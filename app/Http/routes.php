@@ -10,17 +10,22 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
-
+Route::get('/home/login', function () {
+    return view('login');
+});
+Route::get('/home/register', function () {
+    return view('register');
+});
+Route::get('/dashboard','HomeController@index');
 Route::auth();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/home', 'DashboardController@index');
 Route::get('/logout', function(){
    Auth::logout();
-   return Redirect::to('login');
+   return Redirect::to('/home/login');
 });
     // Authentication Routes...
 //    $this->get('login', 'Auth\AuthController@showLoginForm');
