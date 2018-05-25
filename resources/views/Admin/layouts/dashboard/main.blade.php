@@ -30,6 +30,10 @@
 <!--  <link rel="stylesheet" href="{{url('css/bootstrap3-wysihtml5.min.css')}}">-->
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+<script src="{{url('js/jquery.min.js')}}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -41,7 +45,9 @@
   @include('Admin.layouts.dashboard.sidebar_menu')
   <!-- End Main Sidebar Container -->
   <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
   @yield('content')
+  </div>
   <!--End Content Wrapper. Contains page content -->
   <footer class="main-footer">
     <strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
@@ -53,10 +59,7 @@
 
 </div>
 
-<!-- jQuery -->
-<script src="{{url('js/jquery.min.js')}}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button)

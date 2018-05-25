@@ -138,26 +138,34 @@
           </li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fa fa-table"></i>
+              <i class="nav-icon fa fa-wrench"></i>
               <p>
-                Tables
+                Settings
                 <i class="fa fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="pages/tables/simple.html" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Simple Tables</p>
+                <a href="{{url('setting')}}" class="nav-link">
+                  <i class="fa fa-upload nav-icon"></i>
+                  <p>Logo Upload</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="pages/tables/data.html" class="nav-link">
+                <a href="{{url('setting')}}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Data Tables</p>
+                  <p>Site Option </p>
                 </a>
               </li>
             </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{url('setting')}}" class="nav-link">
+              <i class="nav-icon fa fa-wrench"></i>
+              <p>
+                Settings
+              </p>
+            </a>
           </li>
           <li class="nav-item">
             <a href="{{url('logout')}}" class="nav-link">

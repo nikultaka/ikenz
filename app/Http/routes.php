@@ -13,6 +13,15 @@
 Route::get('/', function () {
     return view('login');
 });
+Route::get('/test', function () {
+    return view('test');
+});
+Route::get('/logo', function () {
+    return view('admin.logo_upload');
+});
+Route::get('/setting','SitesettingController@index'); 
+Route::post('/sitesetting/save_details','SitesettingController@save_details'); 
+
 Route::get('/home/login', function () {
     return view('login');
 });
