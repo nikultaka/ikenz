@@ -36,6 +36,22 @@ Route::get('/logout', function(){
    Auth::logout();
    return Redirect::to('/home/login');
 });
+
+
+//This is for admin
+Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function()
+{
+    Route::any('/dashboard', 'Admin\DashboardController@index');
+    Route::any('/login', 'Admin\AdminController@admin')->middleware('is_admin')->name('admin');
+    /*Route::get('/', function(){
+        return view('admin.login');
+    });
+    Route::get('login', function(){
+        return view('admin.login');
+    });*/
+
+});
+
     // Authentication Routes...
 //    $this->get('login', 'Auth\AuthController@showLoginForm');
 //    $this->post('login', 'Auth\AuthController@login');

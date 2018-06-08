@@ -11,7 +11,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form role="form" method="POST" action="{{ url('/login') }}">
+      <form role="form" method="POST" action="{{ url('/admin/login') }}">
           {{ csrf_field() }}
         <div class="form-group has-feedback">
           <input id="email" type="email" placeholder="Email Address" class="form-control" name="email" value="{{ old('email') }}">
