@@ -14,4 +14,39 @@ $(document).ready(function() {
                     }
                 });
     });
+    
+    
+});
+//$("#upload_logo").on('click',function (){
+//    
+//    $.ajax({
+//                    url:$('.base_url').val()+ "/sitesetting/uploadlogo",
+//                    type:'POST',
+//                    data: $('#logo_upload_form').serialize(),
+//                    success: function(data) {
+//                        var data=JSON.parse(data);
+//                        $("#msg").show();
+//                        $("#msg").html(data.msg);
+//                        
+//                    }
+//                });
+//});
+$('#exampleInputFile').ajaxfileupload({
+  action: $('.base_url').val() + '/sitesetting/uploadlogo',
+  valid_extensions : ['jpg','png',"jpeg",'gif'],
+  params: {
+    extra: 'info'
+  },
+  onComplete: function(response) {
+      //var result = JSON.parse(response);
+      if(response.status == 1){
+          $("#hdn_media_name").val(response.file_name);
+          $('#image_frame').show();
+          $('#image_frame').attr('src','<?php echo base_url(); ?>assets/uploads/post/'+response.file_name);
+          $('#image_frame_view').attr('src','<?php echo base_url(); ?>assets/uploads/post/'+response.file_name);
+      } else if(result.status == 1){
+          $("#upload_image_msg").html(response.error);
+          $("#upload_image_msg").css("color","red");
+      }
+  },
 });
