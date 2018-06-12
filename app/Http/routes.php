@@ -35,18 +35,29 @@ Route::get('/logout', function(){
 });
 
 
+
 //This is for admin
-Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function()
+
+Route::get('testimonial', 'Admin\TestimonialController@index');
+Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
+Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
+Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
+
+Route::group(['prefix' => 'admin'], function()
 {
-    Route::any('/dashboard', 'Admin\DashboardController@index');
-    Route::any('/login', 'Admin\AdminController@admin')->middleware('is_admin')->name('admin');
-    /*Route::get('/', function(){
+    Route::get('/', function(){
         return view('admin.login');
     });
-    Route::get('login', function(){
-        return view('admin.login');
-    });*/
-
+    Route::post('/login', 'Admin\AdminController@admin');
+    Route::get('/logout', function(){
+        Auth::logout();
+        return Redirect::to('/admin/');
+    });
+    
+    
+    Route::group(['middleware' => ['auth', 'admin']], function () {
+        Route::any('/dashboard', 'Admin\DashboardController@index');
+    });
 });
 
     // Authentication Routes...

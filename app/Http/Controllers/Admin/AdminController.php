@@ -6,22 +6,28 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminController extends Controller
 {
     //
         public function __construct()
         {
-            $this->middleware('auth');
+            //$this->middleware('is_admin');
         }
         public function admin(Request $request)
         {
-            if ($request->isMethod('post')) {
-                $post = $request->input();
-                echo "<pre>";
-                print_r($post);exit;
-                
+            $username = $request->input('email');
+            $password = $request->input('password');
+            
+            if (Auth::attempt(['email' => $username, 'password' => $password, 'role_id' => 1]))
+            {
+                    return Redirect::intended('/admin/dashboard');
             }
-            return view('admin.login');
+            
+            return Redirect::back()
+			->withInput()
+			->withErrors('That username/password combo does not exist.');
         }
 }

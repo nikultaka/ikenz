@@ -1,0 +1,36 @@
+                    <div class="row">
+                        <div class="col-sm-12" style="margin: 10px;">
+                            <div class="col-sm-6">
+                                <div class="col-sm-12" style="padding-bottom: 5px;">
+                                    <div class="col-sm-2" style="width: 10%">
+                                        <img src="{{ asset('admin/images/users/profile-img.jpg') }}" alt="user-img" class="img-circle">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div><b>Artist Name One</b></div>
+                                        <div>Rating: <i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div style="float: right;">Makeup, Hair</div>
+                                        <div style="float: right;">Dallas, TX</div>
+                                    </div>
+                                </div>
+                                <hr style='float: left;'>
+                            </div>
+                            
+                            <div class="col-sm-6">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-2" style="width: 10%">
+                                        <img src="{{ asset('admin/images/users/profile-img.jpg') }}" alt="user-img" class="img-circle">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div><b>Artist Name One</b></div>
+                                        <div>Rating: <i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i><i class="ti-star"></i></div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div style="float: right;">Makeup, Hair</div>
+                                        <div style="float: right;">Dallas, TX</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
