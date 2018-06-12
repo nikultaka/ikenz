@@ -16,7 +16,7 @@
           <!--<img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">-->
         </div>
         <div class="info">
-          <a class="d-block">Hello, {{ Auth::user()->name }}</a>
+          <a class="d-block">Hello, </a>
         </div>
       </div>
 
