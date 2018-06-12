@@ -1,5 +1,7 @@
 var table= jQuery('.advance_custome_filds_table').DataTable({
-    
+                    paging: true,
+                    pageLength: 10,
+                    bDestroy: true,
                     responsive: true,
                     processing: true,
                     serverSide: true,
@@ -14,14 +16,13 @@ var table= jQuery('.advance_custome_filds_table').DataTable({
                         { data: 'fild_value', name: 'fild_value'},
                         { data: 'status', name: 'status'},
                         
-                        {data: 'action', name: 'action', orderable: false, searchable: false},
+                        
+                        {data: 'action', name: 'action'},
                             ],
     });  
 
-
-
 $(document).ready(function() {
-   // table.ajax.reload();
+   //table.ajax.reload();
 });
 
 $('.add-advance-custom-fild-details').on('click',function (){
