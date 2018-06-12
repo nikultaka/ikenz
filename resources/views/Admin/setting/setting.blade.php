@@ -21,6 +21,40 @@
     <div class="container-fluid">
 <div class="row">
     <div class="col-md-1"></div>
+    <div class="col-md-10">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Logo Upload</h3>
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form role="form" method="post" accept-charset="utf-8" enctype="multipart/form-data" id="logo_upload_form" > 
+               {{ csrf_field() }}
+                <div class="card-body">
+                    <div id="image_preview"><img id="previewing" src="noimage.png" /></div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Select logo image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                          <input type="file" class="custom-file-input" id="exampleInputFile">
+                        <label class="custom-file-label logo-upload" for="exampleInputFile">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="upload_logo">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- /.card-body -->
+                <p id="msg" style="color: orange;margin-left: 30px; display: none" ></p>
+                
+              </form>
+            </div>
+          
+          </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-1"></div>
 <div class="col-md-10">
             <!-- general form elements -->
             <div class="card card-primary">
@@ -76,5 +110,6 @@
     </div>
  </div>
 </section>
+<script type="text/javascript" src="{!! asset('js/jquery.ajaxfileupload.js')!!}"></script>
 <script src="{!! asset('js/site_setting.js')!!}"></script>
 @endsection

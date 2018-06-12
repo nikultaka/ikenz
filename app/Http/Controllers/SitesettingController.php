@@ -17,7 +17,7 @@ class SitesettingController extends Controller
         foreach ($result as $key=>$value){
             $data[$value->option_name] =$value->option_value;
         }
-        return view('Admin/setting')->with($data);
+        return view('Admin.setting.setting')->with($data);
     }
     public function save_details(Request $request){
        $site=new site();
@@ -54,5 +54,10 @@ class SitesettingController extends Controller
        return json_encode($data);
        
        
+    }
+    public function uploadlogo(Request $request){
+        echo '<pre>';
+        print_r($_FILES);
+        die;
     }
 }
