@@ -11,12 +11,14 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 //use Yajra\Datatables\Datatables;
 use yajra\Datatables\Facades\Datatables;
+use Image;
 
 class TestimonialController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('admin');
     }
     
     public function index()
@@ -58,7 +60,7 @@ class TestimonialController extends Controller
             $validator = Validator::make($request->all(), [
                 'cus_name' => 'required',
                 'feedback' => 'required',
-                'user_photo' => 'required',
+                'user_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'status' => 'required',
                 
                     ]);
@@ -69,6 +71,15 @@ class TestimonialController extends Controller
                 if($file = $request->hasFile('user_photo')) {
                     
                     $file = $request->file('user_photo') ;
+                    $input['user_photo'] = time().'.'.$file->getClientOriginalExtension();
+
+                    
+                    $destinationPath = public_path().'/thumbnail';
+                    $img = Image::make($file->getRealPath());
+                    $img->fit(100,100, function ($constraint) {
+                        $constraint->aspectRatio();        
+                    })->save($destinationPath.'/'.$input['user_photo']);
+
                     
                     $destinationPath = public_path().'/upload/';
                     $uniquesavename=time().uniqid(rand());
@@ -76,21 +87,13 @@ class TestimonialController extends Controller
                     $file->move($destinationPath,$destFile);
                     $product->user_photo = $destFile ;
                     
-//                    $image = Image::make(Input::file('photo')->getRealPath());
-//                    $image->save(public_path('photos/'. $id .'.jpg'));
-//                    $image->fit(300, 200)->save(public_path('photos/'. $id .'-thumbs.jpg'));
-
-
-                    
                  }
                  
                 $cus_name = $request->input('cus_name');
                 $feedback = $request->input('feedback');
                 $user_photo = $destFile;
                 $status = $request->input('status');
-//                $created_date = date("Y-m-d h:i:s");
-//                $updated_date = date("Y-m-d h:i:s");
-                
+
                 $data_insert = array();
                 $data_insert['customer_name']=$cus_name;
                 $data_insert['feedback']=$feedback;
@@ -109,7 +112,6 @@ class TestimonialController extends Controller
     
      public function deleterecord(){
         $id=$_POST['id'];
-//        echo $id;exit;
         if(isset($id) && $id !=''){
             DB::table('testimonial')
                     ->where('id', $id)

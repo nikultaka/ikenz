@@ -16,10 +16,7 @@
           <!--<img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">-->
         </div>
         <div class="info">
-<<<<<<< HEAD
-=======
           <a class="d-block">Hello, </a>
->>>>>>> 09fd35628750a49055af570cef467c6af55a0f16
         </div>
       </div>
 
@@ -163,7 +160,7 @@
             </ul>
           </li>
           <li class="nav-item">
-            <a href="{{url('testimonial')}}" class="nav-link">
+            <a href="{{url('admin/testimonial')}}" class="nav-link">
               <i class="nav-icon fa fa-sign-out"></i>
               <p>
                 Testimonial
