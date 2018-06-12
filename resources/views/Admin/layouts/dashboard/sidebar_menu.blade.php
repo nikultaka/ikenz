@@ -159,6 +159,15 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a href="{{url('testimonial')}}" class="nav-link">
+              <i class="nav-icon fa fa-sign-out"></i>
+              <p>
+                Testimonial
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item">
             <a href="{{url('logout')}}" class="nav-link">
               <i class="nav-icon fa fa-sign-out"></i>
               <p>

@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('login');
 });
 Route::get('/test', function () {
@@ -32,12 +32,14 @@ Route::get('/home', 'DashboardController@index');
 Route::get('/logout', function(){
    Auth::logout();
    return Redirect::to('/home/login');
-});*/
+});
 
 
 //This is for admin
-Route::get('admin/testimonial', 'Admin\TestimonialController@index');
-Route::any('admin/testimonial/addmember', 'Admin\TestimonialController@addmember');
+Route::get('testimonial', 'Admin\TestimonialController@index');
+Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
+Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
+Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'is_admin'], function()
 {
