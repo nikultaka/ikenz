@@ -73,3 +73,5 @@ Route::any('sitesetting/uploadlogo','SitesettingController@uploadlogo');
 Route::get('/advancesettings','AdvancesettingController@index'); 
 Route::post('advancesettings/store','AdvancesettingController@store'); 
 Route::any('advancesettings/getdata','AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
+Route::post('advancesettings/delete','AdvancesettingController@destroy');
+Route::post('advancesettings/edit','AdvancesettingController@edit');

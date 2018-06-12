@@ -3,6 +3,9 @@ var table= jQuery('.advance_custome_filds_table').DataTable({
                     responsive: true,
                     processing: true,
                     serverSide: true,
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     ajax: $('#base_url').val()+'/advancesettings/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
@@ -64,4 +67,54 @@ $('.add-advance-custom-fild-details').on('click',function (){
     else{
         return false;
     }
+});
+$('body').on('click','.btnDeletefilddetails',function (){
+    var fildid=($(this).data('id'));
+    var _token = $("input[name='_token']").val();
+    if(fildid>0){
+        $.ajax({
+           url:$('#base_url').val()+'/advancesettings/delete',
+           type:'post',
+               
+           data:{_token:_token,fildid:fildid},
+            success: function (data, textStatus, jqXHR) {
+                var data=$.parseJSON(data);
+                if(data.status==1){
+                    $('#msg_main').html(data.msg);
+                    $('#msg_main').attr('style','color:green;');
+                     table.ajax.reload();
+                }
+            }
+        });
+    }
+    else{
+        return false;
+    }
+});
+$('body').on('click','.btnEditfilddetails',function (){
+    var fildid=($(this).data('id'));
+    var _token = $("input[name='_token']").val();
+    
+    if(fildid>0){
+        $.ajax({
+           url:$('#base_url').val()+'/advancesettings/edit',
+           type:'post',
+               
+           data:{_token:_token,fildid:fildid},
+            success: function (data, textStatus, jqXHR) {
+                var data=$.parseJSON(data);
+                if(data.status==1){
+                    $('#fild_id').val(data.msg.id);
+                    $('#adc_label').val(data.msg.label);
+                    $('#adc_fild_name').val(data.msg.fild_name);
+                    $('#adc_fild_value').val(data.msg.fild_value);
+                    $('#modalRegisterForm').modal('show');
+                }
+            }
+        });
+    }
+    else{
+        return false;
+    }
+    
 });
