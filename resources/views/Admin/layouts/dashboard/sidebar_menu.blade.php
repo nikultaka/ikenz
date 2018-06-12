@@ -16,6 +16,10 @@
           <!--<img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">-->
         </div>
         <div class="info">
+<<<<<<< HEAD
+=======
+          <a class="d-block">Hello, </a>
+>>>>>>> 09fd35628750a49055af570cef467c6af55a0f16
         </div>
       </div>
 

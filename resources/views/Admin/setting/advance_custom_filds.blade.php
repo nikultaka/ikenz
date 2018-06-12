@@ -27,14 +27,16 @@
             <div class="card-header">
                 <div class="col-sm-2" style="float: left;">
             <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalRegisterForm">Add Filds</button>
+            
             </div>  
-              
+              <p id="msg_main"></p>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
               
               <table class="table table-bordered table-striped with-check advance_custome_filds_table">    
                 <thead>
+                    
                 <th>ID</th>
                 <th>Label</th>
                 <th>Fild Name</th>
@@ -75,6 +77,7 @@
             </div>
             <div class="modal-body">
                 <p id="msg"></p>
+                <input type="hidden" name="fild_id" id="fild_id" value="">
                 <div class="control-group">
                     <label class="control-label">Label</label>
                     <div class="controls">
