@@ -19,9 +19,6 @@ Route::get('/test', function () {
 Route::get('/logo', function () {
     return view('admin.logo_upload');
 });
-Route::get('/setting','SitesettingController@index'); 
-Route::post('/sitesetting/save_details','SitesettingController@save_details'); 
-
 Route::get('/home/login', function () {
     return view('login');
 });
@@ -79,3 +76,18 @@ Route::group(['prefix' => 'admin'], function()
 //    $this->get('password/reset/{token?}', 'Auth\PasswordController@showResetForm');
 //    $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 //    $this->post('password/reset', 'Auth\PasswordController@reset');
+
+//Setting Section Filds Section
+
+
+Route::get('/setting','SitesettingController@index'); 
+Route::post('/sitesetting/save_details','SitesettingController@save_details'); 
+Route::any('sitesetting/uploadlogo','SitesettingController@uploadlogo');
+
+
+// Advance Custom Filds Section Routes
+Route::get('/advancesettings','AdvancesettingController@index'); 
+Route::post('advancesettings/store','AdvancesettingController@store'); 
+Route::any('advancesettings/getdata','AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
+Route::post('advancesettings/delete','AdvancesettingController@destroy');
+Route::post('advancesettings/edit','AdvancesettingController@edit');

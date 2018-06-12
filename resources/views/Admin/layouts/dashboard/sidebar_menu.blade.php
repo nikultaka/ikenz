@@ -147,25 +147,17 @@
             <ul class="nav nav-treeview">
               <li class="nav-item">
                 <a href="{{url('setting')}}" class="nav-link">
-                  <i class="fa fa-upload nav-icon"></i>
-                  <p>Logo Upload</p>
+                  <i class="fa fa-wrench nav-icon"></i>
+                  <p>General Settings </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{url('setting')}}" class="nav-link">
+                <a href="{{url('advancesettings')}}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Site Option </p>
+                  <p> Advance Custom Filds </p>
                 </a>
               </li>
             </ul>
-          </li>
-          <li class="nav-item">
-            <a href="{{url('setting')}}" class="nav-link">
-              <i class="nav-icon fa fa-wrench"></i>
-              <p>
-                Settings
-              </p>
-            </a>
           </li>
           <li class="nav-item">
             <a href="{{url('logout')}}" class="nav-link">

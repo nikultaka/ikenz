@@ -34,8 +34,20 @@
 <script src="{{url('js/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+ 
+<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+<style>
+    .has-error{
+        border: 2px solid red;
+        border-radius: 5px;
+    }
+</style>
 </head>
 <body class="hold-transition sidebar-mini">
+    
+    <input type="hidden" value="{{ url('/') }}" name='base_url' id='base_url' class="base_url">
 <div class="wrapper">
  <!-- Navbar -->
  @include('Admin.layouts.dashboard.navbar')
