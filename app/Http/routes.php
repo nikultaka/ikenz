@@ -48,6 +48,9 @@ Route::group(['prefix' => 'admin'], function()
     Route::get('/', function(){
         return view('admin.login');
     });
+    Route::get('/login', function(){ 
+        return view('admin.login');
+    });
     Route::post('/login', 'Admin\AdminController@admin');
     Route::get('/logout', function(){
         Auth::logout();
