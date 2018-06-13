@@ -38,17 +38,16 @@ Route::get('/logout', function(){
 
 //This is for admin
 
-Route::get('testimonial', 'Admin\TestimonialController@index');
-Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
-Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
-Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
+
 
 Route::group(['prefix' => 'admin'], function()
 {
     Route::get('/', function(){
         return view('admin.login');
     });
-    Route::get('/login', function(){ 
+    
+    Route::get('/login', function(){
+
         return view('admin.login');
     });
     Route::post('/login', 'Admin\AdminController@admin');
@@ -63,6 +62,14 @@ Route::group(['prefix' => 'admin'], function()
     Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::any('/dashboard', 'Admin\DashboardController@index');
     });
+    
+    Route::get('testimonial', 'Admin\TestimonialController@index');
+    Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
+    Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
+    Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
+    
+    
+    
 });
 
     // Authentication Routes...

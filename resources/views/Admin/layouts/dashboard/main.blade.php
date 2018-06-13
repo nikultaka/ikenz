@@ -44,6 +44,11 @@
         border-radius: 5px;
     }
 </style>
+<script type="text/javascript">
+    var admin = {};
+    var BASE_URL = "{{ url('/') }}";
+</script>
+</script>
 </head>
 <body class="hold-transition sidebar-mini">
     

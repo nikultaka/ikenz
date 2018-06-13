@@ -1,41 +1,27 @@
-var admin = {};
 admin.advance_custom = {
+    
   initialize:function()
   {
+      var this_class = this;
       $('body').on('click','.btnDeletefilddetails',function (){
-        var fildid = ($(this).data('id'));
-        this.delete_row(fildid);
-      }
+        var fildid = $(this).data('id');
+        this_class.delete_row(fildid);
+      });
+      $('body').on('click','.btnEditfilddetails',function (){
+        var fildid = $(this).data('id');
+        this_class.edit_row(fildid);
+      });
+      $('.add-advance-custom-fild-details').on('click',function (){
+          this_class.add_row();
+      });
+       
+      admin.advance_custom.load_advance_setting();
+        
   },
-  delete_row:function(id){
-      alert(id);
-      return false;
-      var fildid=($(this).data('id'));
-        var _token = $("input[name='_token']").val();
-        if(fildid>0){
-            $.ajax({
-               url:$('#base_url').val()+'/admin/advancesettings/delete',
-               type:'post',
-
-               data:{_token:_token,fildid:fildid},
-                success: function (data, textStatus, jqXHR) {
-                    var data=$.parseJSON(data);
-                    if(data.status==1){
-                        $('#msg_main').html(data.msg);
-                        $('#msg_main').attr('style','color:green;');
-                         table.ajax.reload();
-                    }
-                }
-            });
-        }
-        else{
-            return false;
-        }
-  }
-},
-var table= jQuery('.advance_custoe_filds_table').DataTable({
+  load_advance_setting:function(){
+      var table= jQuery('.advance_custome_filds_table').DataTable({
                     paging: true,
-                    pageLength: 10,
+                    pageLength: 20,
                     bDestroy: true,
                     responsive: true,
                     processing: true,
@@ -43,7 +29,7 @@ var table= jQuery('.advance_custoe_filds_table').DataTable({
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    ajax: $('#base_url').val()+'/admin/advancesettings/getdata',
+                    ajax: BASE_URL+'/admin/advancesettings/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'label', name: 'label'},
@@ -54,14 +40,58 @@ var table= jQuery('.advance_custoe_filds_table').DataTable({
                         
                         {data: 'action', name: 'action'},
                             ],
-    });  
+        });
+  },
+  delete_row:function(fildid){
+        var _token = $("input[name='_token']").val();
+        if(fildid>0){
+            $.ajax({
+               url : BASE_URL+'/admin/advancesettings/delete',
+               type:'post',
 
-$(document).ready(function() {
-   //table.ajax.reload();
-});
-
-$('.add-advance-custom-fild-details').on('click',function (){
-    var count=0;
+               data:{_token:_token,fildid:fildid},
+                success: function (data, textStatus, jqXHR) {
+                    var data=$.parseJSON(data);
+                    if(data.status==1){
+                        $('#msg_main').html(data.msg);
+                        $('#msg_main').attr('style','color:green;');
+                        admin.advance_custom.load_advance_setting();
+                    }
+                }
+            });
+        }
+        else{
+            return false;
+        }
+  },
+  edit_row:function (fildid){
+        
+    var _token = $("input[name='_token']").val();
+    
+    if(fildid>0){
+        $.ajax({
+           url: BASE_URL+'/admin/advancesettings/edit',
+           type:'post',
+               
+           data:{_token:_token,fildid:fildid},
+            success: function (data, textStatus, jqXHR) {
+                var data=$.parseJSON(data);
+                if(data.status==1){
+                    $('#fild_id').val(data.msg.id);
+                    $('#adc_label').val(data.msg.label);
+                    $('#adc_fild_name').val(data.msg.fild_name);
+                    $('#adc_fild_value').val(data.msg.fild_value);
+                    $('#modalRegisterForm').modal('show');
+                }
+            }
+        });
+    }
+    else{
+        return false;
+    }
+  },
+  add_row:function (){
+      var count=0;
     if($('#adc_label').val().trim() == ''){
         $('#adc_label').parent('div').addClass('has-error');
         count++;
@@ -85,7 +115,7 @@ $('.add-advance-custom-fild-details').on('click',function (){
     }
     if(count==0){
         $.ajax({
-            url: $('#base_url').val()+"/admin/advancesettings/store",
+            url: BASE_URL+"/admin/advancesettings/store",
             type:'POST',
             data: $('#advance-custom-fild-form').serialize(),
             datatype:'json',
@@ -95,7 +125,7 @@ $('.add-advance-custom-fild-details').on('click',function (){
                     $('#msg').html(data.msg);
                     $('#msg').attr('style','color:green;');
                     $('#advance-custom-fild-form')[0].reset();
-                        table.ajax.reload();
+                        admin.advance_custom.load_advance_setting();
                 }
             }
         });
@@ -103,54 +133,5 @@ $('.add-advance-custom-fild-details').on('click',function (){
     else{
         return false;
     }
-});
-/*$('body').on('click','.btnDeletefilddetails',function (){
-    var fildid=($(this).data('id'));
-    var _token = $("input[name='_token']").val();
-    if(fildid>0){
-        $.ajax({
-           url:$('#base_url').val()+'/admin/advancesettings/delete',
-           type:'post',
-               
-           data:{_token:_token,fildid:fildid},
-            success: function (data, textStatus, jqXHR) {
-                var data=$.parseJSON(data);
-                if(data.status==1){
-                    $('#msg_main').html(data.msg);
-                    $('#msg_main').attr('style','color:green;');
-                     table.ajax.reload();
-                }
-            }
-        });
-    }
-    else{
-        return false;
-    }
-});*/
-$('body').on('click','.btnEditfilddetails',function (){
-    var fildid=($(this).data('id'));
-    var _token = $("input[name='_token']").val();
-    
-    if(fildid>0){
-        $.ajax({
-           url:$('#base_url').val()+'/admin/advancesettings/edit',
-           type:'post',
-               
-           data:{_token:_token,fildid:fildid},
-            success: function (data, textStatus, jqXHR) {
-                var data=$.parseJSON(data);
-                if(data.status==1){
-                    $('#fild_id').val(data.msg.id);
-                    $('#adc_label').val(data.msg.label);
-                    $('#adc_fild_name').val(data.msg.fild_name);
-                    $('#adc_fild_value').val(data.msg.fild_value);
-                    $('#modalRegisterForm').modal('show');
-                }
-            }
-        });
-    }
-    else{
-        return false;
-    }
-    
-});
+  }
+};
