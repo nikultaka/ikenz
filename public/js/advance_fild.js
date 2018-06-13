@@ -8,7 +8,7 @@ var table= jQuery('.advance_custome_filds_table').DataTable({
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    ajax: $('#base_url').val()+'/advancesettings/getdata',
+                    ajax: $('#base_url').val()+'/admin/advancesettings/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'label', name: 'label'},
@@ -50,7 +50,7 @@ $('.add-advance-custom-fild-details').on('click',function (){
     }
     if(count==0){
         $.ajax({
-            url: $('#base_url').val()+"/advancesettings/store",
+            url: $('#base_url').val()+"/admin/advancesettings/store",
             type:'POST',
             data: $('#advance-custom-fild-form').serialize(),
             datatype:'json',
@@ -74,7 +74,7 @@ $('body').on('click','.btnDeletefilddetails',function (){
     var _token = $("input[name='_token']").val();
     if(fildid>0){
         $.ajax({
-           url:$('#base_url').val()+'/advancesettings/delete',
+           url:$('#base_url').val()+'/admin/advancesettings/delete',
            type:'post',
                
            data:{_token:_token,fildid:fildid},
@@ -98,7 +98,7 @@ $('body').on('click','.btnEditfilddetails',function (){
     
     if(fildid>0){
         $.ajax({
-           url:$('#base_url').val()+'/advancesettings/edit',
+           url:$('#base_url').val()+'/admin/advancesettings/edit',
            type:'post',
                
            data:{_token:_token,fildid:fildid},

@@ -52,6 +52,8 @@ Route::group(['prefix' => 'admin'], function()
     Route::get('/logout', function(){
         Auth::logout();
         return Redirect::to('/admin/');
+        
+        
     });
     
     
@@ -72,17 +74,14 @@ Route::group(['prefix' => 'admin'], function()
 //    $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 //    $this->post('password/reset', 'Auth\PasswordController@reset');
 
-//Setting Section Filds Section
+Route::get('admin/setting','Admin\SitesettingController@index'); 
+    Route::post('admin/sitesetting/save_details','Admin\SitesettingController@save_details'); 
+    Route::any('admin/sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
 
 
-Route::get('/setting','SitesettingController@index'); 
-Route::post('/sitesetting/save_details','SitesettingController@save_details'); 
-Route::any('sitesetting/uploadlogo','SitesettingController@uploadlogo');
-
-
-// Advance Custom Filds Section Routes
-Route::get('/advancesettings','AdvancesettingController@index'); 
-Route::post('advancesettings/store','AdvancesettingController@store'); 
-Route::any('advancesettings/getdata','AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
-Route::post('advancesettings/delete','AdvancesettingController@destroy');
-Route::post('advancesettings/edit','AdvancesettingController@edit');
+    // Advance Custom Filds Section Routes
+    Route::get('admin/advancesettings','Admin\AdvancesettingController@index'); 
+    Route::post('admin/advancesettings/store','Admin\AdvancesettingController@store'); 
+    Route::any('admin/advancesettings/getdata','Admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
+    Route::post('admin/advancesettings/delete','Admin\AdvancesettingController@destroy');
+    Route::post('admin/advancesettings/edit','Admin\AdvancesettingController@edit');
