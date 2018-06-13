@@ -107,4 +107,9 @@
 </div>
 </form>
 <script src="{!! asset('js/advance_fild.js')!!}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        admin.advance_custom.initialize();
+    });
+</script>    
 @endsection

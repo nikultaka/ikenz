@@ -3,7 +3,7 @@ $(document).ready(function() {
     $(".site-setting").click(function(e){
         
         $.ajax({
-                    url: "sitesetting/save_details",
+                    url: $('#base_url').val()+"/admin/sitesetting/save_details",
                     type:'POST',
                     data: $('form').serialize(),
                     success: function(data) {
@@ -32,7 +32,7 @@ $(document).ready(function() {
 //                });
 //});
 $('#exampleInputFile').ajaxfileupload({
-  action: $('.base_url').val() + '/sitesetting/uploadlogo',
+  action: $('.base_url').val() + '/admin/sitesetting/uploadlogo',
   valid_extensions : ['jpg','png',"jpeg",'gif'],
   params: {
     extra: 'info'

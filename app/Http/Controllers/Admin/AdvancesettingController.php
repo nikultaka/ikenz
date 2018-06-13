@@ -1,6 +1,6 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class AdvancesettingController extends Controller
      */
      public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
     public function index()
     {
@@ -95,13 +95,13 @@ class AdvancesettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Request $request)
     {
         $result=array();
         $result['status']=0;
         
         if(isset($_POST['fildid']) && $_POST['fildid'] !='' ){
-            $fild_id=$_POST['fildid'];
+            $fild_id=$request->input('fildid');
            $returnresult= DB::table('advance_custom_details')
                    ->where('id',$fild_id)     
                    ->first();
@@ -132,13 +132,13 @@ class AdvancesettingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy()
+    public function destroy(Request $request)
     {   
         $result=array();
         $result['status']=0;
         
         if(isset($_POST['fildid']) && $_POST['fildid'] !='' ){
-            $fild_id=$_POST['fildid'];
+            $fild_id=$request->input('fildid');
            $returnresult= DB::table('advance_custom_details')
                    ->where('id',$fild_id)     
                    ->update(array('status'=>-1));

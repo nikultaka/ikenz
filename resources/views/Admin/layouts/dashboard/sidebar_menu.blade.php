@@ -146,13 +146,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{url('setting')}}" class="nav-link">
+                <a href="{{url('admin/setting')}}" class="nav-link">
                   <i class="fa fa-wrench nav-icon"></i>
                   <p>General Settings </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{url('advancesettings')}}" class="nav-link">
+                <a href="{{url('admin/advancesettings')}}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p> Advance Custom Filds </p>
                 </a>
