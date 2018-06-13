@@ -15,12 +15,15 @@ var table= jQuery('.test-table').DataTable({
 //                        { data: 'delete', name: 'delete'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
+                           initComplete: function(settings, json) {
+                    refreshJscharges();
+                    }
     });  
     
     
 $(document).ready(function() {
            table.ajax.reload();
-//                alert("dasd");
+           
             $(".sub_tes").click(function(e){
                 
                 e.preventDefault();
@@ -34,7 +37,6 @@ $(document).ready(function() {
                 var demo = document.getElementById("status");
                 var status = demo.options[demo.selectedIndex].value;
                 
-//                var status = $("input[name='status']").val();
                 var count_error = 0;
                 if (cus_name.trim() == '') {
                      $("input[name='cus_name']").addClass('has-error');
@@ -82,9 +84,47 @@ $(document).ready(function() {
             })
             }); 
             
+            
+function refreshJscharges(){
+    $('.btnEdit_test').on('click', function () {
+//        $("#ins_tes").show();
+        var test_id = $(this).data('id'); 
+        var _token = $("input[name='_token']").val();
+        $.ajax({
+            url: 'testimonial/edit',
+            type:'POST',
+            data: {_token:_token, test_id:test_id},
+            success: function(data) {
+                if(data.status==1){
+                    
+                   
+//                    $('select[name^="block_list"] option[value=]').attr("selected","selected");
+                    
+                    $("#cus_name").val(data.content.customer_name);
+                    $("#feedback").val(data.content.feedback);
+                    
+                   
+//                    $("#user_photo").val(data.content.user_photo);
+                    
+                    var status_id = $("#status").val(data.content.status);
+                    status_id.attr("selected","selected");
+                    $('select[name^="status"] option[value=]').attr("selected","selected");
+                    
+                    $("#ins_tes").modal("show");
+                   
+                    
+                }
+            }
+        });
+    });
+}
+
+
+
+            
 function delete_test(id){
         var _token = $("input[name='_token']").val();
-             $.ajax({
+            $.ajax({
                     url: 'testimonial/delete',
                     type:'POST',
                     data: {_token:_token, id:id},
@@ -94,6 +134,6 @@ function delete_test(id){
                             table.ajax.reload();
                         }
                     }
-                })
+            })
                
 }

@@ -42,7 +42,8 @@ class TestimonialController extends Controller
                                 return ($data->status == 1) ? trans('Active'): trans('Inactive');
                                 })
                                 ->addColumn('action', function ($testimonial) {
-                                $button= '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$testimonial->id.'" class="btn btn-xs btn-info btnEditMember"> Edit</a>  	&nbsp;';
+                                $button= '<a href="javascript:void(0);" data-id="'.$testimonial->id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>&nbsp;';
+//                                $button= '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$testimonial->id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
                                 $button .='<a onclick="delete_test('.$testimonial->id.')" class="btn btn-xs btn-danger"> Delete</a></div>';
                                 return $button;
                     })
@@ -109,6 +110,20 @@ class TestimonialController extends Controller
             return response()->json(['error'=>$validator->errors()->all()]);  
         
     }
+    
+    public function edittestimonial(){
+        $id=$_POST['test_id'];
+        $charges =DB::table('testimonial')->where('id','=',$id)->first();
+        $data_result=array();
+        $data_result['status']=1;
+        $data_result['content']=$charges;
+//        print_r($data_result);exit;
+        return $data_result;   
+    }
+    
+    
+    
+    
     
      public function deleterecord(){
         $id=$_POST['id'];
