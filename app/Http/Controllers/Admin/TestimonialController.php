@@ -17,7 +17,7 @@ class TestimonialController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
         $this->middleware('admin');
     }
     
@@ -30,86 +30,85 @@ class TestimonialController extends Controller
         
     }
     
-    public function anyData()
-        {
-          $testimonial=DB::table('testimonial')
-                    ->select('*')
-                    ->where('status',1)
-                    ->get();
-          $testimonial= collect($testimonial);
-          
-             return Datatables::of($testimonial)->editColumn('status', function($data) {
-                                return ($data->status == 1) ? trans('Active'): trans('Inactive');
-                                })
-                                ->addColumn('action', function ($testimonial) {
-                                $button= '<a href="javascript:void(0);" data-id="'.$testimonial->id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>&nbsp;';
-//                                $button= '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$testimonial->id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
-                                $button .='<a onclick="delete_test('.$testimonial->id.')" class="btn btn-xs btn-danger"> Delete</a></div>';
-                                return $button;
-                    })
-                    ->editColumn('id', '{{$id}}')
-                    ->make(true);
-        }
-    
     public function addrecord(Request $request){
         
-        
+        $data_insert=array();
+        $result=array();
+        $result['status']=0;
+
+        if($_POST){
+            if($request->input('id_test')){
+                $id_test = $request->input('id_test');
+            }
             $filename  = basename($_FILES['user_photo']['name']);
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             date_default_timezone_set("Asia/Kolkata");
             
-            $validator = Validator::make($request->all(), [
-                'cus_name' => 'required',
-                'feedback' => 'required',
-                'user_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'status' => 'required',
-                
-                    ]);
-            if ($validator->passes()) {   
-                $product = new Testimonial($request->input()) ;
+             $product = new Testimonial($request->input()) ;
           
                
-                if($file = $request->hasFile('user_photo')) {
-                    
-                    $file = $request->file('user_photo') ;
-                    $input['user_photo'] = time().'.'.$file->getClientOriginalExtension();
+            if($file = $request->hasFile('user_photo')) {
 
-                    
-                    $destinationPath = public_path().'/thumbnail';
-                    $img = Image::make($file->getRealPath());
-                    $img->fit(100,100, function ($constraint) {
-                        $constraint->aspectRatio();        
-                    })->save($destinationPath.'/'.$input['user_photo']);
+                $file = $request->file('user_photo') ;
+                $input['user_photo'] = time().'.'.$file->getClientOriginalExtension();
 
-                    
-                    $destinationPath = public_path().'/upload/';
-                    $uniquesavename=time().uniqid(rand());
-                    $destFile = $uniquesavename . '.'.$extension;
-                    $file->move($destinationPath,$destFile);
-                    $product->user_photo = $destFile ;
-                    
-                 }
-                 
+
+                $destinationPath = public_path().'/thumbnail';
+                $img = Image::make($file->getRealPath());
+                $img->fit(100,100, function ($constraint) {
+                    $constraint->aspectRatio();        
+                })->save($destinationPath.'/'.$input['user_photo']);
+
+
+                $destinationPath = public_path().'/upload/';
+                $uniquesavename=time().uniqid(rand());
+                $destFile = $uniquesavename . '.'.$extension;
+                $file->move($destinationPath,$destFile);
+                $product->user_photo = $destFile ;
+
+             }
                 $cus_name = $request->input('cus_name');
                 $feedback = $request->input('feedback');
-                $user_photo = $destFile;
+                $user_photo = isset($destFile) ? $destFile : '';
                 $status = $request->input('status');
 
+             
                 $data_insert = array();
                 $data_insert['customer_name']=$cus_name;
                 $data_insert['feedback']=$feedback;
                 $data_insert['user_photo']=$user_photo;
                 $data_insert['status']=$status;
+
+
+                 
+            if(isset($_POST['id_test']) && $_POST['id_test'] != ''){
+              $data_insert['updated_date']=date("Y-m-d h:i:s");
+              $returnresult= DB::table('testimonial')
+                 ->where('id',$id_test)     
+                 ->update($data_insert);
+              if($returnresult){
+                  $result['status']=1;
+                  $result['msg']='Record updated successfully.!';
+              }
+                    
+            }      
+            else{
+
                 $data_insert['created_date']=date("Y-m-d h:i:s");
                 $data_insert['updated_date']=date("Y-m-d h:i:s");
-                
+                if(DB::table('testimonial')->insert($data_insert)){
+                $result['status']=1;
+                $result['msg']="Record add sucessfully..!";
 
-                Testimonial::insert($data_insert);
-                return response()->json(['success'=>'Added new records.']);
                     }
-            return response()->json(['error'=>$validator->errors()->all()]);  
-        
+           
+            }
+            echo json_encode($result);
+            exit;
+                 
+        }
     }
+        
     
     public function edittestimonial(){
         $id=$_POST['test_id'];
@@ -117,12 +116,9 @@ class TestimonialController extends Controller
         $data_result=array();
         $data_result['status']=1;
         $data_result['content']=$charges;
-//        print_r($data_result);exit;
-        return $data_result;   
+        echo json_encode($data_result);
+        exit;
     }
-    
-    
-    
     
     
      public function deleterecord(){
@@ -135,12 +131,119 @@ class TestimonialController extends Controller
         $data_result['status']=1;
         $data_result['msg']="Record deleted success.";
         
-        return $data_result;
+        echo json_encode($data_result);
+        exit;
         }
         else {
             return response()->json(['error'=>'record Not Found']);
         }
     }
+    
+    
+    public function anyData()
+    {
+        
+        $requestData = $_REQUEST;
+
+        $data = array();
+        $sql = "SELECT * FROM testimonial ";
+        //This is for search value
+        $sql .= " WHERE status = 1 ";
+        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
+            $sql .= " AND (customer_name LIKE '%" . $requestData['search']['value'] . "%' OR feedback LIKE '%" . $requestData['search']['value'] . "%' "
+                    . "OR user_photo LIKE '%" . $requestData['search']['value'] . "%') ";
+        }
+
+        //This is for order 
+        $columns = array(
+            0. => 'id',
+            1 => 'customer_name',
+            2 => 'feedback',
+            3 => 'user_photo',
+            4 => 'status',
+            5 => 'created_date',
+            5 => 'updated_date',
+        );
+        
+        
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
+            $order_by = $columns[$requestData['order'][0]['column']];
+            $sql .= " ORDER BY " . $order_by;
+        } else {
+            $sql .= " ORDER BY id DESC";
+        }
+
+        if (isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
+            $sql .= " " . $requestData['order'][0]['dir'];
+        } else {
+            $sql .= " DESC ";
+        }
+        
+        //This is for count
+        
+        $result=DB::table('testimonial')
+                    ->where('status',1)
+                    ->count();
+        $totalData = 0;
+        $totalFiltered = 0;
+        if ($result > 0) {
+            $totalData = $result;
+            $totalFiltered = $result;
+        }
+
+        //This is for pagination
+        if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
+            $sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+        }
+        
+        $service_price_list = DB::select($sql);
+        $arr_data = Array();
+        $arr_data = $result;
+
+
+        foreach ($service_price_list as $row) {
+            $temp['id'] = $row->id;
+            $temp['customer_name'] = $row->customer_name;
+            $temp['feedback'] = $row->feedback;
+            $temp['user_photo'] = $row->user_photo;
+            $temp['created_date'] = $row->created_date;
+            $temp['updated_date'] = $row->updated_date;
+            $status = $row->status;
+            if ($status == "0") {
+
+                $statusstring = "Deactive";
+            } elseif ($status == "1") {
+                $statusstring = "Active";
+            } else {
+                $statusstring = "";
+            }
+            $temp['status'] = $statusstring;
+
+            $id = $row->id;
+
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
+            $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
+            
+            $temp['action'] = $action;
+            $data[] = $temp;
+            $id = "";
+        }
+
+
+
+        $json_data = array(
+            "draw" => intval($requestData['draw']),
+            "recordsTotal" => intval($totalData),
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data,
+            "sql" => $sql
+        );
+        echo json_encode($json_data);
+        exit(0);
+            
+        }
+    
+    
     
     
 }

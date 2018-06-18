@@ -1,35 +1,76 @@
-var table= jQuery('.test-table').DataTable({
+admin.testimonial = {
+    initialize:function()
+    {   
+        var this_class = this;
+
+        $('.sub_tes').on('click',function (){
+            this_class.add_row();
+        });
+        
+        $('body').on('click','.btnEdit_test',function (){
+            var test_id = $(this).data('id'); 
+            this_class.edit_row(test_id);
+        });
+        
+        $('body').on('click','.btnDelete_test',function (){
+            var test_id = $(this).data('id'); 
+            this_class.delete_row(test_id);
+        });
+
+        $("#user_photo").change(function() {
+            $("#u_photo").show();
+            this_class.Image_preview(this);
+        });
+        
+        admin.testimonial.load_testimonial();
+        $("#u_photo").hide();  
+          
+
+    },
+
+
+Image_preview: function(input) {
+
+                if (input.files && input.files[0]) {
+                  var reader = new FileReader();
+
+                  reader.onload = function(e) {
+                    $('#u_photo').attr('src', e.target.result);
+                  }
+
+                  reader.readAsDataURL(input.files[0]);
+                }
+},
+
+load_testimonial:function(){
+    
+    var table= jQuery('.test-table').DataTable({
+                    paging: true,   
+                    pageLength: 10,
+                    bDestroy: true,
                     responsive: true,
                     processing: true,
                     serverSide: true,
-                    ajax: 'testimonial/getdata',
+                    "order": [[ 0, "desc" ]],
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    ajax: BASE_URL+'/admin/testimonial/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'customer_name', name: 'customer_name'},
                         { data: 'feedback', name: 'feedback'},
                         { data: 'user_photo', name: 'user_photo'},
                         { data: 'status', name: 'status'},
-                        { data: 'created_date', name: 'created_date'},
-                        { data: 'updated_date', name: 'updated_date'},
-//                        { data: 'edit', name: 'edit'},
-//                        { data: 'delete', name: 'delete'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
-                           initComplete: function(settings, json) {
-                    refreshJscharges();
-                    }
-    });  
+    }); 
     
-    
-$(document).ready(function() {
-           table.ajax.reload();
-           
-            $(".sub_tes").click(function(e){
+},
+
+ 
+add_row:function (){
                 
-                e.preventDefault();
-//                var demo = document.getElementById("block_list");
-//                var block_id = demo.options[demo.selectedIndex].value;
-//                
                 var _token = $("input[name='_token']").val();
                 var cus_name = $("input[name='cus_name']").val();
                 var feedback = $("textarea[name='feedback']").val();
@@ -51,12 +92,6 @@ $(document).ready(function() {
                 } else{
                     $("textarea[name='feedback']").removeClass('has-error');
                 }
-                if (user_photo.trim() == '') {
-                     $("input[name='user_photo']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("input[name='user_photo']").removeClass('has-error');
-                }
                 if (status == "") {
                      $("select[name='status']").addClass('has-error');
                     count_error++;
@@ -64,76 +99,95 @@ $(document).ready(function() {
                      $("select[name='status']").removeClass('has-error');
                 }
                 if(count_error == 0){
-//                    
+                
+                    
                    var formData = new FormData($('#frm_testimonial')[0]);
                     $.ajax({
-                    url: 'testimonial/addrecord',
+                    url: BASE_URL+'/admin/testimonial/addrecord',
                     type:'POST',
                     data:formData,
                     contentType: false,
                     enctype: 'multipart/form-data',
                     processData: false,
+                    
                     success: function(data) {
-                            
-                            table.ajax.reload();
-                            $('#frm_testimonialddd')[0].reset()
-
+                        var data=$.parseJSON(data);
+                        if(data.status==1){
+                            $('#msg').html(data.msg);
+                            $('#msg').attr('style','color:green;');
+                            $('#frm_testimonial')[0].reset()
+                            admin.testimonial.load_testimonial();
+                            $("#ins_tes").modal("hide");
+                        }
+                        else{
+                            return false;
+                        }
                     }
                 });
                 }
-            })
-            }); 
-            
-            
-function refreshJscharges(){
-    $('.btnEdit_test').on('click', function () {
-//        $("#ins_tes").show();
-        var test_id = $(this).data('id'); 
+    
+},
+
+
+edit_row:function(test_id){
+    
+    
         var _token = $("input[name='_token']").val();
+        if(test_id > 0){
         $.ajax({
-            url: 'testimonial/edit',
+            url: BASE_URL+'/admin/testimonial/edit',
             type:'POST',
             data: {_token:_token, test_id:test_id},
             success: function(data) {
+                var data=$.parseJSON(data);
                 if(data.status==1){
                     
-                   
-//                    $('select[name^="block_list"] option[value=]').attr("selected","selected");
-                    
+                    $("#ins_tes").modal("show");
+                    $("#u_photo").show();
+                      
+                    $("#id_test").val(data.content.id);
                     $("#cus_name").val(data.content.customer_name);
                     $("#feedback").val(data.content.feedback);
                     
-                   
-//                    $("#user_photo").val(data.content.user_photo);
+                    $('#u_photo').attr('src',BASE_URL+'/upload/'+ data.content.user_photo);
                     
                     var status_id = $("#status").val(data.content.status);
                     status_id.attr("selected","selected");
-                    $('select[name^="status"] option[value=]').attr("selected","selected");
-                    
-                    $("#ins_tes").modal("show");
-                   
-                    
+//                    $('select[name^="status"] option[value=]').attr("selected","selected");
+                    admin.testimonial.load_testimonial();
                 }
             }
         });
-    });
-}
+        }
+                else{
+                    return false;
+                }
+    
+},
 
-
-
-            
-function delete_test(id){
-        var _token = $("input[name='_token']").val();
+delete_row:function (id){
+    
+    var _token = $("input[name='_token']").val();
+    if(id > 0){
             $.ajax({
-                    url: 'testimonial/delete',
+                    url: BASE_URL+'/admin/testimonial/delete',
                     type:'POST',
                     data: {_token:_token, id:id},
                     success: function(data) {
+                        var data=$.parseJSON(data);
                         if(data.status==1){
-                            alert(data.msg);
-                            table.ajax.reload();
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
+                            admin.testimonial.load_testimonial();
                         }
                     }
-            })
-               
-}
+            });
+    }
+    else{
+        return false;
+    }
+    
+    
+},
+    
+};

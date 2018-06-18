@@ -63,17 +63,38 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('/dashboard', 'Admin\DashboardController@index');
     });
     
-    Route::get('testimonial', 'Admin\TestimonialController@index');
-    Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
-    Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
-    Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
-
-    Route::any('testimonial/edit', 'Admin\TestimonialController@edittestimonial');
-    
-    
     
 });
 
+    Route::get('admin/testimonial', 'Admin\TestimonialController@index');
+    Route::any('admin/testimonial/addrecord', 'Admin\TestimonialController@addrecord');
+    Route::any('admin/testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
+    Route::any('admin/testimonial/delete', 'Admin\TestimonialController@deleterecord');
+    Route::any('admin/testimonial/edit', 'Admin\TestimonialController@edittestimonial');
+
+    Route::get('admin/faq', 'Admin\FaqController@index');
+    Route::any('admin/faq/addrecord', 'Admin\FaqController@addrecord');
+    Route::any('admin/faq/getdata', 'Admin\FaqController@anydata')->name('faq/getdata');
+    Route::any('admin/faq/delete', 'Admin\FaqController@deleterecord');
+    Route::any('admin/faq/edit', 'Admin\FaqController@editfaq');
+
+    Route::get('admin/faq_category', 'Admin\FaqcategoryController@index');
+    Route::any('admin/faq_category/addrecord', 'Admin\FaqcategoryController@addrecord');
+    Route::any('admin/faq_category/getdata', 'Admin\FaqcategoryController@anydata')->name('faq_category/getdata');
+    Route::any('admin/faq_category/delete', 'Admin\FaqcategoryController@deleterecord');
+    Route::any('admin/faq_category/edit', 'Admin\FaqcategoryController@editfaq_category');
+    
+    Route::get('admin/contact_us', 'Admin\Contact_usController@index');
+    Route::any('admin/contact_us/addrecord', 'Admin\Contact_usController@addrecord');
+    Route::any('admin/contact_us/getdata', 'Admin\Contact_usController@anydata')->name('contact_us/getdata');
+    Route::any('admin/contact_us/delete', 'Admin\Contact_usController@deleterecord');
+    Route::any('admin/contact_us/edit', 'Admin\Contact_usController@editcontact_us');
+    Route::any('admin/contact_us/email', 'Admin\Contact_usController@email_reply');
+    
+    
+    Route::get('admin/cms', 'Admin\CmsController@index');
+    
+    
     // Authentication Routes...
 //    $this->get('login', 'Auth\AuthController@showLoginForm');
 //    $this->post('login', 'Auth\AuthController@login');
@@ -86,7 +107,7 @@ Route::group(['prefix' => 'admin'], function()
 //    $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 //    $this->post('password/reset', 'Auth\PasswordController@reset');
 
-Route::get('admin/setting','Admin\SitesettingController@index'); 
+    Route::get('admin/setting','Admin\SitesettingController@index'); 
     Route::post('admin/sitesetting/save_details','Admin\SitesettingController@save_details'); 
     Route::any('admin/sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
 
@@ -97,11 +118,3 @@ Route::post('advancesettings/store','AdvancesettingController@store');
 Route::any('admin/advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
 Route::post('advancesettings/delete','AdvancesettingController@destroy');
 Route::post('advancesettings/edit','AdvancesettingController@edit');
-
-    // Advance Custom Filds Section Routes
-    Route::get('admin/advancesettings','Admin\AdvancesettingController@index'); 
-    Route::post('admin/advancesettings/store','Admin\AdvancesettingController@store'); 
-    Route::any('admin/advancesettings/getdata','Admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
-    Route::post('admin/advancesettings/delete','Admin\AdvancesettingController@destroy');
-    Route::post('admin/advancesettings/edit','Admin\AdvancesettingController@edit');
-

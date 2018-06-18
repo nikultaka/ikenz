@@ -125,7 +125,7 @@ admin.advance_custom = {
                     $('#msg').html(data.msg);
                     $('#msg').attr('style','color:green;');
                     $('#advance-custom-fild-form')[0].reset();
-                        admin.advance_custom.load_advance_setting();
+                    admin.advance_custom.load_advance_setting();
                 }
             }
         });

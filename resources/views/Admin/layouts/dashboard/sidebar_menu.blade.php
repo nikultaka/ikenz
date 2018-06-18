@@ -161,9 +161,50 @@
           </li>
           <li class="nav-item">
             <a href="{{url('admin/testimonial')}}" class="nav-link">
-              <i class="nav-icon fa fa-sign-out"></i>
+              <i class="nav-icon fa fa-quote-left"></i>
               <p>
                 Testimonial
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                FAQ
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{url('admin/faq')}}" class="nav-link">
+                  <i class="fa fa-question nav-icon"></i>
+                  <p> FAQ </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{url('admin/faq_category')}}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p> FAQ Category </p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="{{url('admin/contact_us')}}" class="nav-link">
+              <i class="nav-icon fa fa-phone"></i>
+              <p>
+                Contact us
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item">
+            <a href="{{url('admin/cms')}}" class="nav-link">
+              <i class="nav-icon fa fa-phone"></i>
+              <p>
+                CMS
               </p>
             </a>
             
