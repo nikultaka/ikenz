@@ -77,8 +77,8 @@
                             <label for="editor" class="col-sm-2">Meta Description</label>
                                 <div class="col-sm-8">
                                     <textarea class="form-control" id="editor" name="editor"></textarea>
-                                    <button onclick="submit_html();">Submit</button>
-                                    <iframe id="result"></iframe>
+<!--                                    <button onclick="submit_html();">Submit</button>
+                                    <iframe id="result"></iframe>-->
                                     <!--<input type="text" class="form-control" name="" id="" />-->
                                 </div>
                         <div class="col-sm-1"></div>
