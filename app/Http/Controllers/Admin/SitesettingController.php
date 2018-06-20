@@ -59,6 +59,7 @@ class SitesettingController extends Controller
     public function uploadlogo(Request $request){
         $result=array();
         $result['status']=0;
+        $site=new site();
         $filename  = basename($_FILES['setting_logo_upload']['name']);
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         if($file = $request->hasFile('setting_logo_upload')) {
@@ -67,17 +68,33 @@ class SitesettingController extends Controller
             $input['setting_logo_upload'] = time().'.'.$file->getClientOriginalExtension();
 
 
-            $destinationPath = public_path().'/thumbnail';
-            $img = Image::make($file->getRealPath());
-            $img->fit(100,100, function ($constraint) {
-                $constraint->aspectRatio();        
-            })->save($destinationPath.'/'.$input['setting_logo_upload']);
+            $destinationPath = public_path().'/thumbnail/';
+            $uniquesavename=time().uniqid(rand());
+            $destFile = $uniquesavename . '.'.$extension;
+            $img = Image::make($file->getRealPath())->resize(250, 250);
+            $img->save($destinationPath.'/'.$input['setting_logo_upload']);
 
 
             $destinationPath = public_path().'/upload/';
-            $uniquesavename=time().uniqid(rand());
+            $uniquesavename=time();
             $destFile = $uniquesavename . '.'.$extension;
-            $file->move($destinationPath,$destFile);
+            if($file->move($destinationPath,$destFile)){
+                $data=array();
+                $data_site_title= $site->get_value_by_option_name('site_logo');
+                if(!empty($data_site_title)){
+                    $site->update_value_by_option_name('site_logo',$destFile);
+                    $data['status']=1;
+                    $data['msg']="Data Add Successfully..!";
+                 }
+                 else{
+                    $data['option_name']='site_logo';
+                    $data['option_value']=$destFile;
+                    $data['status']=1;
+                    $data['created_date']=date('Y-m-d');
+                    $data['updated_date']=date('Y-m-d');
+                    $site->insert_value_site_setting($data);
+                 }
+            }
             $result['status']=1;
             $result['data']=$destFile;
         }

@@ -158,12 +158,11 @@ class AdvancesettingController extends Controller
         $data = array();
         $select_query = DB::table('advance_custom_details');
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
-        //$sql = "SELECT * FROM advance_custom_details ";
         //This is for search value
-        //$sql .= " WHERE status = 1 ";
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("label","like",'%'.$requestData['search']['value'].'%'. "OR fild_name","like",'%'.$requestData['search']['value'].'%');
-           // $sql .= " AND (label LIKE '%" . $requestData['search']['value'] . "%' OR fild_name LIKE '%" . $requestData['search']['value'] . "%' OR fild_value LIKE '%" . $requestData['search']['value'] . "%') ";
+            $select_query->where("label","like",'%'.$requestData['search']['value'].'%')
+                    ->orWhere("fild_name","like",'%'.$requestData['search']['value'].'%')
+                    ->orWhere("fild_value","like",'%'.$requestData['search']['value'].'%');
         }
 
         //This is for order 
@@ -178,10 +177,8 @@ class AdvancesettingController extends Controller
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
              $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
-           // $sql .= " ORDER BY " . $order_by;
         } else {
             $select_query->orderBy("id","DESC");
-            //$sql .= " ORDER BY id DESC";
         }
 
         
@@ -203,7 +200,6 @@ class AdvancesettingController extends Controller
             $select_query->limit($requestData['length']);
         }
 
-        //echo $sql; die;
         
         $service_price_list = $select_query->get();
         $arr_data = Array();

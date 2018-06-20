@@ -32,7 +32,7 @@
               <form role="form" method="post" enctype="multipart/form-data" id="logo_upload_form" name="logo_upload_form" > 
                {{ csrf_field() }}
                 <div class="card-body">
-                    <div id="image_preview"><img id="previewing" src="" style="width: 100px;" /></div>
+                    <div id="image_preview"><img id="previewing" src="<?php echo isset($site_logo) ? url('/thumbnail/'.$site_logo) : ''?>" style="width: 100px;" /></div>
                     
                     <input type="hidden" name="logo_image_name" id="logo_image_name" value="">
                   <div class="form-group">
@@ -114,4 +114,9 @@
 </section>
 <script type="text/javascript" src="{!! asset('js/jquery.ajaxfileupload.js')!!}"></script>
 <script src="{!! asset('js/site_setting.js')!!}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        admin.site_setting.initialize();
+    });
+</script>
 @endsection
