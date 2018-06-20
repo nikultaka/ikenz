@@ -21,16 +21,22 @@ admin.advance_custom = {
   load_advance_setting:function(){
       var table= jQuery('.advance_custome_filds_table').DataTable({
                     paging: true,
-                    pageLength: 20,
+                    pageLength: 10,
                     bDestroy: true,
                     responsive: true,
                     processing: true,
                     serverSide: true,
+<<<<<<< HEAD
                     "order": [[ 0, "desc" ]],
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+=======
+                    ajax: {
+                        url: BASE_URL+'/admin/advancesettings/getdata',
+                        type: "POST",
+                        data: admin.common.get_csrf_toke_object_data()
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
                     },
-                    ajax: BASE_URL+'/admin/advancesettings/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'label', name: 'label'},

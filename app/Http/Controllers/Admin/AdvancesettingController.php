@@ -158,7 +158,19 @@ class AdvancesettingController extends Controller
         $requestData = $_REQUEST;
 
         $data = array();
+<<<<<<< HEAD
         
+=======
+        $select_query = DB::table('advance_custom_details');
+        $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        //This is for search value
+        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
+            $select_query->where("label","like",'%'.$requestData['search']['value'].'%')
+                    ->orWhere("fild_name","like",'%'.$requestData['search']['value'].'%')
+                    ->orWhere("fild_value","like",'%'.$requestData['search']['value'].'%');
+        }
+
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
         //This is for order 
         $columns = array(
             0. => 'id',
@@ -168,6 +180,7 @@ class AdvancesettingController extends Controller
             4 => 'status',
             5 => 'gm_created',
         );
+<<<<<<< HEAD
         
         $select_query = DB::table('advance_custom_details');
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
@@ -189,11 +202,44 @@ class AdvancesettingController extends Controller
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
+=======
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
+            $order_by = $columns[$requestData['order'][0]['column']];
+             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
+        } else {
+            $select_query->orderBy("id","DESC");
+        }
+
+        
+        //This is for count
+        
+        $result= $select_query->count();
+        $totalData = 0;
+        $totalFiltered = 0;
+        if ($result > 0) {
+            $totalData = $result;
+            $totalFiltered = $result;
+        }
+
+        //This is for pagination
+        if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
+            //$sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
             $select_query->offset($requestData['start']);
             $select_query->limit($requestData['length']);
         }
 
+<<<<<<< HEAD
         $service_price_list = $select_query->get();
+=======
+        
+        $service_price_list = $select_query->get();
+        $arr_data = Array();
+        $arr_data = $result;
+
+
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
         foreach ($service_price_list as $row) {
             
             $temp['id'] = $row->id;
@@ -202,7 +248,11 @@ class AdvancesettingController extends Controller
             $temp['fild_value'] = $row->fild_value;
             $temp['gm_created'] = $row->gm_created;
             $temp['status'] = $row->status;
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
             $id = $row->id;
             
             
@@ -219,8 +269,14 @@ class AdvancesettingController extends Controller
         $json_data = array(
             "draw" => intval($requestData['draw']),
             "recordsTotal" => intval($totalData),
+<<<<<<< HEAD
             "recordsFiltered" => intval($totalData),
             "data" => $data
+=======
+            "recordsFiltered" => intval($totalFiltered),
+            "data" => $data,
+            
+>>>>>>> 359ffa2aa68b33a8c26b689d68daf96eb6c20180
         );
         echo json_encode($json_data);
         exit(0);

@@ -29,16 +29,18 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form role="form" method="post" accept-charset="utf-8" enctype="multipart/form-data" id="logo_upload_form" > 
+              <form role="form" method="post" enctype="multipart/form-data" id="logo_upload_form" name="logo_upload_form" > 
                {{ csrf_field() }}
                 <div class="card-body">
-                    <div id="image_preview"><img id="previewing" src="noimage.png" /></div>
+                    <div id="image_preview"><img id="previewing" src="<?php echo isset($site_logo) ? url('/thumbnail/'.$site_logo) : ''?>" style="width: 100px;" /></div>
+                    
+                    <input type="hidden" name="logo_image_name" id="logo_image_name" value="">
                   <div class="form-group">
                     <label for="exampleInputFile">Select logo image</label>
                     <div class="input-group">
                       <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label logo-upload" for="exampleInputFile">Choose file</label>
+                          <input type="file" class="custom-file-input" id="setting_logo_upload" name="setting_logo_upload">
+                        <label class="custom-file-label logo-upload" for="setting_logo_upload">Choose file</label>
                       </div>
                       <div class="input-group-append">
                         <span class="input-group-text" id="upload_logo">Upload</span>
@@ -112,4 +114,9 @@
 </section>
 <script type="text/javascript" src="{!! asset('js/jquery.ajaxfileupload.js')!!}"></script>
 <script src="{!! asset('js/site_setting.js')!!}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        admin.site_setting.initialize();
+    });
+</script>
 @endsection
