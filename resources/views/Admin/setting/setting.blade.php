@@ -113,7 +113,7 @@
  </div>
 </section>
 <script type="text/javascript" src="{!! asset('js/jquery.ajaxfileupload.js')!!}"></script>
-<script src="{!! asset('js/site_setting.js')!!}"></script>
+<script src="{!! asset('js/module/site_setting.js')!!}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         admin.site_setting.initialize();
