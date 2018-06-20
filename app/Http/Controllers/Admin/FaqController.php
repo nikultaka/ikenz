@@ -11,7 +11,6 @@ use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
-//use Image;
 
 class FaqController extends Controller
 {
@@ -119,7 +118,10 @@ class FaqController extends Controller
 
         $select_query->select('f.id','f.question','f.answer' ,'f.status' , 'fc.category_name',DB::raw("IF(f.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("fc.category_name","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("fc.category_name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("f.question","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("f.answer","like",'%'.$requestData['search']['value'].'%');
+            
         }
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {

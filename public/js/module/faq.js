@@ -31,10 +31,11 @@ load_faq:function(){
                     processing: true,
                     serverSide: true,
                     "order": [[ 0, "desc" ]],
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    ajax: BASE_URL+'/admin/faq/getdata',
+                    ajax: {
+                    url : BASE_URL+'/admin/faq/getdata',
+                    type : 'POST',
+                    data : admin.common.get_csrf_toke_object_data()
+                    },  
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
@@ -118,12 +119,11 @@ add_row:function (){
 edit_row:function(faq_id){
     
     
-        var _token = $("input[name='_token']").val();
         if(faq_id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/faq/edit',
                 type:'POST',
-                data: {_token:_token, faq_id:faq_id},
+                data: {_token:admin.common.get_csrf_token_value(), faq_id:faq_id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
@@ -135,11 +135,9 @@ edit_row:function(faq_id){
     
                         var category_id = $("#category_id").val(data.content.category_id);
                         category_id.attr("selected","selected");
-//                        $('select[name^="status"] option[value=]').attr("selected","selected");
 
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-//                        $('select[name^="status"] option[value=]').attr("selected","selected");
                         admin.faq.load_faq();
                     }
                 }
@@ -153,12 +151,11 @@ edit_row:function(faq_id){
 
 delete_row:function (faq_id){
     
-    var _token = $("input[name='_token']").val();
     if(faq_id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/faq/delete',
                     type:'POST',
-                    data: {_token:_token, faq_id:faq_id},
+                    data: {_token:admin.common.get_csrf_token_value(), faq_id:faq_id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

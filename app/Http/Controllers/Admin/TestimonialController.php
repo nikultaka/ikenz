@@ -120,6 +120,23 @@ class TestimonialController extends Controller
         exit;
     }
     
+     public function deleterecord(){
+        $id=$_POST['id'];
+        if(isset($id) && $id !=''){
+            DB::table('testimonial')
+                    ->where('id', $id)
+                    ->update(array('status'=>-1));
+        $data_result=array();
+        $data_result['status']=1;
+        $data_result['msg']="Record deleted success.";
+        
+        echo json_encode($data_result);exit;
+        }
+        else {
+            return response()->json(['error'=>'record Not Found']);
+        }   
+    }
+    
         
         public function anyData(){
         
@@ -172,7 +189,7 @@ class TestimonialController extends Controller
             $id = $row->id;
             
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
-            $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
             
             
             $temp['action'] = $action;

@@ -52,10 +52,11 @@ load_testimonial:function(){
                     processing: true,
                     serverSide: true,
                     "order": [[ 0, "desc" ]],
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    ajax: {
+                    url : BASE_URL+'/admin/testimonial/getdata',
+                    type : 'POST',
+                    data : admin.common.get_csrf_toke_object_data()
                     },
-                    ajax: BASE_URL+'/admin/testimonial/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'customer_name', name: 'customer_name'},
@@ -132,12 +133,11 @@ add_row:function (){
 edit_row:function(test_id){
     
     
-        var _token = $("input[name='_token']").val();
         if(test_id > 0){
         $.ajax({
             url: BASE_URL+'/admin/testimonial/edit',
             type:'POST',
-            data: {_token:_token, test_id:test_id},
+            data: {_token:admin.common.get_csrf_token_value(), test_id:test_id},
             success: function(data) {
                 var data=$.parseJSON(data);
                 if(data.status==1){
@@ -167,12 +167,11 @@ edit_row:function(test_id){
 
 delete_row:function (id){
     
-    var _token = $("input[name='_token']").val();
     if(id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/testimonial/delete',
                     type:'POST',
-                    data: {_token:_token, id:id},
+                    data: {_token:admin.common.get_csrf_token_value(), id:id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

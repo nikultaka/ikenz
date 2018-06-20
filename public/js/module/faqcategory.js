@@ -33,10 +33,11 @@ load_faq_category:function(){
                     processing: true,
                     serverSide: true,
                     "order": [[ 0, "desc" ]],
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    ajax: {
+                        url : BASE_URL+'/admin/faq_category/getdata',
+                        type: "POST",
+                        data: admin.common.get_csrf_toke_object_data()
                     },
-                    ajax: BASE_URL+'/admin/faq_category/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
@@ -100,17 +101,15 @@ add_row:function (){
 
 edit_row:function(faq_cat_id){
     
-    
-        var _token = $("input[name='_token']").val();
+        
         if(faq_cat_id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/faq_category/edit',
                 type:'POST',
-                data: {_token:_token, faq_cat_id:faq_cat_id},
+                data: {_token :admin.common.get_csrf_token_value(), faq_cat_id:faq_cat_id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
-
 
                         $("#ins_faq_cat").modal("show");
 
@@ -132,12 +131,11 @@ edit_row:function(faq_cat_id){
 
 delete_row:function (faq_cat_id){
     
-    var _token = $("input[name='_token']").val();
     if(faq_cat_id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/faq_category/delete',
                     type:'POST',
-                    data: {_token:_token, faq_cat_id:faq_cat_id},
+                    data: {_token:admin.common.get_csrf_token_value(), faq_cat_id:faq_cat_id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

@@ -36,10 +36,11 @@ load_contact_us:function(){
                     processing: true,
                     serverSide: true,
                     "order": [[ 0, "desc" ]],
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    ajax: {
+                    url : BASE_URL+'/admin/contact_us/getdata',
+                    type : 'POST',
+                    data : admin.common.get_csrf_toke_object_data()
                     },
-                    ajax: BASE_URL+'/admin/contact_us/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
                         { data: 'name', name: 'name'},
@@ -138,12 +139,11 @@ add_row:function (){
 edit_row:function(c_us_id){
     
     
-        var _token = $("input[name='_token']").val();
         if(c_us_id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/contact_us/edit',
                 type:'POST',
-                data: {_token:_token, c_us_id:c_us_id},
+                data: {_token:admin.common.get_csrf_token_value(), c_us_id:c_us_id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
@@ -167,12 +167,11 @@ edit_row:function(c_us_id){
 
 delete_row:function (c_us_id){
     
-    var _token = $("input[name='_token']").val();
     if(c_us_id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/contact_us/delete',
                     type:'POST',
-                    data: {_token:_token, c_us_id:c_us_id},
+                    data: {_token:admin.common.get_csrf_token_value(), c_us_id:c_us_id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
@@ -191,22 +190,17 @@ delete_row:function (c_us_id){
 },
 
 email_reply:function (id){
-       var _token = $("input[name='_token']").val();
         if(id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/contact_us/email',
                 type:'POST',
-                data: {_token:_token, id:id},
+                data: {_token:admin.common.get_csrf_token_value(), id:id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
                         $("#reply_email").modal("show");
-//                        $("#id_c_us").val(data.content.id);
-//                        $("#name").val(data.content.name);
                         $("#em_name").val(data.content.email);
-//                        $("#phone_no").val(data.content.phone_no);
-//                        $("#description").val(data.content.description);
                         admin.contact_us.load_contact_us();
                     }
                 }
