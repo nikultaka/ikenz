@@ -26,6 +26,7 @@ admin.advance_custom = {
                     responsive: true,
                     processing: true,
                     serverSide: true,
+                    "order": [[ 0, "desc" ]],
                     headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -42,6 +43,7 @@ admin.advance_custom = {
                             ],
         });
   },
+  
   delete_row:function(fildid){
         var _token = $("input[name='_token']").val();
         if(fildid>0){
@@ -133,5 +135,5 @@ admin.advance_custom = {
     else{
         return false;
     }
-  }
+  } 
 };

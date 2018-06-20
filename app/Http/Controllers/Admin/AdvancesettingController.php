@@ -150,19 +150,15 @@ class AdvancesettingController extends Controller
         }
         echo json_encode($result);
     }
-    public function getdatatable()
+        
+        
+         public function getdatatable()
     {
         
         $requestData = $_REQUEST;
 
         $data = array();
-        $sql = "SELECT * FROM advance_custom_details ";
-        //This is for search value
-        $sql .= " WHERE status = 1 ";
-        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $sql .= " AND (label LIKE '%" . $requestData['search']['value'] . "%' OR fild_name LIKE '%" . $requestData['search']['value'] . "%' OR fild_value LIKE '%" . $requestData['search']['value'] . "%') ";
-        }
-
+        
         //This is for order 
         $columns = array(
             0. => 'id',
@@ -172,64 +168,47 @@ class AdvancesettingController extends Controller
             4 => 'status',
             5 => 'gm_created',
         );
-        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
-            $order_by = $columns[$requestData['order'][0]['column']];
-            $sql .= " ORDER BY " . $order_by;
-        } else {
-            $sql .= " ORDER BY id DESC";
+        
+        $select_query = DB::table('advance_custom_details');
+        $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
+            $select_query->where("label","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("fild_name","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("fild_value","like",'%'.$requestData['search']['value'].'%');
         }
-
-        if (isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
-            $sql .= " " . $requestData['order'][0]['dir'];
+        
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
+            $order_by = $columns[$requestData['order'][0]['column']];
+            $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $sql .= " DESC ";
+            $select_query->orderBy("id","DESC");
         }
         
         //This is for count
-        
-        $result=DB::table('advance_custom_details')
-                    ->where('status',1)
-                    ->count();
-        $totalData = 0;
-        $totalFiltered = 0;
-        if ($result > 0) {
-            $totalData = $result;
-            $totalFiltered = $result;
-        }
+        $totalData = $select_query->count();
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
-            $sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            $select_query->offset($requestData['start']);
+            $select_query->limit($requestData['length']);
         }
 
-        //echo $sql; die;
-        
-        $service_price_list = DB::select($sql);
-        $arr_data = Array();
-        $arr_data = $result;
-
-
+        $service_price_list = $select_query->get();
         foreach ($service_price_list as $row) {
+            
             $temp['id'] = $row->id;
             $temp['label'] = $row->label;
             $temp['fild_name'] = $row->fild_name;
             $temp['fild_value'] = $row->fild_value;
             $temp['gm_created'] = $row->gm_created;
-            $status = $row->status;
-            if ($status == "0") {
-
-                $statusstring = "Deactive";
-            } elseif ($status == "1") {
-                $statusstring = "Active";
-            } else {
-                $statusstring = "";
-            }
-            $temp['status'] = $statusstring;
-
+            $temp['status'] = $row->status;
+            
             $id = $row->id;
-
+            
+            
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEditfilddetails"> Edit</a>  	&nbsp;';
             $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDeletefilddetails"> Delete</a></div>';
+            
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
@@ -240,13 +219,13 @@ class AdvancesettingController extends Controller
         $json_data = array(
             "draw" => intval($requestData['draw']),
             "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data,
-            "sql" => $sql
+            "recordsFiltered" => intval($totalData),
+            "data" => $data
         );
         echo json_encode($json_data);
         exit(0);
             
-        }
+    }
+        
     
 }

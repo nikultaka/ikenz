@@ -37,7 +37,7 @@ load_faq:function(){
                     ajax: BASE_URL+'/admin/faq/getdata',
                     columns: [
                         { data: 'id', name: 'id'},
-                        { data: 'category_id', name: 'category_id'},
+                        { data: 'category_name', name: 'category_name'},
                         { data: 'question', name: 'question'},
                         { data: 'answer', name: 'answer'},
                         { data: 'status', name: 'status'},

@@ -67,7 +67,7 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/faq.js')!!}"></script>
+<script src="{!! asset('js/module/faq.js')!!}"></script>
 <script type="text/javascript">
                                 $(document).ready(function () {
                                     admin.faq.initialize();
