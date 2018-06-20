@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting as site;
-
+use Image;
 class SitesettingController extends Controller
 {
      public function __construct()
@@ -57,8 +57,30 @@ class SitesettingController extends Controller
        
     }
     public function uploadlogo(Request $request){
-        echo '<pre>';
-        print_r($_FILES);
-        die;
+        $result=array();
+        $result['status']=0;
+        $filename  = basename($_FILES['setting_logo_upload']['name']);
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        if($file = $request->hasFile('setting_logo_upload')) {
+                    
+            $file = $request->file('setting_logo_upload') ;
+            $input['setting_logo_upload'] = time().'.'.$file->getClientOriginalExtension();
+
+
+            $destinationPath = public_path().'/thumbnail';
+            $img = Image::make($file->getRealPath());
+            $img->fit(100,100, function ($constraint) {
+                $constraint->aspectRatio();        
+            })->save($destinationPath.'/'.$input['setting_logo_upload']);
+
+
+            $destinationPath = public_path().'/upload/';
+            $uniquesavename=time().uniqid(rand());
+            $destFile = $uniquesavename . '.'.$extension;
+            $file->move($destinationPath,$destFile);
+            $result['status']=1;
+            $result['data']=$destFile;
+        }
+        echo json_encode($result);
     }
 }

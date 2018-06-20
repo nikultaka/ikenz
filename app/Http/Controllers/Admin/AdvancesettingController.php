@@ -156,11 +156,14 @@ class AdvancesettingController extends Controller
         $requestData = $_REQUEST;
 
         $data = array();
-        $sql = "SELECT * FROM advance_custom_details ";
+        $select_query = DB::table('advance_custom_details');
+        $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        //$sql = "SELECT * FROM advance_custom_details ";
         //This is for search value
-        $sql .= " WHERE status = 1 ";
+        //$sql .= " WHERE status = 1 ";
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $sql .= " AND (label LIKE '%" . $requestData['search']['value'] . "%' OR fild_name LIKE '%" . $requestData['search']['value'] . "%' OR fild_value LIKE '%" . $requestData['search']['value'] . "%') ";
+            $select_query->where("label","like",'%'.$requestData['search']['value'].'%'. "OR fild_name","like",'%'.$requestData['search']['value'].'%');
+           // $sql .= " AND (label LIKE '%" . $requestData['search']['value'] . "%' OR fild_name LIKE '%" . $requestData['search']['value'] . "%' OR fild_value LIKE '%" . $requestData['search']['value'] . "%') ";
         }
 
         //This is for order 
@@ -174,22 +177,17 @@ class AdvancesettingController extends Controller
         );
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
-            $sql .= " ORDER BY " . $order_by;
+             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
+           // $sql .= " ORDER BY " . $order_by;
         } else {
-            $sql .= " ORDER BY id DESC";
+            $select_query->orderBy("id","DESC");
+            //$sql .= " ORDER BY id DESC";
         }
 
-        if (isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
-            $sql .= " " . $requestData['order'][0]['dir'];
-        } else {
-            $sql .= " DESC ";
-        }
         
         //This is for count
         
-        $result=DB::table('advance_custom_details')
-                    ->where('status',1)
-                    ->count();
+        $result= $select_query->count();
         $totalData = 0;
         $totalFiltered = 0;
         if ($result > 0) {
@@ -199,12 +197,15 @@ class AdvancesettingController extends Controller
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
-            $sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            //$sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            
+            $select_query->offset($requestData['start']);
+            $select_query->limit($requestData['length']);
         }
 
         //echo $sql; die;
         
-        $service_price_list = DB::select($sql);
+        $service_price_list = $select_query->get();
         $arr_data = Array();
         $arr_data = $result;
 
@@ -215,16 +216,7 @@ class AdvancesettingController extends Controller
             $temp['fild_name'] = $row->fild_name;
             $temp['fild_value'] = $row->fild_value;
             $temp['gm_created'] = $row->gm_created;
-            $status = $row->status;
-            if ($status == "0") {
-
-                $statusstring = "Deactive";
-            } elseif ($status == "1") {
-                $statusstring = "Active";
-            } else {
-                $statusstring = "";
-            }
-            $temp['status'] = $statusstring;
+            $temp['status'] = $row->status;
 
             $id = $row->id;
 
@@ -242,7 +234,7 @@ class AdvancesettingController extends Controller
             "recordsTotal" => intval($totalData),
             "recordsFiltered" => intval($totalFiltered),
             "data" => $data,
-            "sql" => $sql
+            
         );
         echo json_encode($json_data);
         exit(0);
