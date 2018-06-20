@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use App\Models\Cms;
 use App\Models\SiteSetting as site;
 
 class CmsController extends Controller
