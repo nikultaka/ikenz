@@ -61,6 +61,14 @@ Route::group(['prefix' => 'admin'], function()
     
     Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::any('/dashboard', 'Admin\DashboardController@index');
+        
+        Route::get('cms', 'Admin\CmsController@index');
+        Route::get('cms/add', 'Admin\CmsController@add');
+        
+        Route::get('media', 'Admin\MediaController@index');
+        Route::get('media/add', 'Admin\MediaController@add');
+        Route::any('media/get_category_data', 'Admin\MediaController@get_category_data');
+        
     });
     
     
@@ -92,7 +100,7 @@ Route::group(['prefix' => 'admin'], function()
     Route::any('admin/contact_us/email', 'Admin\Contact_usController@email_reply');
     
     
-    Route::get('admin/cms', 'Admin\CmsController@index');
+    
     
     
     // Authentication Routes...

@@ -34,6 +34,27 @@
             </a>
             
           </li>
+          
+          <li class="nav-item">
+            <a href="{{url('admin/cms')}}" class="nav-link">
+              <i class="nav-icon fa fa-phone"></i>
+              <p>
+                CMS
+              </p>
+            </a>
+            
+          </li>
+          
+          <li class="nav-item">
+            <a href="{{url('admin/media')}}" class="nav-link">
+              <i class="nav-icon fa fa-phone"></i>
+              <p>
+                Media
+              </p>
+            </a>
+            
+          </li>
+          
           <li class="nav-item">
             <a href="pages/widgets.html" class="nav-link">
               <i class="nav-icon fa fa-th"></i>
@@ -200,15 +221,7 @@
             </a>
             
           </li>
-          <li class="nav-item">
-            <a href="{{url('admin/cms')}}" class="nav-link">
-              <i class="nav-icon fa fa-phone"></i>
-              <p>
-                CMS
-              </p>
-            </a>
-            
-          </li>
+          
           <li class="nav-item">
             <a href="{{url('logout')}}" class="nav-link">
               <i class="nav-icon fa fa-sign-out"></i>

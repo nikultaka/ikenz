@@ -21,6 +21,10 @@ class CmsController extends Controller
         return view('Admin.cms.cms');
 //                ->with($data);
     }
+    
+    public function add(){
+        return view('Admin.cms.add');
+    }
 //    public function save_details(Request $request){
 //       $site=new site();
 //       $data['status']=0;

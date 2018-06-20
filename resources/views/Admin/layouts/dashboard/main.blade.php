@@ -9,9 +9,7 @@
   <!-- Font Awesome -->
   
 <!--  <link rel="stylesheet" href="{{url('css/font-awesome.css')}}" type="text/css">-->
-  <link 
-  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
-  rel="stylesheet"  type='text/css'>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
@@ -52,7 +50,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
     
-    <input type="hidden" value="{{ url('/') }}" name='base_url' id='base_url' class="base_url">
+<input type="hidden" value="{{ csrf_token() }}" name='csrf-token' id='csrf-token'>
 <div class="wrapper">
  <!-- Navbar -->
  @include('Admin.layouts.dashboard.navbar')
@@ -83,6 +81,7 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="{{url('js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{url('js/common.js')}}"></script>
 <!-- Morris.js charts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <!--<script src="plugins/morris/morris.min.js"></script>-->
