@@ -52,7 +52,7 @@
                         <div class="col-sm-1"></div>
                             <label for="" class="col-sm-2">Description Editor</label>
                                 <div class="col-sm-8">
-                                    <textarea id="description" name="description" rows="10" cols="80"></textarea>
+                                    <textarea id="description" class="form-control" name="description" rows="10" cols="80"></textarea>
                                     <!--<input type="text" class="form-control" name="" id="" />-->
                                 </div>
                         <div class="col-sm-1"></div>
@@ -109,14 +109,5 @@
 </section>
 <script src="{!! asset('js/cms.js')!!}"></script>
 <script src="{!! asset('js/components/ckeditor/ckeditor.js')!!}"></script>
-<script>
-  $(function () {
-    // Replace the <textarea id="editor1"> with a CKEditor
-    // instance, using default configuration.
-    CKEDITOR.replace('description')
-    //bootstrap WYSIHTML5 - text editor
-    $('.textarea').wysihtml5()
-  })
-</script>
 
 @endsection

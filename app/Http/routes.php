@@ -122,7 +122,7 @@ Route::group(['prefix' => 'admin'], function()
 
 // Advance Custom Filds Section Routes
 Route::get('admin/advancesettings','admin\AdvancesettingController@index'); 
-Route::post('advancesettings/store','AdvancesettingController@store'); 
+Route::post('admin/advancesettings/store','admin\AdvancesettingController@store'); 
 Route::any('admin/advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
-Route::post('advancesettings/delete','AdvancesettingController@destroy');
-Route::post('advancesettings/edit','AdvancesettingController@edit');
+Route::post('admin/advancesettings/delete','admin\AdvancesettingController@destroy');
+Route::post('admin/advancesettings/edit','admin\AdvancesettingController@edit');

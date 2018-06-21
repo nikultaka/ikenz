@@ -11,7 +11,6 @@ use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
-//use Image;
 
 class FaqController extends Controller
 {
@@ -42,7 +41,7 @@ class FaqController extends Controller
             $data['category_id'] = $request->input('category_id');
             $data['question'] = $request->input('question');
             $data['answer'] = $request->input('answer');
-            $data['status'] = $request->input('status');;
+            $data['status'] = $request->input('status');
             
             
             if(isset($_POST['id_faq']) && $_POST['id_faq'] != ''){
@@ -94,23 +93,14 @@ class FaqController extends Controller
             return response()->json(['error'=>'record Not Found']);
         }   
     }
-    
-//    
-    public function anyData()
+        
+     public function anyData()
     {
         
         $requestData = $_REQUEST;
 
         $data = array();
-        $sql = "select f.*, fc.category_name from faq as f LEFT JOIN faq_category as fc ON fc.id = f.category_id";
         
-        //This is for search value
-        $sql .= " WHERE f.status = 1 ";
-        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $sql .= " AND (fc.category_name LIKE '%" . $requestData['search']['value'] . "%' OR f.question LIKE '%" . $requestData['search']['value'] . "%' "
-                    . "OR f.answer LIKE '%" . $requestData['search']['value'] . "%') ";
-        }
-
         //This is for order 
         $columns = array(
             0. => 'f.id',
@@ -122,82 +112,64 @@ class FaqController extends Controller
             5 => 'f.updated_at',
         );
         
-        
-        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
-            $order_by = $columns[$requestData['order'][0]['column']];
-            $sql .= " ORDER BY " . $order_by;
-        } else {
-            $sql .= " ORDER BY id DESC";
-        }
+        $select_query = DB::table('faq as f')
+                        ->join('faq_category as fc','f.category_id','=','fc.id')
+                        ->where('f.status',1);
 
-        if (isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
-            $sql .= " " . $requestData['order'][0]['dir'];
+        $select_query->select('f.id','f.question','f.answer' ,'f.status' , 'fc.category_name',DB::raw("IF(f.status = 1,'Active','Inactive') as status"));
+        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
+            $select_query->where("fc.category_name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("f.question","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("f.answer","like",'%'.$requestData['search']['value'].'%');
+            
+        }
+        
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
+            $order_by = $columns[$requestData['order'][0]['column']];
+            $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $sql .= " DESC ";
+            $select_query->orderBy("f.id","DESC");
         }
         
         //This is for count
-        
-        $result=DB::table('faq')
-                    ->where('status',1)
-                    ->count();
-        $totalData = 0;
-        $totalFiltered = 0;
-        if ($result > 0) {
-            $totalData = $result;
-            $totalFiltered = $result;
-        }
+        $totalData = $select_query->count();
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
-            $sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            $select_query->offset($requestData['start']);
+            $select_query->limit($requestData['length']);
         }
 
-        $service_price_list = DB::select($sql);
-        $arr_data = Array();
-        $arr_data = $result;
-
-
-        foreach ($service_price_list as $row) {
+        $faq_list = $select_query->get();
+        foreach ($faq_list as $row) {
+            
             $temp['id'] = $row->id;
-            $temp['category_id'] = $row->category_name;
+            $temp['category_name'] = $row->category_name;
             $temp['question'] = $row->question;
             $temp['answer'] = $row->answer;
-            $temp['created_at'] = $row->created_at;
-            $temp['updated_at'] = $row->updated_at;
-            $status = $row->status;
-            if ($status == "0") {
-
-                $statusstring = "Deactive";
-            } elseif ($status == "1") {
-                $statusstring = "Active";
-            } else {
-                $statusstring = "";
-            }
-            $temp['status'] = $statusstring;
-
+            $temp['status'] = $row->status;
             $id = $row->id;
-
+           
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_faq"> Edit</a>  	&nbsp;';
             $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_faq"> Delete</a></div>';
 
+            
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
         }
 
 
-
         $json_data = array(
             "draw" => intval($requestData['draw']),
             "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data,
-            "sql" => $sql
+            "recordsFiltered" => intval($totalData),
+            "data" => $data
         );
         echo json_encode($json_data);
         exit(0);
             
-        }
+    }
+    
     
 }

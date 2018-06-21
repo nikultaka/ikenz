@@ -150,12 +150,15 @@ class AdvancesettingController extends Controller
         }
         echo json_encode($result);
     }
-    public function getdatatable()
+        
+        
+         public function getdatatable()
     {
         
         $requestData = $_REQUEST;
 
         $data = array();
+
         $select_query = DB::table('advance_custom_details');
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         //This is for search value
@@ -174,13 +177,16 @@ class AdvancesettingController extends Controller
             4 => 'status',
             5 => 'gm_created',
         );
-        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
+        
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
-             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
+            $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
             $select_query->orderBy("id","DESC");
         }
-
+        
+        //This is for count
+        $totalData = $select_query->count();
         
         //This is for count
         
@@ -194,19 +200,18 @@ class AdvancesettingController extends Controller
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
-            //$sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
-            
             $select_query->offset($requestData['start']);
             $select_query->limit($requestData['length']);
         }
 
-        
         $service_price_list = $select_query->get();
+        
         $arr_data = Array();
         $arr_data = $result;
 
 
         foreach ($service_price_list as $row) {
+            
             $temp['id'] = $row->id;
             $temp['label'] = $row->label;
             $temp['fild_name'] = $row->fild_name;
@@ -215,9 +220,11 @@ class AdvancesettingController extends Controller
             $temp['status'] = $row->status;
 
             $id = $row->id;
-
+            
+            
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEditfilddetails"> Edit</a>  	&nbsp;';
             $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDeletefilddetails"> Delete</a></div>';
+            
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
@@ -228,13 +235,14 @@ class AdvancesettingController extends Controller
         $json_data = array(
             "draw" => intval($requestData['draw']),
             "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data,
+            "recordsFiltered" => intval($totalData),
+            "data" => $data
             
         );
         echo json_encode($json_data);
         exit(0);
             
-        }
+    }
+        
     
 }

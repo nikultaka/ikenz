@@ -37,7 +37,7 @@
           
           <li class="nav-item">
             <a href="{{url('admin/cms')}}" class="nav-link">
-              <i class="nav-icon fa fa-phone"></i>
+              <i class="nav-icon fa fa-tasks"></i>
               <p>
                 CMS
               </p>

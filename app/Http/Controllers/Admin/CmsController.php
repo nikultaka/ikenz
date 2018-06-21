@@ -11,7 +11,8 @@ class CmsController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth');
+//        $this->middleware('auth');
+        $this->middleware('admin');
     }
     public function index(){
 //        $data=array();
@@ -19,12 +20,13 @@ class CmsController extends Controller
 //        foreach ($result as $key=>$value){
 //            $data[$value->option_name] =$value->option_value;
 //        }
-        return view('Admin.cms.cms');
+//        return view('Admin.cms.cms');
+        return view('Admin.cms.cms_list'    );
 //                ->with($data);
     }
     
     public function add(){
-        return view('Admin.cms.add');
+        return view('Admin.cms.cms_list');
     }
 //    public function save_details(Request $request){
 //       $site=new site();

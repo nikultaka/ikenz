@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
 use Validator;
 use Illuminate\Support\Facades\DB;
-//use Yajra\Datatables\Datatables;
 use yajra\Datatables\Facades\Datatables;
 use Image;
 
@@ -116,10 +115,10 @@ class TestimonialController extends Controller
         $data_result=array();
         $data_result['status']=1;
         $data_result['content']=$charges;
+        $data_result['msg']="Record deleted successfully.";
         echo json_encode($data_result);
         exit;
     }
-    
     
      public function deleterecord(){
         $id=$_POST['id'];
@@ -131,29 +130,20 @@ class TestimonialController extends Controller
         $data_result['status']=1;
         $data_result['msg']="Record deleted success.";
         
-        echo json_encode($data_result);
-        exit;
+        echo json_encode($data_result);exit;
         }
         else {
             return response()->json(['error'=>'record Not Found']);
-        }
+        }   
     }
     
-    
-    public function anyData()
-    {
+        
+        public function anyData(){
         
         $requestData = $_REQUEST;
 
         $data = array();
-        $sql = "SELECT * FROM testimonial ";
-        //This is for search value
-        $sql .= " WHERE status = 1 ";
-        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $sql .= " AND (customer_name LIKE '%" . $requestData['search']['value'] . "%' OR feedback LIKE '%" . $requestData['search']['value'] . "%' "
-                    . "OR user_photo LIKE '%" . $requestData['search']['value'] . "%') ";
-        }
-
+        
         //This is for order 
         $columns = array(
             0. => 'id',
@@ -165,64 +155,42 @@ class TestimonialController extends Controller
             5 => 'updated_date',
         );
         
-        
-        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '') {
-            $order_by = $columns[$requestData['order'][0]['column']];
-            $sql .= " ORDER BY " . $order_by;
-        } else {
-            $sql .= " ORDER BY id DESC";
+        $select_query = DB::table('testimonial');
+        $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
+            $select_query->where("customer_name","like",'%'.$requestData['search']['value'].'%');
         }
-
-        if (isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
-            $sql .= " " . $requestData['order'][0]['dir'];
+        
+        if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
+            $order_by = $columns[$requestData['order'][0]['column']];
+            $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $sql .= " DESC ";
+            $select_query->orderBy("id","DESC");
         }
         
         //This is for count
-        
-        $result=DB::table('testimonial')
-                    ->where('status',1)
-                    ->count();
-        $totalData = 0;
-        $totalFiltered = 0;
-        if ($result > 0) {
-            $totalData = $result;
-            $totalFiltered = $result;
-        }
+        $totalData = $select_query->count();
 
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
-            $sql .= " LIMIT " . $requestData['start'] . "," . $requestData['length'];
+            $select_query->offset($requestData['start']);
+            $select_query->limit($requestData['length']);
         }
-        
-        $service_price_list = DB::select($sql);
-        $arr_data = Array();
-        $arr_data = $result;
 
-
-        foreach ($service_price_list as $row) {
+        $testimonial_list = $select_query->get();
+        foreach ($testimonial_list as $row) {
             $temp['id'] = $row->id;
             $temp['customer_name'] = $row->customer_name;
             $temp['feedback'] = $row->feedback;
             $temp['user_photo'] = $row->user_photo;
             $temp['created_date'] = $row->created_date;
             $temp['updated_date'] = $row->updated_date;
-            $status = $row->status;
-            if ($status == "0") {
-
-                $statusstring = "Deactive";
-            } elseif ($status == "1") {
-                $statusstring = "Active";
-            } else {
-                $statusstring = "";
-            }
-            $temp['status'] = $statusstring;
-
+            $temp['status'] = $row->status;
             $id = $row->id;
-
+            
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
-            $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
+            
             
             $temp['action'] = $action;
             $data[] = $temp;
@@ -234,14 +202,13 @@ class TestimonialController extends Controller
         $json_data = array(
             "draw" => intval($requestData['draw']),
             "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalFiltered),
-            "data" => $data,
-            "sql" => $sql
+            "recordsFiltered" => intval($totalData),
+            "data" => $data
         );
         echo json_encode($json_data);
         exit(0);
             
-        }
+    }
     
     
     
