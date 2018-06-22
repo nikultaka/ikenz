@@ -52,32 +52,34 @@ class TestimonialController extends Controller
                 $input['user_photo'] = time().'.'.$file->getClientOriginalExtension();
 
 
-                $destinationPath = public_path().'/thumbnail';
+                $destinationPath = public_path().'/upload/testimonial/thumbnail';
                 $img = Image::make($file->getRealPath());
                 $img->fit(100,100, function ($constraint) {
                     $constraint->aspectRatio();        
                 })->save($destinationPath.'/'.$input['user_photo']);
 
 
-                $destinationPath = public_path().'/upload/';
+                $destinationPath = public_path().'/upload/testimonial/';
                 $uniquesavename=time().uniqid(rand());
                 $destFile = $uniquesavename . '.'.$extension;
                 $file->move($destinationPath,$destFile);
-                $product->user_photo = $destFile ;
+                $product->user_photo = $destFile;
 
+             }
+             else{
+                 $product->user_photo = $request->input('hi_file');
              }
                 $cus_name = $request->input('cus_name');
                 $feedback = $request->input('feedback');
-                $user_photo = isset($destFile) ? $destFile : '';
+                $user_photo = $product->user_photo;
                 $status = $request->input('status');
 
              
                 $data_insert = array();
                 $data_insert['customer_name']=$cus_name;
                 $data_insert['feedback']=$feedback;
-                $data_insert['user_photo']=$user_photo;
+                $data_insert['user_photo']= $user_photo;
                 $data_insert['status']=$status;
-
 
                  
             if(isset($_POST['id_test']) && $_POST['id_test'] != ''){
@@ -115,7 +117,7 @@ class TestimonialController extends Controller
         $data_result=array();
         $data_result['status']=1;
         $data_result['content']=$charges;
-        $data_result['msg']="Record deleted successfully.";
+        $data_result['msg']=$charges;
         echo json_encode($data_result);
         exit;
     }
@@ -155,7 +157,8 @@ class TestimonialController extends Controller
             5 => 'updated_date',
         );
         
-        $select_query = DB::table('testimonial');
+        $select_query = DB::table('testimonial')
+                        ->where('status','!=',-1);
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
             $select_query->where("customer_name","like",'%'.$requestData['search']['value'].'%');

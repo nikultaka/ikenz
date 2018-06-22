@@ -6,12 +6,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Contact Us List</h1>
+                <h1 class="m-0 text-dark">User List</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Contact Us List</li>
+                    <li class="breadcrumb-item active">User List</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,22 +26,22 @@
               
             <div class="card-header">
                 <div class="col-sm-2">
-            <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#ins_con"> Create New </button>
+            <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#ins_user"> Create New User </button>
             </div>  
               <p id="msg_main"></p>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table class="table table-bordered table-striped with-check contact_us-table">
+              <table class="table table-bordered table-striped with-check user-table">
                 <thead>
                     
                     <th>ID</th>
-                    <th>Name</th>
+                    <th>Category</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
                     <th>Email</th>
-                    <th>Phone No</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Reply</th>
+                    <th>Password</th>
+                    <th>status</th>
                     <th>Action</th>
                 </thead>
               </table>
@@ -61,6 +61,6 @@
 </section>
 
 
-@include('Admin.contact_us.contact_us')
+@include('Admin.user.adduser')
 
 @endsection

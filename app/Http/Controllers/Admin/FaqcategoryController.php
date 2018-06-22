@@ -105,11 +105,9 @@ class FaqcategoryController extends Controller
             4 => 'updated_at',
         );
         
-        $select_query = DB::table('faq_category');
+        $select_query = DB::table('faq_category')->where('status','!=',-1);
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("category_name","like",'%'.$requestData['search']['value'].'%');
-            $select_query->where("category_name","like",'%'.$requestData['search']['value'].'%');
             $select_query->where("category_name","like",'%'.$requestData['search']['value'].'%');
         }
         

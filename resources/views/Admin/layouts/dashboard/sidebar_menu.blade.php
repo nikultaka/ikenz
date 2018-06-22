@@ -221,6 +221,38 @@
             </a>
             
           </li>
+          <li class="nav-item">
+            <a href="{{url('admin/newsletter')}}" class="nav-link">
+              <i class="nav-icon fa fa-newspaper-o"></i>
+              <p>
+                Newsletter
+              </p>
+            </a>
+            
+          </li>
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-question-circle"></i>
+              <p>
+                User
+                <i class="fa fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{url('admin/user')}}" class="nav-link">
+                  <i class="fa fa-question nav-icon"></i>
+                  <p> USer </p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{url('admin/user_role')}}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p> User Roll </p>
+                </a>
+              </li>
+            </ul>
+          </li>
           
           <li class="nav-item">
             <a href="{{url('logout')}}" class="nav-link">

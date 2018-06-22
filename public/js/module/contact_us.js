@@ -47,6 +47,7 @@ load_contact_us:function(){
                         { data: 'email', name: 'email'},
                         { data: 'phone_no', name: 'phone_no'},
                         { data: 'description', name: 'description'},
+                        { data: 'status', name: 'status'},
                         { data: 'reply', name: 'reply'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
@@ -154,6 +155,8 @@ edit_row:function(c_us_id){
                         $("#email").val(data.content.email);
                         $("#phone_no").val(data.content.phone_no);
                         $("#description").val(data.content.description);
+                        var status_id = $("#status").val(data.content.status);
+                        status_id.attr("selected","selected");
                         admin.contact_us.load_contact_us();
                     }
                 }

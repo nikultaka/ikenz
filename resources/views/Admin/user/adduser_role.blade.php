@@ -4,7 +4,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
-            <div class="modal fade" id="ins_faq_cat" role="dialog">
+            <div class="modal fade" id="ins_user_cat" role="dialog">
                 <div class="modal-dialog">
 
                     <!--                modal content-->
@@ -14,13 +14,13 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_faq_cat" name="frm_faq_cat">
+                            <form id="frm_user_cat" name="frm_user_cat">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <input type="hidden" name="id_faq_cat" id="id_faq_cat">
-                                    <label for="category_name" class="col-sm-3">Category Name</label>
+                                    <input type="hidden" name="id_user_cat" id="id_user_cat">
+                                    <label for="user_category" class="col-sm-3">Category Name</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="category_name" id="category_name">
+                                        <input type="text" class="form-control" name="user_category" id="user_category">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -44,7 +44,7 @@
 
                         </div>
                         <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_faq_cat" name="submit">Submit</button>
+                            <button type="submit" class="btn btn-primary sub_user_cat" name="submit">Submit</button>
                             <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
@@ -53,9 +53,9 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/faqcategory.js')!!}"></script>
+<script src="{!! asset('js/module/user_role.js')!!}"></script>
 <script type="text/javascript">
                                 $(document).ready(function () {
-                                    admin.faq_category.initialize();
+                                    admin.user_role.initialize();
                                 });
 </script>  
