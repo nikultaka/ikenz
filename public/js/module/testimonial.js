@@ -141,7 +141,6 @@ edit_row:function(test_id){
             success: function(data) {
                 var data=$.parseJSON(data);
                 if(data.status==1){
-                    
                     $("#ins_tes").modal("show");
                     $("#u_photo").show();
                       
@@ -149,7 +148,8 @@ edit_row:function(test_id){
                     $("#cus_name").val(data.content.customer_name);
                     $("#feedback").val(data.content.feedback);
                     
-                    $('#u_photo').attr('src',BASE_URL+'/upload/'+ data.content.user_photo);
+                    $('#u_photo').attr('src',BASE_URL+'/upload/testimonial/'+ data.content.user_photo);
+                    $("#hi_file").val(data.content.user_photo);
                     
                     var status_id = $("#status").val(data.content.status);
                     status_id.attr("selected","selected");

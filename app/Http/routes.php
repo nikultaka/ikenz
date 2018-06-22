@@ -102,6 +102,25 @@ Route::group(['prefix' => 'admin'], function()
     Route::any('admin/contact_us/email', 'Admin\Contact_usController@email_reply');
     
     
+    Route::get('admin/newsletter', 'Admin\NewsletterController@index');
+    Route::any('admin/newsletter/getdata', 'Admin\NewsletterController@anydata')->name('news_latter/getdata');
+    Route::any('admin/newsletter/delete', 'Admin\NewsletterController@deleterecord');
+    
+    
+    Route::get('admin/user', 'Admin\UserController@index');
+    Route::any('admin/user/addrecord', 'Admin\UserController@addrecord');
+    Route::any('admin/user/getdata', 'Admin\UserController@anydata')->name('contact_us/getdata');
+    Route::any('admin/user/delete', 'Admin\UserController@deleterecord');
+    Route::any('admin/user/edit', 'Admin\UserController@edituser');
+    Route::any('admin/user/email', 'Admin\UserController@check_email');
+    
+    
+    Route::get('admin/user_role', 'Admin\User_roleController@index');
+    Route::any('admin/user_role/addrecord', 'Admin\User_roleController@addrecord');
+    Route::any('admin/user_role/getdata', 'Admin\User_roleController@anydata')->name('contact_us/getdata');
+    Route::any('admin/user_role/delete', 'Admin\User_roleController@deleterecord');
+    Route::any('admin/user_role/edit', 'Admin\User_roleController@edit_user_role');
+//    Route::any('admin/user_role/email', 'Admin\User_roleController@check_email');
     
     
     

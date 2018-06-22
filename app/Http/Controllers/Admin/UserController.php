@@ -6,13 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Faq;
+use App\Models\User;
 use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
 
-class FaqController extends Controller
+class UserController extends Controller
 {
     public function __construct()
     {
@@ -23,9 +23,9 @@ class FaqController extends Controller
     public function index()
     {
         $data_result=array();
-        $cate_id = DB::table('faq_category')->where('status', '=', 1)->get();
-        $data_result['cate_id']=$cate_id;
-        return view("admin.faq.faq_list")->with($data_result);
+        $user_role = DB::table('user_role')->where('status', '=', 1)->get();
+        $data_result['user_role']=$user_role;
+        return view("admin.user.user_list")->with($data_result);
         
     }
     
@@ -35,18 +35,20 @@ class FaqController extends Controller
         $result=array();
         $result['status']=0;
         if($_POST){
-            if($request->input('id_faq')){
-                $id_faq = $request->input('id_faq');
+            if($request->input('id_user')){
+                $id_faq = $request->input('id_user');
             }
-            $data['category_id'] = $request->input('category_id');
-            $data['question'] = $request->input('question');
-            $data['answer'] = $request->input('answer');
+            $data['user_category'] = $request->input('user_category');
+            $data['f_name'] = $request->input('f_name');
+            $data['l_name'] = $request->input('l_name');
+            $data['email'] = $request->input('email');
+            $data['password'] = $request->input('password');
             $data['status'] = $request->input('status');
             
             
-            if(isset($_POST['id_faq']) && $_POST['id_faq'] != ''){
-                $data['updated_at']=date("Y-m-d h:i:s");
-                $returnresult= DB::table('faq')
+            if(isset($_POST['id_user']) && $_POST['id_user'] != ''){
+                $data['gm_updated']=date("Y-m-d h:i:s");
+                $returnresult= DB::table('user')
                    ->where('id',$id_faq)     
                    ->update($data);
                 if($returnresult){
@@ -56,9 +58,9 @@ class FaqController extends Controller
            
             }
             else{
-                $data['created_at']=date("Y-m-d h:i:s");
-                $data['updated_at']=date("Y-m-d h:i:s");
-                if(DB::table('faq')->insert($data)){
+                $data['gm_created']=date("Y-m-d h:i:s");
+                $data['gm_updated']=date("Y-m-d h:i:s");
+                if(DB::table('user')->insert($data)){
                 $result['status']=1;
                 $result['msg']="Record add sucessfully..!";
             }
@@ -68,19 +70,19 @@ class FaqController extends Controller
         
     }
       
-    public function editfaq(){
-        $id=$_POST['faq_id'];
-        $faq =DB::table('faq')->where('id','=',$id)->first();
+    public function edituser(){
+        $id=$_POST['user_id'];
+        $user =DB::table('user')->where('id','=',$id)->first();
         $data_result=array();
         $data_result['status']=1;
-        $data_result['content']=$faq;
+        $data_result['content']=$user;
         echo json_encode($data_result);exit;
     }
     
      public function deleterecord(){
-        $id=$_POST['faq_id'];
+        $id=$_POST['user_id'];
         if(isset($id) && $id !=''){
-            DB::table('faq')
+            DB::table('user')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
         $data_result=array();
@@ -103,24 +105,28 @@ class FaqController extends Controller
         
         //This is for order 
         $columns = array(
-            0. => 'f.id',
-            1 => 'fc.category_name',
-            2 => 'f.question',
-            3 => 'f.answer',
-            4 => 'f.status',
-            5 => 'f.created_at',
-            5 => 'f.updated_at',
+            0. => 'u.id',
+            1 => 'u.f_name',
+            2 => 'u.l_name',
+            3 => 'u.email',
+            4 => 'u.password',
+            5 => 'u.status',
+            6 => 'u.gm_created',
+            7 => 'u.gm_updated',
+            8 => 'ur.category',
         );
         
-        $select_query = DB::table('faq as f')
-                        ->join('faq_category as fc','f.category_id','=','fc.id')
-                        ->where('f.status','!=',-1);
-
-        $select_query->select('f.id','f.question','f.answer' ,'f.status' , 'fc.category_name',DB::raw("IF(f.status = 1,'Active','Inactive') as status"));
+        $select_query = DB::table('user as u')
+                        ->join('user_role as ur','u.user_category','=','ur.id')
+                        ->where('u.status','!=',-1);
+//                        ->get();
+        
+        $select_query->select('u.*','ur.category',DB::raw("IF(u.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("fc.category_name","like",'%'.$requestData['search']['value'].'%')
-                         ->oRwhere("f.question","like",'%'.$requestData['search']['value'].'%')
-                         ->oRwhere("f.answer","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("u.f_name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("u.l_name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("ur.user_category","like",'%'.$requestData['search']['value'].'%');
             
         }
         
@@ -128,7 +134,7 @@ class FaqController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("f.id","DESC");
+            $select_query->orderBy("u.id","DESC");
         }
         
         //This is for count
@@ -144,14 +150,16 @@ class FaqController extends Controller
         foreach ($faq_list as $row) {
             
             $temp['id'] = $row->id;
-            $temp['category_name'] = $row->category_name;
-            $temp['question'] = $row->question;
-            $temp['answer'] = $row->answer;
+            $temp['category'] = $row->category;
+            $temp['f_name'] = $row->f_name;
+            $temp['l_name'] = $row->l_name;
+            $temp['email'] = $row->email;
+            $temp['password'] = $row->password;
             $temp['status'] = $row->status;
             $id = $row->id;
            
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_faq"> Edit</a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_faq"> Delete</a></div>';
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_user"> Edit</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_user"> Delete</a></div>';
 
             
             $temp['action'] = $action;
@@ -170,6 +178,31 @@ class FaqController extends Controller
         exit(0);
             
     }
+    
+    public function check_email(Request $request) {
+        
+        $email_id = $request->input('email');
+        
+        $valid = TRUE;
+        $email =DB::table('user')
+                ->select('id')
+                ->select('email')
+                ->where('email','=',$email_id)
+                ->get();
+        
+        $email_all = count($email);
+            
+            if($email_all > 0){
+                $valid = FALSE;
+            }
+            else{
+                $valid = TRUE;
+            }            
+            return json_encode(array('valid' => $valid));exit;
+   
+            
+    }   
+    
     
     
 }

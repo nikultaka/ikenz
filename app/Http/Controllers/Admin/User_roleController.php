@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Contact_us;
+//use App\Models\Faq;
+//use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
 
-class Contact_usController extends Controller
+class User_roleController extends Controller
 {
     public function __construct()
     {
@@ -21,7 +22,11 @@ class Contact_usController extends Controller
     
     public function index()
     {
-        return view("admin.contact_us.contact_us_list");
+//        $data_result=array();
+//        $cate_id = DB::table('faq_category')->where('status', '=', 1)->get();
+//        $data_result['cate_id']=$cate_id;
+        return view("admin.user.user_role_list");
+//        ->with($data_result);
         
     }
     
@@ -31,20 +36,17 @@ class Contact_usController extends Controller
         $result=array();
         $result['status']=0;
         if($_POST){
-            if($request->input('id_c_us')){
-                $id_c_us = $request->input('id_c_us');
+            if($request->input('id_user_cat')){
+                $id_user_cat = $request->input('id_user_cat');
             }
-            $data['name'] = $request->input('name');
-            $data['email'] = $request->input('email');
-            $data['phone_no'] = $request->input('phone_no');
-            $data['description'] = $request->input('description');
+            $data['category'] = $request->input('user_category');
             $data['status'] = $request->input('status');;
             
             
-            if(isset($_POST['id_c_us']) && $_POST['id_c_us'] != ''){
+            if(isset($_POST['id_user_cat']) && $_POST['id_user_cat'] != ''){
                 $data['gm_updated']=date("Y-m-d h:i:s");
-                $returnresult= DB::table('contact_us')
-                   ->where('id',$id_c_us)     
+                $returnresult= DB::table('user_role')
+                   ->where('id',$id_user_cat)     
                    ->update($data);
                 if($returnresult){
                     $result['status']=1;
@@ -55,45 +57,34 @@ class Contact_usController extends Controller
             else{
                 $data['gm_created']=date("Y-m-d h:i:s");
                 $data['gm_updated']=date("Y-m-d h:i:s");
-                if(DB::table('contact_us')->insert($data)){
+                if(DB::table('user_role')->insert($data)){
                 $result['status']=1;
                 $result['msg']="Record add sucessfully..!";
             }
             }
         }
         echo json_encode($result);
-        exit;
         
     }
       
-    public function editcontact_us(){
-        $id=$_POST['c_us_id'];
-        $contact_us =DB::table('contact_us')->where('id','=',$id)->first();
+    public function edit_user_role(){
+        $id=$_POST['user_cat_id'];
+        $user_category =DB::table('user_role')->where('id','=',$id)->first();
         $data_result=array();
         $data_result['status']=1;
-        $data_result['content']=$contact_us;
+        $data_result['content']=$user_category;
         echo json_encode($data_result);exit;
     }
-    
-    public function email_reply(){
-        $id=$_POST['id'];
-        $contact_us =DB::table('contact_us')->select('email')->where('id','=',$id)->first();
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$contact_us;
-        echo json_encode($data_result);exit;
-    }
-    
     
      public function deleterecord(){
-        $id=$_POST['c_us_id'];
+        $id=$_POST['user_cat_id'];
         if(isset($id) && $id !=''){
-            DB::table('contact_us')
+            DB::table('user_role')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
         $data_result=array();
         $data_result['status']=1;
-        $data_result['msg']="Record deleted successfully.";
+        $data_result['msg']="Record deleted success.";
         
         echo json_encode($data_result);exit;
         }
@@ -101,9 +92,8 @@ class Contact_usController extends Controller
             return response()->json(['error'=>'record Not Found']);
         }   
     }
-    
-    
-    public function anyData()
+        
+     public function anyData()
     {
         
         $requestData = $_REQUEST;
@@ -113,19 +103,19 @@ class Contact_usController extends Controller
         //This is for order 
         $columns = array(
             0. => 'id',
-            1 => 'name',
-            2 => 'email',
-            3 => 'phone_no',
-            4 => 'description',
+            1 => 'category',
+            2 => 'status',
+            3 => 'gm_created',
+            4 => 'gm_updated',
         );
         
-        $select_query = DB::table('contact_us')
-                    ->where('status', '!=',-1);
+        $select_query = DB::table('user_role')
+//                        ->join('faq_category as fc','f.category_id','=','fc.id')
+                        ->where('status','!=',-1);
+
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("name","like",'%'.$requestData['search']['value'].'%');
-            $select_query->where("email","like",'%'.$requestData['search']['value'].'%');
-            $select_query->where("phone_no","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("category","like",'%'.$requestData['search']['value'].'%');   
         }
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
@@ -144,26 +134,22 @@ class Contact_usController extends Controller
             $select_query->limit($requestData['length']);
         }
 
-        $contact_us_list = $select_query->get();
-        foreach ($contact_us_list as $row) {
+        $faq_list = $select_query->get();
+        foreach ($faq_list as $row) {
+            
             $temp['id'] = $row->id;
-            $temp['name'] = $row->name;
-            $temp['email'] = $row->email;
-            $temp['phone_no'] = $row->phone_no;
-            $temp['description'] = $row->description;
-            $temp['reply'] = '<i class="fa fa-mail-reply em_reply" data-id="'.$row->id.'" onclick="email_reply('.$row->id.')"></i>';
+            $temp['category'] = $row->category;
             $temp['status'] = $row->status;
             $id = $row->id;
- 
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_contact_us"> Edit</a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_contact_us"> Delete</a></div>';
+           
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_user_cat"> Edit</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_user_cat"> Delete</a></div>';
 
             
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
         }
-
 
 
         $json_data = array(
@@ -176,5 +162,6 @@ class Contact_usController extends Controller
         exit(0);
             
     }
+    
     
 }
