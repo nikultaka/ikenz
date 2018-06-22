@@ -1,28 +1,57 @@
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{url('css/adminlte.min.css')}}">
-
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <title>Ela - Bootstrap Admin Dashboard Template</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{{url('css/lib/bootstrap/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{url('css/helper.css')}}" rel="stylesheet">
+    <link href="{{url('css/style.css')}}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
+    <!--[if lt IE 9]>
+    <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 </head>
- @yield('content')
+
+<body class="fix-header fix-sidebar">
+    <!-- Preloader - style you can find in spinners.css -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+        @yield('content')
  
-<!-- jQuery -->
-<!--<script src="../../plugins/jquery/jquery.min.js"></script>
- Bootstrap 4 
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>-->
-<!-- iCheck -->
+        
+    </div>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    <script src="{{url('js/lib/jquery/jquery.min.js')}}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{url('js/lib/bootstrap/js/popper.min.js')}}"></script>
+    <script src="{{url('js/lib/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{{url('js/jquery.slimscroll.js')}}"></script>
+    <!--Menu sidebar -->
+    <script src="{{url('js/sidebarmenu.js')}}"></script>
+    <!--stickey kit -->
+    <script src="{{url('js/lib/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
+    <!--Custom JavaScript -->
+    <script src="{{url('js/scripts.js')}}"></script>
+
 </body>
 
- </html>
+</html>
