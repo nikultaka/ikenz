@@ -40,3 +40,12 @@
 @include('Admin.FAQ_category.faqcategory')
 
 @endsection
+
+@section('bottomscript')
+<script src="{!! asset('js/module/faqcategory.js')!!}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    admin.faq_category.initialize();
+});
+</script>
+@endsection

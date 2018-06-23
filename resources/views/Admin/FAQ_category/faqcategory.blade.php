@@ -53,9 +53,3 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/faqcategory.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.faq_category.initialize();
-                                });
-</script>  

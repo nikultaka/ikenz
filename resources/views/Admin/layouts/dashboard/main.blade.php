@@ -86,32 +86,22 @@
     <!--stickey kit -->
     <script src="{{url('js/lib/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <!--Custom JavaScript -->
-
-
-    <!-- Amchart -->
-     <script src="{{url('js/lib/morris-chart/raphael-min.js')}}"></script>
-    <script src="{{url('js/lib/morris-chart/morris.js')}}"></script>
-    <script src="{{url('js/lib/morris-chart/dashboard1-init.js')}}"></script>
-
-
-    <script src="{{url('js/lib/calendar-2/moment.latest.min.js')}}"></script>
-    <!-- scripit init-->
-    <script src="{{url('js/lib/calendar-2/semantic.ui.min.js')}}"></script>
-    <!-- scripit init-->
-    <script src="{{url('js/lib/calendar-2/prism.min.js')}}"></script>
-    <!-- scripit init-->
-    <script src="{{url('js/lib/calendar-2/pignose.calendar.min.js')}}"></script>
-    <!-- scripit init-->
-    <script src="{{url('js/lib/calendar-2/pignose.init.js')}}"></script>
-
-    <script src="{{url('js/lib/owl-carousel/owl.carousel.min.js')}}"></script>
-    <script src="{{url('js/lib/owl-carousel/owl.carousel-init.js')}}"></script>
-
-    <!-- scripit init-->
+    
+    <script src="{{url('js/lib/datatables/datatables.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/datatables-init.js')}}"></script>
 
     <script src="{{url('js/scripts.js')}}"></script>
     
     <script src="{{url('js/common.js')}}"></script>
+    
+    @yield('bottomscript')
 
 </body>
 
