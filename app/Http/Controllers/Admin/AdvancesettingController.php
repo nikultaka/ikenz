@@ -159,7 +159,7 @@ class AdvancesettingController extends Controller
 
         $data = array();
 
-        $select_query = DB::table('advance_custom_details');
+        $select_query = DB::table('advance_custom_details')->where('status','1');
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         //This is for search value
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {

@@ -69,6 +69,9 @@ Route::group(['prefix' => 'admin'], function()
         Route::get('media/add', 'Admin\MediaController@add');
         Route::any('media/get_category_data', 'Admin\MediaController@get_category_data');
         
+        Route::get('upload-media', 'Admin\UploadmediaController@index');
+         Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
+        
     });
     
     
