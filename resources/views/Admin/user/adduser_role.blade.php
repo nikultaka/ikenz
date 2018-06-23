@@ -1,4 +1,3 @@
-
 <section class="content">
 
     <div class="col-xs-12">
@@ -53,9 +52,3 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/user_role.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.user_role.initialize();
-                                });
-</script>  

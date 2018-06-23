@@ -1,22 +1,9 @@
 @extends('Admin.layouts.dashboard.main')
 
+@section('pageTitle','Advance Settings')
+@section('pageHeadTitle','Advance Settings')
 @section('content')
-  
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Setting</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Advance Setting</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -25,8 +12,8 @@
           <div class="card">
               
             <div class="card-header">
-                <div class="col-sm-2" style="float: left;">
-            <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalRegisterForm">Add Filds</button>
+                <div class="col-sm-12">
+            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalRegisterForm">Add Filds</button>
             
             </div>  
               <p id="msg_main"></p>
@@ -106,6 +93,8 @@
     </div>
 </div>
 </form>
+@endsection
+@section('bottomscript')
 <script src="{!! asset('js/module/advance_fild.js')!!}"></script>
 <script type="text/javascript">
     $(document).ready(function(){

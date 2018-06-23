@@ -80,9 +80,3 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/user.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.user.initialize();
-                                });
-</script>  

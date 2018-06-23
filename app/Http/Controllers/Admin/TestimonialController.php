@@ -16,16 +16,16 @@ class TestimonialController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('auth');
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
     {
-        $data_result=array();
-        $test_list = Testimonial::where('status', '=', 1)->get();
-        $data_result['test_list']=$test_list;
-        return view("admin.testimonial.testimonial_list")->with($data_result);
+//        $data_result=array();
+//        $test_list = Testimonial::where('status', '=', 1)->get();
+//        $data_result['test_list']=$test_list;
+        return view("admin.testimonial.testimonial_list");
+//        ->with($data_result);
         
     }
     

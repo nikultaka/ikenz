@@ -38,7 +38,6 @@
                                     <label for="description" class="col-sm-3">Description</label>
                                     <div class="col-sm-9">
                                         <textarea class="form-control" name="description" id="description"></textarea>
-                                        <!--<input type="text" class="form-control" name="description" id="description" />-->
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -100,10 +99,4 @@
             
         </div>
     </div>
-</section>
-<script src="{!! asset('js/module/contact_us.js')!!}"></script>
-<script type="text/javascript">
-            $(document).ready(function () {
-                admin.contact_us.initialize();
-            });
-</script>  
+</section>  

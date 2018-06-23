@@ -7,18 +7,60 @@
             <ul id="sidebarnav">
                 <li class="nav-devider"></li>
                 <li class="nav-label">Home</li>
-                <li class="nav-label">
-                    <a href="{{url('admin/dashboard')}}" aria-expanded="false">
-                        <i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span>
-                    </a>
+                <li><a href="{{url('admin/dashboard')}}" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">Dashboard</span></a>
                 </li>
-                <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-tachometer"></i><span class="hide-menu">FAQ</span></a>
+                
+                <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-user"></i><span class="hide-menu">User</span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{url('admin/faq_category')}}">FAQ Category </a></li>
-                        <li><a href="{{url('admin/faq')}}">FAQ </a></li>
+                        <li><a href="{{url('admin/user')}}">User </a></li>
+                        <li><a href="{{url('admin/user_role')}}">User Category </a></li>
                     </ul>
                 </li>
-                <li class="nav-label">Apps</li>
+                
+                
+                <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-question-circle"></i><span class="hide-menu">FAQ</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{url('admin/faq')}}">FAQ </a></li>
+                        <li><a href="{{url('admin/faq_category')}}">FAQ Category </a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="{{url('admin/testimonial')}}" aria-expanded="false"><i class="fa fa-quote-left"></i><span class="hide-menu">Testimonial</span></a>
+                </li>
+                
+                <li><a href="{{url('admin/contact_us')}}" aria-expanded="false"><i class="fa fa-phone"></i><span class="hide-menu">Contact us</span></a>
+                </li>
+                
+                <li><a href="{{url('admin/newsletter')}}" aria-expanded="false"><i class="fa fa-newspaper-o"></i><span class="hide-menu">Newsletter</span></a>
+                </li>
+                
+                 <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-wrench"></i><span class="hide-menu">Settings</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{url('admin/setting')}}"> General Settings </a></li>
+                        <li><a href="{{url('admin/advancesettings')}}"> Advance Custom Filds </a></li>
+                    </ul>
+                </li>
+                
+                <li><a href="{{url('admin/cms')}}" aria-expanded="false"><i class="fa fa-tasks"></i><span class="hide-menu">CMS</span></a>
+                </li>
+                
+                <li><a href="{{url('admin/media')}}" aria-expanded="false"><i class="fa fa-medium"></i><span class="hide-menu">Media</span></a>
+                </li>
+
+                <li><a href="{{url('logout')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Logout</span></a>
+                </li>
+                
+             
+                
+                
+                
+                
+                
+                
+                
+                
+                
+<!--                <li class="nav-label">Apps</li>
                 <li> <a class="has-arrow  " href="#" aria-expanded="false"><i class="fa fa-envelope"></i><span class="hide-menu">Email</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="email-compose.html">Compose</a></li>
@@ -125,7 +167,7 @@
                         </li>
                         <li><a href="#">item 1.4</a></li>
                     </ul>
-                </li>
+                </li>-->
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

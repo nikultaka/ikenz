@@ -42,6 +42,7 @@ load_faq_category:function(){
                         { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
                         { data: 'status', name: 'status'},
+                        { data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
     }); 
@@ -117,7 +118,7 @@ edit_row:function(faq_cat_id){
                         $("#category_name").val(data.content.category_name);
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-                        $('select[name^="status"] option[value=]').attr("selected","selected");
+//                        $('select[name^="status"] option[value=]').attr("selected","selected");
                         admin.faq_category.load_faq_category();
                     }
                 }

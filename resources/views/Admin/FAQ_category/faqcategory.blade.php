@@ -1,4 +1,3 @@
-
 <section class="content">
 
     <div class="col-xs-12">

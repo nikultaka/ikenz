@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-//use App\Models\Faq;
-//use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
@@ -16,17 +14,12 @@ class User_roleController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('auth');
         $this->middleware('admin');
     }
     
     public function index()
     {
-//        $data_result=array();
-//        $cate_id = DB::table('faq_category')->where('status', '=', 1)->get();
-//        $data_result['cate_id']=$cate_id;
         return view("admin.user.user_role_list");
-//        ->with($data_result);
         
     }
     
@@ -110,7 +103,6 @@ class User_roleController extends Controller
         );
         
         $select_query = DB::table('user_role')
-//                        ->join('faq_category as fc','f.category_id','=','fc.id')
                         ->where('status','!=',-1);
 
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));

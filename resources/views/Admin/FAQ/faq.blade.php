@@ -3,7 +3,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
-            <div class="modal fade" id="ins_faq" role="dialog">
+            <div class="modal fade commonModel" id="ins_faq" role="dialog">
                 <div class="modal-dialog">
 
                     <!--modal content-->
@@ -66,9 +66,3 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/faq.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.faq.initialize();
-                                });
-</script>  

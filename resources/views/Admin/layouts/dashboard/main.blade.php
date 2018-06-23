@@ -10,9 +10,11 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-    <title>Admin</title>
+    <title>@yield('pageTitle')</title>
+    <script src="{{url('js/lib/jquery/jquery.min.js')}}"></script>
     <!-- Bootstrap Core CSS -->
     <link href="{{url('css/lib/bootstrap/bootstrap.min.css')}}" rel="stylesheet">
+    <script src="{{url('js/lib/bootstrap/js/bootstrap.min.js')}}"></script>
     <!-- Custom CSS -->
     <link href="{{url('css/helper.css')}}" rel="stylesheet">
     <link href="{{url('css/style.css')}}" rel="stylesheet">
@@ -57,7 +59,7 @@
             <!-- Bread crumb -->
             <div class="row page-titles">
                 <div class="col-md-5 align-self-center">
-                    <h3 class="text-primary">Dashboard</h3> </div>
+                    <h3 class="text-primary">@yield('pageHeadTitle')</h3> </div>
                 <div class="col-md-7 align-self-center">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>

@@ -1,22 +1,26 @@
 @extends('Admin.layouts.dashboard.main')
+        
+
+@section('pageTitle','Media')
+@section('pageHeadTitle','Media')
 
 @section('content')
     
-   <div id="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Media Category List</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Media Category List</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-  </div>
+        <!--   <div id="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Media Category List</h1>
+                    </div> /.col 
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
+                            <li class="breadcrumb-item active">Media Category List</li>
+                        </ol>
+                    </div> /.col 
+                </div> /.row 
+            </div> /.container-fluid 
+          </div>-->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -25,8 +29,8 @@
           <div class="card">
               
             <div class="card-header">
-                <div class="col-sm-2">
-            <button type="button" class="btn btn-info btn-block" data-toggle="modal" data-target="#ins_faq_cat"> Create New Category </button>
+                <div class="col-sm-12">
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_faq_cat"> Create New Category </button>
             </div>  
               <p id="msg_main"></p>
             </div>

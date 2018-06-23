@@ -62,9 +62,4 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/testimonial.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.testimonial.initialize();
-                                });
-</script>  
+ 
