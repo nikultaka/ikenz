@@ -15,7 +15,6 @@ class FaqcategoryController extends Controller
 {
     public function __construct()
     {
-//        $this->middleware('auth');
         $this->middleware('admin');
     }
     
@@ -136,8 +135,8 @@ class FaqcategoryController extends Controller
             $temp['status'] = $row->status;
             $id = $row->id;
             
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_faqcat"> Edit</a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_faqcat"> Delete</a></div>';
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-sm btn-info btnEdit_faqcat"> Edit</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-sm btn-danger btnDelete_faqcat"> Delete</a></div>';
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";

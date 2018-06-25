@@ -128,4 +128,9 @@ $(function() {
         $('a[data-action="close"]').on("click", function() {
             $(this).closest(".card").removeClass().slideUp("fast");
         });
+        
+        $('body').on('click', function() {
+//            $('body').removeClass('modal-open');
+            $('.modal-backdrop').hide();
+        });
 });

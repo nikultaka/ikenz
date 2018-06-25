@@ -10,7 +10,7 @@ class MediaController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('admin');
     }
     public function index(){
         return view('Admin.media.category_list');

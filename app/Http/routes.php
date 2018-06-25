@@ -59,7 +59,7 @@ Route::group(['prefix' => 'admin'], function()
     });
     
     
-    Route::group(['middleware' => ['auth', 'admin']], function () {
+//    Route::group(['middleware' => ['auth', 'admin']], function () {
         Route::any('/dashboard', 'Admin\DashboardController@index');
         
         Route::get('cms', 'Admin\CmsController@index');
@@ -69,6 +69,7 @@ Route::group(['prefix' => 'admin'], function()
         Route::get('media/add', 'Admin\MediaController@add');
         Route::any('media/get_category_data', 'Admin\MediaController@get_category_data');
         
+<<<<<<< HEAD
         Route::get('upload-media', 'Admin\UploadmediaController@index');
          Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
         
@@ -76,51 +77,53 @@ Route::group(['prefix' => 'admin'], function()
     
     
 });
+=======
+>>>>>>> 18e24354e8c7bab519011818a1586eba8e536968
 
-    Route::get('admin/testimonial', 'Admin\TestimonialController@index');
-    Route::any('admin/testimonial/addrecord', 'Admin\TestimonialController@addrecord');
-    Route::any('admin/testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
-    Route::any('admin/testimonial/delete', 'Admin\TestimonialController@deleterecord');
-    Route::any('admin/testimonial/edit', 'Admin\TestimonialController@edittestimonial');
+    Route::get('testimonial', 'Admin\TestimonialController@index');
+    Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
+    Route::any('testimonial/getdata', 'Admin\TestimonialController@anydata')->name('testimonial/getdata');
+    Route::any('testimonial/delete', 'Admin\TestimonialController@deleterecord');
+    Route::any('testimonial/edit', 'Admin\TestimonialController@edittestimonial');
 
-    Route::get('admin/faq', 'Admin\FaqController@index');
-    Route::any('admin/faq/addrecord', 'Admin\FaqController@addrecord');
-    Route::any('admin/faq/getdata', 'Admin\FaqController@anydata')->name('faq/getdata');
-    Route::any('admin/faq/delete', 'Admin\FaqController@deleterecord');
-    Route::any('admin/faq/edit', 'Admin\FaqController@editfaq');
+    Route::get('faq', 'Admin\FaqController@index');
+    Route::any('faq/addrecord', 'Admin\FaqController@addrecord');
+    Route::any('faq/getdata', 'Admin\FaqController@anydata')->name('faq/getdata');
+    Route::any('faq/delete', 'Admin\FaqController@deleterecord');
+    Route::any('faq/edit', 'Admin\FaqController@editfaq');
 
-    Route::get('admin/faq_category', 'Admin\FaqcategoryController@index');
-    Route::any('admin/faq_category/addrecord', 'Admin\FaqcategoryController@addrecord');
-    Route::any('admin/faq_category/getdata', 'Admin\FaqcategoryController@anydata')->name('faq_category/getdata');
-    Route::any('admin/faq_category/delete', 'Admin\FaqcategoryController@deleterecord');
-    Route::any('admin/faq_category/edit', 'Admin\FaqcategoryController@editfaq_category');
+    Route::get('faq_category', 'Admin\FaqcategoryController@index');
+    Route::any('faq_category/addrecord', 'Admin\FaqcategoryController@addrecord');
+    Route::any('faq_category/getdata', 'Admin\FaqcategoryController@anydata')->name('faq_category/getdata');
+    Route::any('faq_category/delete', 'Admin\FaqcategoryController@deleterecord');
+    Route::any('faq_category/edit', 'Admin\FaqcategoryController@editfaq_category');
     
-    Route::get('admin/contact_us', 'Admin\Contact_usController@index');
-    Route::any('admin/contact_us/addrecord', 'Admin\Contact_usController@addrecord');
-    Route::any('admin/contact_us/getdata', 'Admin\Contact_usController@anydata')->name('contact_us/getdata');
-    Route::any('admin/contact_us/delete', 'Admin\Contact_usController@deleterecord');
-    Route::any('admin/contact_us/edit', 'Admin\Contact_usController@editcontact_us');
-    Route::any('admin/contact_us/email', 'Admin\Contact_usController@email_reply');
-    
-    
-    Route::get('admin/newsletter', 'Admin\NewsletterController@index');
-    Route::any('admin/newsletter/getdata', 'Admin\NewsletterController@anydata')->name('news_latter/getdata');
-    Route::any('admin/newsletter/delete', 'Admin\NewsletterController@deleterecord');
+    Route::get('contact_us', 'Admin\Contact_usController@index');
+    Route::any('contact_us/addrecord', 'Admin\Contact_usController@addrecord');
+    Route::any('contact_us/getdata', 'Admin\Contact_usController@anydata')->name('contact_us/getdata');
+    Route::any('contact_us/delete', 'Admin\Contact_usController@deleterecord');
+    Route::any('contact_us/edit', 'Admin\Contact_usController@editcontact_us');
+    Route::any('contact_us/email', 'Admin\Contact_usController@email_reply');
     
     
-    Route::get('admin/user', 'Admin\UserController@index');
-    Route::any('admin/user/addrecord', 'Admin\UserController@addrecord');
-    Route::any('admin/user/getdata', 'Admin\UserController@anydata')->name('contact_us/getdata');
-    Route::any('admin/user/delete', 'Admin\UserController@deleterecord');
-    Route::any('admin/user/edit', 'Admin\UserController@edituser');
-    Route::any('admin/user/email', 'Admin\UserController@check_email');
+    Route::get('newsletter', 'Admin\NewsletterController@index');
+    Route::any('newsletter/getdata', 'Admin\NewsletterController@anydata')->name('news_latter/getdata');
+    Route::any('newsletter/delete', 'Admin\NewsletterController@deleterecord');
     
     
-    Route::get('admin/user_role', 'Admin\User_roleController@index');
-    Route::any('admin/user_role/addrecord', 'Admin\User_roleController@addrecord');
-    Route::any('admin/user_role/getdata', 'Admin\User_roleController@anydata')->name('contact_us/getdata');
-    Route::any('admin/user_role/delete', 'Admin\User_roleController@deleterecord');
-    Route::any('admin/user_role/edit', 'Admin\User_roleController@edit_user_role');
+    Route::get('user', 'Admin\UserController@index');
+    Route::any('user/addrecord', 'Admin\UserController@addrecord');
+    Route::any('user/getdata', 'Admin\UserController@anydata')->name('contact_us/getdata');
+    Route::any('user/delete', 'Admin\UserController@deleterecord');
+    Route::any('user/edit', 'Admin\UserController@edituser');
+    Route::any('user/email', 'Admin\UserController@check_email');
+    
+    
+    Route::get('user_role', 'Admin\User_roleController@index');
+    Route::any('user_role/addrecord', 'Admin\User_roleController@addrecord');
+    Route::any('user_role/getdata', 'Admin\User_roleController@anydata')->name('contact_us/getdata');
+    Route::any('user_role/delete', 'Admin\User_roleController@deleterecord');
+    Route::any('user_role/edit', 'Admin\User_roleController@edit_user_role');
 //    Route::any('admin/user_role/email', 'Admin\User_roleController@check_email');
     
     
@@ -137,14 +140,16 @@ Route::group(['prefix' => 'admin'], function()
 //    $this->post('password/email', 'Auth\PasswordController@sendResetLinkEmail');
 //    $this->post('password/reset', 'Auth\PasswordController@reset');
 
-    Route::get('admin/setting','Admin\SitesettingController@index'); 
-    Route::post('admin/sitesetting/save_details','Admin\SitesettingController@save_details'); 
-    Route::any('admin/sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
+    Route::get('setting','Admin\SitesettingController@index'); 
+    Route::post('sitesetting/save_details','Admin\SitesettingController@save_details'); 
+    Route::any('sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
 
 
 // Advance Custom Filds Section Routes
-Route::get('admin/advancesettings','admin\AdvancesettingController@index'); 
-Route::post('admin/advancesettings/store','admin\AdvancesettingController@store'); 
-Route::any('admin/advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
-Route::post('admin/advancesettings/delete','admin\AdvancesettingController@destroy');
-Route::post('admin/advancesettings/edit','admin\AdvancesettingController@edit');
+Route::get('advancesettings','admin\AdvancesettingController@index'); 
+Route::post('advancesettings/store','admin\AdvancesettingController@store'); 
+Route::any('advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
+Route::post('advancesettings/delete','admin\AdvancesettingController@destroy');
+Route::post('advancesettings/edit','admin\AdvancesettingController@edit');
+
+});

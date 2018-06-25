@@ -153,7 +153,6 @@ edit_row:function(test_id){
                     
                     var status_id = $("#status").val(data.content.status);
                     status_id.attr("selected","selected");
-//                    $('select[name^="status"] option[value=]').attr("selected","selected");
                     admin.testimonial.load_testimonial();
                 }
             }
