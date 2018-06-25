@@ -41,6 +41,16 @@
                                         <!--<input type="text" class="form-control" name="description" id="description" />-->
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="status" class="col-sm-3">Status</label>
+                                    <div class="col-sm-9">
+                                        <select id="status" name="status" class="form-control">
+                                            <option value="">----Select Status----</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </form>
 
                         </div>

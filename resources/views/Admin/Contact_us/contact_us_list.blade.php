@@ -40,6 +40,7 @@
                     <th>Email</th>
                     <th>Phone No</th>
                     <th>Description</th>
+                    <th>Status</th>
                     <th>Reply</th>
                     <th>Action</th>
                 </thead>

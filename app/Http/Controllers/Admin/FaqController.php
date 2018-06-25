@@ -114,7 +114,7 @@ class FaqController extends Controller
         
         $select_query = DB::table('faq as f')
                         ->join('faq_category as fc','f.category_id','=','fc.id')
-                        ->where('f.status',1);
+                        ->where('f.status','!=',-1);
 
         $select_query->select('f.id','f.question','f.answer' ,'f.status' , 'fc.category_name',DB::raw("IF(f.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {

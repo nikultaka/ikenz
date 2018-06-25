@@ -37,8 +37,8 @@ class Contact_usController extends Controller
             $data['name'] = $request->input('name');
             $data['email'] = $request->input('email');
             $data['phone_no'] = $request->input('phone_no');
-            $data['description'] = $request->input('description');;
-            $data['status'] = 1;
+            $data['description'] = $request->input('description');
+            $data['status'] = $request->input('status');;
             
             
             if(isset($_POST['id_c_us']) && $_POST['id_c_us'] != ''){
@@ -119,7 +119,8 @@ class Contact_usController extends Controller
             4 => 'description',
         );
         
-        $select_query = DB::table('contact_us');
+        $select_query = DB::table('contact_us')
+                    ->where('status', '!=',-1);
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
             $select_query->where("name","like",'%'.$requestData['search']['value'].'%');

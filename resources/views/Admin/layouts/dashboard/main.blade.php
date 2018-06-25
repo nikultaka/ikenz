@@ -1,41 +1,28 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Dashboard</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Font Awesome -->
-  
-<!--  <link rel="stylesheet" href="{{url('css/font-awesome.css')}}" type="text/css">-->
-  <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{url('css/adminlte.min.css')}}">
-  <!-- iCheck -->
-<!--  <link rel="stylesheet" href="{{url('css/blue.css')}}">-->
-  <!-- Morris chart -->
-<!--  <link rel="stylesheet" href="{{url('css/morris.css')}}">-->
-  <!-- jvectormap -->
-<!--  <link rel="stylesheet" href="{{url('css/jquery-jvectormap-1.2.2.css')}}">-->
-  <!-- Date Picker -->
-<!--  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">-->
-  <!-- Daterange picker -->
-<!--  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">-->
-  <!-- bootstrap wysihtml5 - text editor -->
-<!--  <link rel="stylesheet" href="{{url('css/bootstrap3-wysihtml5.min.css')}}">-->
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <!-- jQuery -->
-<script src="{{url('js/jquery.min.js')}}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<html lang="en">
 
-<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
- 
-<link href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <title>Admin</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{{url('css/lib/bootstrap/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{url('css/helper.css')}}" rel="stylesheet">
+    <link href="{{url('css/style.css')}}" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
+    <!--[if lt IE 9]>
+    <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+    
 <style>
     .has-error{
         border: 2px solid red;
@@ -46,70 +33,77 @@
     var admin = {};
     var BASE_URL = "{{ url('/') }}";
 </script>
-</script>
 </head>
-<body class="hold-transition sidebar-mini">
-    
-<input type="hidden" value="{{ csrf_token() }}" name='csrf-token' id='csrf-token'>
-<div class="wrapper">
- <!-- Navbar -->
- @include('Admin.layouts.dashboard.navbar')
-  <!-- EndNavbar -->
-  
-  <!-- Main Sidebar Container -->
-  @include('Admin.layouts.dashboard.sidebar_menu')
-  <!-- End Main Sidebar Container -->
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-  @yield('content')
-  </div>
-  <!--End Content Wrapper. Contains page content -->
-  <footer class="main-footer">
-    <strong>Copyright &copy; 2014-2018 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.0.0-alpha
+
+<body class="fix-header fix-sidebar">
+    <!-- Preloader - style you can find in spinners.css -->
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
     </div>
-  </footer>
+    <!-- Main wrapper  -->
+    <div id="main-wrapper">
+    <input type="hidden" value="{{ csrf_token() }}" name='csrf-token' id='csrf-token'>
+    
+    <!-- Navbar -->
+     @include('Admin.layouts.dashboard.navbar')
+    <!-- EndNavbar -->
+    
+    <!-- Main Sidebar Container -->
+    @include('Admin.layouts.dashboard.sidebar_menu')
+    <!-- End Main Sidebar Container -->
+    
+    <div class="page-wrapper">
+            <!-- Bread crumb -->
+            <div class="row page-titles">
+                <div class="col-md-5 align-self-center">
+                    <h3 class="text-primary">Dashboard</h3> </div>
+                <div class="col-md-7 align-self-center">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </div>
+            </div>
+            
+            @yield('content')
+            
+            <footer class="footer"> © 2018 All rights reserved. Template designed by <a href="https://colorlib.com">Colorlib</a></footer>
+            <!-- End footer -->
+    </div>
+    
+    </div>
+    <!-- End Wrapper -->
+    <!-- All Jquery -->
+    <script src="{{url('js/lib/jquery/jquery.min.js')}}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{url('js/lib/bootstrap/js/popper.min.js')}}"></script>
+    <script src="{{url('js/lib/bootstrap/js/bootstrap.min.js')}}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{{url('js/jquery.slimscroll.js')}}"></script>
+    <!--Menu sidebar -->
+    <script src="{{url('js/sidebarmenu.js')}}"></script>
+    <!--stickey kit -->
+    <script src="{{url('js/lib/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
+    <!--Custom JavaScript -->
+    
+    <script src="{{url('js/lib/datatables/datatables.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js')}}"></script>
+    <script src="{{url('js/lib/datatables/datatables-init.js')}}"></script>
 
-</div>
+    <script src="{{url('js/scripts.js')}}"></script>
+    
+    <script src="{{url('js/common.js')}}"></script>
+    
+    @yield('bottomscript')
 
-
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
-<!-- Bootstrap 4 -->
-<script src="{{url('js/bootstrap.bundle.min.js')}}"></script>
-<script src="{{url('js/common.js')}}"></script>
-<!-- Morris.js charts -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<!--<script src="plugins/morris/morris.min.js"></script>-->
-<!-- Sparkline -->
-<!--<script src="plugins/sparkline/jquery.sparkline.min.js"></script>-->
-<!-- jvectormap -->
-<!--<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>-->
-<!-- jQuery Knob Chart -->
-<!--<script src="plugins/knob/jquery.knob.js"></script>-->
-<!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
-<!--<script src="plugins/daterangepicker/daterangepicker.js"></script>-->
-<!-- datepicker -->
-<!--<script src="plugins/datepicker/bootstrap-datepicker.js"></script>-->
-<!-- Bootstrap WYSIHTML5 -->
-<!--<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>-->
-<!-- Slimscroll -->
-<!--<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>-->
-<!-- FastClick -->
-<script src="{{url('js/fastclick.js')}}"></script>
-<!-- AdminLTE App -->
-<script src="{{url('js/adminlte.js')}}"></script>
-<!--<script src="{{url('js/demo.js')}}"></script>-->
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<!--<script src="dist/js/pages/dashboard.js"></script>-->
-<!-- AdminLTE for demo purposes -->
-<!--<script src="dist/js/demo.js"></script>-->
 </body>
+
 </html>
     

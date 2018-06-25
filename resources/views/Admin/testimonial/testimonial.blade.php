@@ -33,6 +33,7 @@
                                     <label for="user_photo" class="col-sm-3">User Photo</label>
                                     <div class="col-sm-9">
                                         <input type="file" class="form-control" name="user_photo" id="user_photo" />
+                                        <input type="hidden" name="hi_file" id="hi_file">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -45,7 +46,6 @@
                                             <option value="">----Select Status----</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
-                                            <option value="-1">Deleted</option>
                                         </select>
                                     </div>
                                 </div>

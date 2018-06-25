@@ -30,7 +30,7 @@
                                             <option value="">----Select Status----</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
-                                            <option value="-1">Deleted</option>
+                                            <!--<option value="-1">Deleted</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -53,9 +53,3 @@
         </div>
     </div>
 </section>
-<script src="{!! asset('js/module/faqcategory.js')!!}"></script>
-<script type="text/javascript">
-                                $(document).ready(function () {
-                                    admin.faq_category.initialize();
-                                });
-</script>  
