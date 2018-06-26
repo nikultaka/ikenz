@@ -69,16 +69,15 @@ Route::group(['prefix' => 'admin'], function()
         Route::get('media/add', 'Admin\MediaController@add');
         Route::any('media/get_category_data', 'Admin\MediaController@get_category_data');
         
-<<<<<<< HEAD
+
         Route::get('upload-media', 'Admin\UploadmediaController@index');
          Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
+         Route::any('upload-media/getdatatabel', 'Admin\UploadmediaController@getdatatable');
+         Route::any('upload-media/delete_media', 'Admin\UploadmediaController@delete_media');
         
     });
     
     
-});
-=======
->>>>>>> 18e24354e8c7bab519011818a1586eba8e536968
 
     Route::get('testimonial', 'Admin\TestimonialController@index');
     Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
@@ -152,4 +151,6 @@ Route::any('advancesettings/getdata','admin\AdvancesettingController@getdatatabl
 Route::post('advancesettings/delete','admin\AdvancesettingController@destroy');
 Route::post('advancesettings/edit','admin\AdvancesettingController@edit');
 
-});
+
+Route::get('multifileupload', 'HomeController@multifileupload')->name('multifileupload');
+Route::post('multifileupload', 'HomeController@store')->name('multifileupload');

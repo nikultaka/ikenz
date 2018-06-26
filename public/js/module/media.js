@@ -157,3 +157,78 @@ delete_row:function (faq_cat_id){
 },
     
 };
+admin.media_upload={
+    ini:function (){
+        var this_class = this;
+//        Dropzone.autoDiscover = false;
+//        var myDropzone = new Dropzone("div#dropzoneFileUpload", {
+//            addRemoveLinks: true,
+//            url: BASE_URL + "/admin/upload-media/upload",
+//            params: {
+//                _token: admin.common.get_csrf_token_value(),
+//                
+//            },
+//            
+//        });
+//        Dropzone.options.myAwesomeDropzone = {
+//            paramName: "file", // The name that will be used to transfer the file
+//            maxFilesize: 250, // MB
+//            addRemoveLinks: true,
+//            accept: function(file, done) {
+// 
+//            },
+//        };
+        $('body').on('click','.btnDeleteMediaUploded',function (){
+            
+            var mediaid = $(this).data("id");
+             this_class.delete_uploaded_media(mediaid);
+            
+        })
+         admin.media_upload.load_datatabel();
+    },
+    load_datatabel:function (){
+        var table= jQuery('.media-datatable').DataTable({
+                    paging: true,   
+                    pageLength: 10,
+                    bDestroy: true,
+                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    order: [[ 0, "desc" ]],
+                    ajax: {
+                        url: BASE_URL+"/admin/upload-media/getdatatabel",
+                        type: "POST",
+                        data: admin.common.get_csrf_toke_object_data()
+                    },
+                    columns: [
+                       { data: 'id', name: 'id'},
+                       { data: 'media_image', name: 'media_image'},
+                        { data: 'media_name', name: 'media_name'},
+                        {data: 'action', name: 'action'},
+                            ],
+    });
+    },
+    delete_uploaded_media:function (mediaid){
+        if(mediaid > 0){
+            $.ajax({
+                    url: BASE_URL+'/admin/upload-media/delete_media',
+                    type:'POST',
+                    data: {_token:admin.common.get_csrf_token_value(), media_id:mediaid},
+                    success: function(data) {
+                        var data=$.parseJSON(data);
+                        if(data.status==1){
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
+                            admin.media_upload.load_datatabel();
+                        }
+                    }
+            });
+    }           
+            else{
+                return false;
+            }
+    
+    
+    }
+    
+};
