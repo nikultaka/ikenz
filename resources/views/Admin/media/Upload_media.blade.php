@@ -1,5 +1,8 @@
 @extends('Admin.layouts.dashboard.main')
 
+@section('pageTitle','Media Upload')
+@section('pageHeadTitle','Media Upload')
+
 @section('content')
 <style>
  
@@ -31,21 +34,6 @@
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.css" type="text/css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/dropzone.js"></script>
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1 class="m-0 text-dark">Media Upload</h1>
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{url('home')}}">Home</a></li>
-                    <li class="breadcrumb-item active">Media Upload</li>
-                </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -54,8 +42,8 @@
           <div class="card">
               
             <div class="card-header">
-                <div class="col-sm-2" style="float: left;">
-            <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalMediaUpload">Upload Media</button>
+                <div class="col-sm-12">
+            <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalMediaUpload">Upload Media</button>
             
             </div>  
               <p id="msg_main"></p>
@@ -104,11 +92,9 @@
                 <div class="control-group">
                    <div class="container" >
                     <div class='content'>
-                     <form action="upload-media/upload" files='true' class="dropzone" id="dropzonewidget">
+                     <form action="#" files='true' class="dropzone" id="dropzonewidget" enctype="multipart/form-data">
                          {{ csrf_field() }}
-                      
-
-                
+                                    
                      </form> 
                     </div> 
                    </div>
@@ -126,7 +112,7 @@
 
             <div class="dz-success-mark">
                 <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                    <!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch -->
+                     Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch 
                     <title>Check</title>
                     <desc>Created with Sketch.</desc>
                     <defs></defs>
@@ -138,7 +124,7 @@
 
             <div class="dz-error-mark">
                 <svg width="54px" height="54px" viewBox="0 0 54 54" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
-                    <!-- Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch -->
+                     Generator: Sketch 3.2.1 (9971) - http://www.bohemiancoding.com/sketch 
                     <title>error</title>
                     <desc>Created with Sketch.</desc>
                     <defs></defs>
@@ -169,10 +155,13 @@
     </div>
 </div>
 
+@endsection
 
+@section('bottomscript')
 
 <script type="text/javascript">
 var photo_counter = 0;
+//                console.log(Dropzone.files[1].name);//Getting second file name
 Dropzone.options.realDropzone = {
 
     uploadMultiple: false,
@@ -184,29 +173,43 @@ Dropzone.options.realDropzone = {
     dictRemoveFile: 'Remove',
     dictFileTooBig: 'Image is bigger than 8MB',
 
-    // The setting up of the dropzone
+//     The setting up of the dropzone
     init:function() {
+//
+//        this.on("removedfile", function(file) {
+//            $.ajax({
+//                type: 'POST',
+//                url: 'upload/delete',
+//                data: {id: file.name, _token: $('#csrf-token').val()},
+//                dataType: 'html',
+//                success: function(data){
+//                    var rep = JSON.parse(data);
+//                    if(rep.code == 200)
+//                    {
+//                        photo_counter--;
+//                        $("#photoCounter").text( "(" + photo_counter + ")");
+//                    }
+//
+//                }
+//            });
+//
+//        });
 
-        this.on("removedfile", function(file) {
+        this.on("addedfile", function(file){
+          var myDropzone = this;
+          $('#imageinfoCont').animate({left:'4.5%'});//brings form in
+          $('#imgsubbutt').click(function(){
+            $('#imageinfoCont').animate({left:'-10000px'}); //hides the form again
+            myDropzone.processQueue(); //processes the queue
+          });
+        });
 
-            $.ajax({
-                type: 'POST',
-                url: 'upload/delete',
-                data: {id: file.name, _token: $('#csrf-token').val()},
-                dataType: 'html',
-                success: function(data){
-                    var rep = JSON.parse(data);
-                    if(rep.code == 200)
-                    {
-                        photo_counter--;
-                        $("#photoCounter").text( "(" + photo_counter + ")");
-                    }
-
-                }
-            });
-
-        } );
     },
+//this.on("addfile",function (file){
+// $(".add-advance-custom-fild-details").on('click',function (){
+//    alert("dsad"); 
+// })
+// });
     error: function(file, response) {
         if($.type(response) === "string")
             var message = response; //dropzone sends it's own error messages in string
@@ -225,7 +228,32 @@ Dropzone.options.realDropzone = {
         photo_counter++;
         $("#photoCounter").text( "(" + photo_counter + ")");
     }
-}
+},
+
+$(document).ready(function (){
+    $(".add-advance-custom-fild-details").on('click',function (){
+            console.log(realDropzone.files[1].name);//Getting second file name
+    alert("dcsd");
+        var _token = $("input[name='_token']").val();
+        var formData = new FormData($('#dropzonewidget')[0]);
+//        alert(formData);
+                    $.ajax({        
+                    url: "upload-media/upload",
+                    type:'POST',
+                    data:{_token: _token},
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    
+                    success: function(data) {
+                    }
+                });
+    });
+});
+
+
+
+
 </script>
 
 <!--<script src="{!! asset('js/module/advance_fild.js')!!}"></script>
@@ -234,4 +262,5 @@ Dropzone.options.realDropzone = {
         admin.advance_custom.initialize();
     });
 </script>    -->
+
 @endsection

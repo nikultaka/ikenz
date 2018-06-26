@@ -12,7 +12,7 @@ class CmsController extends Controller
      public function __construct()
     {
 //        $this->middleware('auth');
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     public function index(){
 //        $data=array();
@@ -21,13 +21,57 @@ class CmsController extends Controller
 //            $data[$value->option_name] =$value->option_value;
 //        }
 //        return view('Admin.cms.cms');
-        return view('Admin.cms.cms_list'    );
+        return view('Admin.cms.add');
 //                ->with($data);
     }
     
-    public function add(){
-        return view('Admin.cms.cms_list');
+//    public function add(){
+//        return view('Admin.cms.cms_list');
+//    }
+    
+     public function addrecord(Request $request)
+    {   
+        $data=array();
+        $result=array();
+        $result['status']=0;
+        if($_POST){
+//            if($request->input('id_faq')){
+//                $id_faq = $request->input('id_faq');
+//            }
+            $data['title'] = $request->input('title');
+            $data['slug_url'] = $request->input('slug');
+            $data['description'] = $request->input('description');
+            $data['meta_title'] = $request->input('meta_title');
+            $data['meta_keyword'] = $request->input('meta_keyword');
+            $data['meta_description'] = $request->input('meta_description');
+            $data['status'] = $request->input('status');
+            
+            
+            if(isset($_POST['id_faq']) && $_POST['id_faq'] != ''){
+                $data['updated_at']=date("Y-m-d h:i:s");
+                $returnresult= DB::table('cms')
+                   ->where('id',$id_faq)     
+                   ->update($data);
+                if($returnresult){
+                    $result['status']=1;
+                    $result['msg']='Record updated successfully.!';
+                }
+           
+            }
+            else{
+                $data['created_at']=date("Y-m-d h:i:s");
+                $data['updated_at']=date("Y-m-d h:i:s");
+                if(DB::table('cms')->insert($data)){
+                $result['status']=1;
+                $result['msg']="Record add sucessfully..!";
+            }
+            }
+        }
+        echo json_encode($result);
+        
     }
+    
+    
 //    public function save_details(Request $request){
 //       $site=new site();
 //       $data['status']=0;

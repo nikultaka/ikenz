@@ -63,22 +63,20 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('/dashboard', 'Admin\DashboardController@index');
         
         Route::get('cms', 'Admin\CmsController@index');
-        Route::get('cms/add', 'Admin\CmsController@add');
+        Route::post('cms/add', 'Admin\CmsController@addrecord');
         
         Route::get('media', 'Admin\MediaController@index');
         Route::get('media/add', 'Admin\MediaController@add');
         Route::any('media/get_category_data', 'Admin\MediaController@get_category_data');
+        Route::any('media/addrecord', 'Admin\MediaController@addrecord');
+        Route::any('media/edit', 'Admin\MediaController@editmedia');
+        Route::any('media/delete', 'Admin\MediaController@deleterecord');
+
         
-<<<<<<< HEAD
+
         Route::get('upload-media', 'Admin\UploadmediaController@index');
-         Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
+        Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
         
-    });
-    
-    
-});
-=======
->>>>>>> 18e24354e8c7bab519011818a1586eba8e536968
 
     Route::get('testimonial', 'Admin\TestimonialController@index');
     Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
@@ -145,11 +143,11 @@ Route::group(['prefix' => 'admin'], function()
     Route::any('sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
 
 
-// Advance Custom Filds Section Routes
-Route::get('advancesettings','admin\AdvancesettingController@index'); 
-Route::post('advancesettings/store','admin\AdvancesettingController@store'); 
-Route::any('advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
-Route::post('advancesettings/delete','admin\AdvancesettingController@destroy');
-Route::post('advancesettings/edit','admin\AdvancesettingController@edit');
+    // Advance Custom Filds Section Routes
+    Route::get('advancesettings','admin\AdvancesettingController@index'); 
+    Route::post('advancesettings/store','admin\AdvancesettingController@store'); 
+    Route::any('advancesettings/getdata','admin\AdvancesettingController@getdatatable')->name('advancesettings/getdata');; 
+    Route::post('advancesettings/delete','admin\AdvancesettingController@destroy');
+    Route::post('advancesettings/edit','admin\AdvancesettingController@edit');
 
 });

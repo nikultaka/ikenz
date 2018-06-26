@@ -1,7 +1,7 @@
 @extends('Admin.layouts.dashboard.main')
 
 @section('content')
-  
+    
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
@@ -62,8 +62,8 @@
 
 @include('Admin.cms.add')
 <script src="{!! asset('js/.js')!!}"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
+<script type="text/javascript"> 
+        $(document).ready(function(){
 //        admin.advance_custom.initialize();
     });
 </script>    

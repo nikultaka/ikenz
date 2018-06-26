@@ -44,7 +44,11 @@
                 <li><a href="{{url('admin/cms')}}" aria-expanded="false"><i class="fa fa-tasks"></i><span class="hide-menu">CMS</span></a>
                 </li>
                 
-                <li><a href="{{url('admin/media')}}" aria-expanded="false"><i class="fa fa-medium"></i><span class="hide-menu">Media</span></a>
+                <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-medium"></i><span class="hide-menu">Media</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{url('admin/media')}}"> Media Category </a></li>
+                        <li><a href="{{url('admin/upload-media')}}"> Media Upload </a></li>
+                    </ul>
                 </li>
 
                 <li><a href="{{url('logout')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Logout</span></a>

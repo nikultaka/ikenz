@@ -10,7 +10,7 @@ class MediaController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     public function index(){
         return view('Admin.media.category_list');
@@ -19,6 +19,71 @@ class MediaController extends Controller
     public function add(){
         return view('Admin.media.add_category');
     }
+    
+    public function addrecord(Request $request)
+    {   
+        $data=array();
+        $result=array();
+        $result['status']=0;
+        if($_POST){
+            if($request->input('id_media')){
+                $id_media = $request->input('id_media');
+            }
+            $data['category_name'] = $request->input('category_name');
+            $data['status'] = $request->input('status');;
+            
+            
+            if(isset($_POST['id_media']) && $_POST['id_media'] != ''){
+                $data['updated_at']=date("Y-m-d h:i:s");
+                $returnresult= DB::table('media_category')
+                   ->where('id',$id_media)     
+                   ->update($data);
+                if($returnresult){
+                    $result['status']=1;
+                    $result['msg']='Record updated successfully.!';
+                }
+           
+            }
+            else{
+                $data['created_at']=date("Y-m-d h:i:s");
+                $data['updated_at']=date("Y-m-d h:i:s");
+                if(DB::table('media_category')->insert($data)){
+                $result['status']=1;
+                $result['msg']="Record add sucessfully..!";
+            }
+            }
+        }
+        echo json_encode($result);
+        
+    }
+    
+    public function editmedia(){
+        $id=$_POST['id_media'];
+        $media =DB::table('media_category')->where('id','=',$id)->first();
+        $data_result=array();
+        $data_result['status']=1;
+        $data_result['content']=$media;
+        echo json_encode($data_result);exit;
+    }
+    
+    public function deleterecord(){
+        $id=$_POST['id_media'];
+        if(isset($id) && $id !=''){
+            DB::table('media_category')
+                    ->where('id', $id)
+                    ->update(array('status'=>-1));
+        $data_result=array();
+        $data_result['status']=1;
+        $data_result['msg']="Record deleted success.";
+        
+        echo json_encode($data_result);exit;
+        }
+        else {
+            return response()->json(['error'=>'record Not Found']);
+        }   
+    }
+    
+    
     
     public function get_category_data()
     {
@@ -36,7 +101,7 @@ class MediaController extends Controller
             4 => 'updated_at',
         );
         
-        $select_query = DB::table('media_category');
+        $select_query = DB::table('media_category')->where('status','!=',-1);
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
             $select_query->where("category_name","like",'%'.$requestData['search']['value'].'%');
@@ -67,8 +132,8 @@ class MediaController extends Controller
             $temp['status'] = $row->status;
             $id = $row->id;
 
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_faqcat"> Edit</a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_faqcat"> Delete</a></div>';
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_media"> Edit</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="'.$id.'" type="button" class="btn btn-xs btn-danger btnDelete_media"> Delete</a></div>';
             
             $temp['action'] = $action;
             $data[] = $temp;
