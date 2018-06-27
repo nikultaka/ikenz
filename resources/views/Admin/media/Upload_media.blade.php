@@ -2,9 +2,11 @@
 
 @section('pageTitle','Media Upload')
 @section('pageHeadTitle','Media Upload')
-
-@section('content')
+@section('headLink')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/basic.css" rel="stylesheet" type="text/css" />
+<link href="{!! asset('css/dropzone.css')!!}" type="text/css">
+<script type="text/javascript" src="{!! asset('js/dropzone.js')!!}"></script>
+
 <style>
  
 #my-dropzone .message {
@@ -26,9 +28,10 @@
 }
 
 </style>
+
+@endsection
+@section('content')
 <!--<link href="{!! asset('css/dropzonecustome.css')!!}" type="text/css">-->
-<link href="{!! asset('css/dropzone.css')!!}" type="text/css">
-<script type="text/javascript" src="{!! asset('js/dropzone.js')!!}"></script>
 
 <section class="content">
     <div class="container-fluid">
@@ -131,7 +134,8 @@
 
 
 
-
+@endsection
+@section('bottomscript')
 <script src="{!! asset('js/module/media.js')!!}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
