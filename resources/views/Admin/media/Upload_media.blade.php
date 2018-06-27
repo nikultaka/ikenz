@@ -1,5 +1,8 @@
 @extends('Admin.layouts.dashboard.main')
 
+@section('pageTitle','Media Upload')
+@section('pageHeadTitle','Media Upload')
+
 @section('content')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.4.0/basic.css" rel="stylesheet" type="text/css" />
 <style>
@@ -50,12 +53,15 @@
           <div class="card">
               
             <div class="card-header">
+
                 <div class="col-sm-2" style="float: left;">
                     <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalImageUpload">Upload Image</button>
                 </div>
 <!--                <div class="col-sm-2" style="float: left;">
                     <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalVideoUpload">Upload Video</button>
                 </div>-->
+ 
+
               <p id="msg_main"></p>
             </div>
             <!-- /.card-header -->
@@ -104,9 +110,12 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="dropzone" id="dropzoneFileUpload">
             </div>
-                         {{ csrf_field() }}
+                        
+
+                
                 <div class="control-group">
                 </div>
             </div>
@@ -117,6 +126,7 @@
     </div>
 </div>
 
+
 <script src="{!! asset('js/module/media.js')!!}"></script>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -125,6 +135,7 @@
 </script>
 
 <script type="text/javascript">
+
     
         var baseUrl = "{{ url('/') }}";
         var token = "{{ Session::getToken() }}";

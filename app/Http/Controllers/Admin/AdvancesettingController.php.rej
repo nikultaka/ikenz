@@ -1,0 +1,10 @@
+diff a/app/Http/Controllers/Admin/AdvancesettingController.php b/app/Http/Controllers/Admin/AdvancesettingController.php	(rejected hunks)
+@@ -16,7 +16,7 @@
+      */
+      public function __construct()
+     {
+-        $this->middleware('admin');
++      //  $this->middleware('admin');
+     }
+     public function index()
+     {

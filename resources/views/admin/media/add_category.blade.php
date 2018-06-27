@@ -4,7 +4,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
-            <div class="modal fade" id="ins_faq_cat" role="dialog">
+            <div class="modal fade" id="ins_media" role="dialog">
                 <div class="modal-dialog">
 
                     <!--                modal content-->
@@ -14,10 +14,10 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_faq_cat" name="frm_faq_cat">
+                            <form id="frm_media" name="frm_media">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <input type="hidden" name="id_faq_cat" id="id_faq_cat">
+                                    <input type="hidden" name="id_media" id="id_media">
                                     <label for="category_name" class="col-sm-3">Category Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="category_name" id="category_name">
@@ -42,7 +42,7 @@
 
                         </div>
                         <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_faq_cat" name="submit">Submit</button>
+                            <button type="submit" class="btn btn-primary sub_media" name="submit">Submit</button>
                             <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>

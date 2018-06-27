@@ -15,7 +15,11 @@ class UploadmediaController extends Controller
     private $photos_path;
      public function __construct()
     {
+
         //$this->middleware('auth');
+
+//        $this->middleware('auth');
+
     }
     public function index(){
         return view('Admin.media.Upload_media');
@@ -30,10 +34,6 @@ class UploadmediaController extends Controller
             $image = $request->file('file');
             $filename  = basename($image->getClientOriginalName());
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
-           // $imageName = time().$image->getClientOriginalName();
-            //$input['media_name'] = time().'.'.$image->getClientOriginalExtension();
-
-
             $destinationPath = public_path().'/upload/image/thumbnail/';
             $uniquesavename=time().uniqid(rand());
             $destFile = $uniquesavename . '.'.$extension;
@@ -164,5 +164,6 @@ class UploadmediaController extends Controller
            $result['msg']="Record Deleted..";
        }
        echo json_encode($result);
+
     }
 }

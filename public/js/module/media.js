@@ -3,18 +3,18 @@ admin.media_category = {
     {
         var this_class = this;
 
-        $('.sub_faq_cat').on('click',function (){
+        $('.sub_media').on('click',function (){
             this_class.add_row();
         });
         
-        $('body').on('click','.btnEdit_faqcat',function (){
-            var faq_cat_id = $(this).data('id'); 
-            this_class.edit_row(faq_cat_id);
+        $('body').on('click','.btnEdit_media',function (){
+            var id_media = $(this).data('id'); 
+            this_class.edit_row(id_media);
         });
         
-        $('body').on('click','.btnDelete_faqcat',function (){
-            var faq_cat_id = $(this).data('id'); 
-            this_class.delete_row(faq_cat_id);
+        $('body').on('click','.btnDelete_media',function (){
+            var id_media = $(this).data('id'); 
+            this_class.delete_row(id_media);
         });
 
         admin.media_category.load_media_category();
@@ -51,7 +51,6 @@ load_media_category:function(){
  
 add_row:function (){
                 
-                var _token = $("input[name='_token']").val();
                 var category_name = $("input[name='category_name']").val();
                 var demo = document.getElementById("status");
                 var status = demo.options[demo.selectedIndex].value;
@@ -77,7 +76,7 @@ add_row:function (){
                     $.ajax({
                     url: BASE_URL+'/admin/media/addrecord',
                     type:'POST',
-                    data: $('#frm_faq_cat').serialize(),
+                    data: $('#frm_media').serialize(),
                     datatype:'json',
                     
                     success: function(data) {
@@ -85,9 +84,9 @@ add_row:function (){
                         if(data.status==1){
                             $('#msg').html(data.msg);
                             $('#msg').attr('style','color:green;');
-                            $('#frm_faq_cat')[0].reset()
+                            $('#frm_media')[0].reset()
                             admin.media_category.load_media_category();
-                            $("#ins_faq_cat").modal("hide");
+                            $("#ins_media").modal("hide");
                         }
                         else{
                             return false;
@@ -99,28 +98,26 @@ add_row:function (){
 },
 
 
-edit_row:function(faq_cat_id){
+edit_row:function(id_media){
     
-    
-        var _token = $("input[name='_token']").val();
-        if(faq_cat_id > 0){
+        
+        if(id_media > 0){
             $.ajax({
                 url: BASE_URL+'/admin/media/edit',
                 type:'POST',
-                data: {_token:_token, faq_cat_id:faq_cat_id},
+                data: {_token :admin.common.get_csrf_token_value(), id_media:id_media},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
+                        $("#ins_media").modal("show");
 
-                        $("#ins_faq_cat").modal("show");
-
-                        $("#id_faq_cat").val(data.content.id);
+                        $("#id_media").val(data.content.id);
                         $("#category_name").val(data.content.category_name);
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-                        $('select[name^="status"] option[value=]').attr("selected","selected");
-                        admin.media.load_media_category();
+//                        $('select[name^="status"] option[value=]').attr("selected","selected");
+                        admin.media_category.load_media_category();
                     }
                 }
             });
@@ -131,14 +128,14 @@ edit_row:function(faq_cat_id){
     
 },
 
-delete_row:function (faq_cat_id){
+delete_row:function (id_media){
     
     var _token = $("input[name='_token']").val();
-    if(faq_cat_id > 0){
+    if(id_media > 0){
             $.ajax({
                     url: BASE_URL+'/admin/media/delete',
                     type:'POST',
-                    data: {_token:_token, faq_cat_id:faq_cat_id},
+                    data: {_token:admin.common.get_csrf_token_value(), id_media:id_media},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
@@ -158,7 +155,9 @@ delete_row:function (faq_cat_id){
     
 };
 admin.media_upload={
+    
     ini:function (){
+        
         var this_class = this;
 //        Dropzone.autoDiscover = false;
 //        var myDropzone = new Dropzone("div#dropzoneFileUpload", {
