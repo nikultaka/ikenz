@@ -77,6 +77,7 @@ Route::group(['prefix' => 'admin'], function()
         Route::get('upload-media', 'Admin\UploadmediaController@index');
 
          Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
+         Route::any('upload-media/videoupload', 'Admin\UploadmediaController@videoupload');
          Route::any('upload-media/getdatatabel', 'Admin\UploadmediaController@getdatatable');
          Route::any('upload-media/delete_media', 'Admin\UploadmediaController@delete_media');
         

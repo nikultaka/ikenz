@@ -55,12 +55,9 @@
             <div class="card-header">
 
                 <div class="col-sm-2" style="float: left;">
-                    <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalImageUpload">Upload Image</button>
+                    <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalImageUpload">Upload Media</button>
                 </div>
-<!--                <div class="col-sm-2" style="float: left;">
-                    <button type="button" class="btn btn-block btn-info" data-toggle="modal" data-target="#modalVideoUpload">Upload Video</button>
-                </div>-->
- 
+                 
 
               <p id="msg_main"></p>
             </div>
@@ -72,6 +69,7 @@
                 <th>id</th>
                 <th>Media</th>
                 <th>Media Name</th>
+                <th>Media Type</th>
                 <th>Action</th>
                 </thead>
               </table>
@@ -101,7 +99,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Input Select</label>
+                    
+                    <label class="col-sm-2 control-label ">Input Select</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="MediaType" >
                             <option value="1">Image</option>
@@ -112,10 +111,29 @@
                 </div>
 
                 <div class="dropzone" id="dropzoneFileUpload">
-            </div>
-                        
-
-                
+                    <input type="hidden" id="mediaTypehidden" value="1">
+                </div>
+                <div id="video-section" style="display: none;">    
+                    <form method="post" onsubmit="return false" id="VideoUploadForm" enctype="multipart/form-data">
+                        {{ csrf_field() }}
+                    <video width="400" controls>
+                      <source src="mov_bbb.mp4" id="video_here">
+                        Your browser does not support HTML5 video.
+                    </video>
+                    <div class="form-group">
+                    <label for="exampleInputFile">Select Video </label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                          <input class="custom-file-input file_multi_video" accept="video/*" id="setting_logo_upload" name="file" type="file">
+                        <label class="custom-file-label logo-upload" for="setting_logo_upload">Choose file</label>
+                      </div>
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="upload_video">Upload</span>
+                      </div>
+                    </div>
+                  </div>
+                   </form>
+                </div>
                 <div class="control-group">
                 </div>
             </div>
@@ -125,6 +143,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 <script src="{!! asset('js/module/media.js')!!}"></script>
@@ -139,20 +159,38 @@
     
         var baseUrl = "{{ url('/') }}";
         var token = "{{ Session::getToken() }}";
-        var mediatype = $('select#MediaType option:selected').val();
+        
+        var mediatype = $('#mediaTypehidden').val();
+        
         Dropzone.autoDiscover = false;
+        
         var myDropzone = new Dropzone("div#dropzoneFileUpload", {
             addRemoveLinks: true,
+            acceptedFiles: 'image/*',
             url: baseUrl + "/admin/upload-media/upload",
             params: {
+                mediatype: $('#mediaTypehidden').val(),
                 _token: token,
-                mediatype:mediatype
+               
             },
-            success: function(data) {
-                admin.media_upload.load_datatabel();
-            }
+            init: function() {
+                 this.on("sending", function(file, xhr, formData){
+                    formData.append("mediatype", $('#mediaTypehidden').val());
+                });
+                this.on("complete", function(file) {
+                    $(".dz-remove").html('<div class="datatable_btn"><a data-id="" id="image_delete_btn" class="btn btn-xs btn-danger btnDeleteMediaUploded"> Delete</a></div>');
+                });
+
+                this.on("success", function(file, response) {
+                    $('#image_delete_btn').data('id',response.id);
+                     admin.media_upload.load_datatabel();
+                 })
+
+            },
             
         });
+        
+        
         Dropzone.options.myAwesomeDropzone = {
             paramName: "file", // The name that will be used to transfer the file
             maxFilesize: 250, // MB
@@ -161,6 +199,26 @@
  
             },
         };
+        $('#MediaType').on('change',function (){
+           var valuechange = $('select#MediaType option:selected').val(); 
+           $('#mediaTypehidden').val(valuechange);
+           if(valuechange==1){
+               $('#video-section').hide();
+               $('#dropzoneFileUpload').show();
+           }
+           else if(valuechange==2){
+               $('#video-section').show();
+               $('#dropzoneFileUpload').hide();
+           }
+           else{
+               return false;
+           }
+        });
+        $(document).on("change", ".file_multi_video", function(evt) {
+            var $source = $('#video_here');
+            $source[0].src = URL.createObjectURL(this.files[0]);
+            $source.parent()[0].load();
+        });
         
     </script>
 @endsection

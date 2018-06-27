@@ -180,9 +180,13 @@ admin.media_upload={
         $('body').on('click','.btnDeleteMediaUploded',function (){
             
             var mediaid = $(this).data("id");
-             this_class.delete_uploaded_media(mediaid);
+            var mediatype = $(this).data("mediatype");
+             this_class.delete_uploaded_media(mediaid,mediatype);
             
-        })
+        });
+        $('body').on('click','#upload_video',function (){
+            this_class.upload_video();
+        });
          admin.media_upload.load_datatabel();
     },
     load_datatabel:function (){
@@ -203,16 +207,17 @@ admin.media_upload={
                        { data: 'id', name: 'id'},
                        { data: 'media_image', name: 'media_image'},
                         { data: 'media_name', name: 'media_name'},
+                        { data: 'media_type', name: 'media_type'},
                         {data: 'action', name: 'action'},
                             ],
     });
     },
-    delete_uploaded_media:function (mediaid){
+    delete_uploaded_media:function (mediaid,mediatype){
         if(mediaid > 0){
             $.ajax({
                     url: BASE_URL+'/admin/upload-media/delete_media',
                     type:'POST',
-                    data: {_token:admin.common.get_csrf_token_value(), media_id:mediaid},
+                    data: {_token:admin.common.get_csrf_token_value(), media_id:mediaid,mediatype:mediatype},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
@@ -228,6 +233,21 @@ admin.media_upload={
             }
     
     
+    },
+    upload_video:function (){
+        var formData = new FormData($('#VideoUploadForm')[0]);
+        $.ajax({
+               type : 'post',
+               url : BASE_URL+'/admin/upload-media/videoupload',
+               data: formData,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+               success: function(data) {
+                    $('#VideoUploadForm')[0].reset();
+                    
+                   admin.media_upload.load_datatabel();
+               }
+        });
     }
-    
 };
