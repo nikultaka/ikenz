@@ -41,9 +41,13 @@
                     </ul>
                 </li>
                 
-                <li><a href="{{url('admin/cms')}}" aria-expanded="false"><i class="fa fa-tasks"></i><span class="hide-menu">CMS</span></a>
+                 <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-tasks"></i><span class="hide-menu">CMS</span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li><a href="{{url('admin/cms')}}"> CMS </a></li>
+                        <li><a href="{{url('admin/cms_list')}}"> CMS List </a></li>
+                    </ul>
                 </li>
-                
+                              
                 <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-medium"></i><span class="hide-menu">Media</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{url('admin/media')}}"> Media Category </a></li>

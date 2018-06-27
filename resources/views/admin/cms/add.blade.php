@@ -14,6 +14,7 @@
                 <form role="form" method="post" id="frm_cms" name="frm_cms" onsubmit="return false"> 
                     {{ csrf_field() }}
                   <div class="card-body">
+                        <input type="hidden" name="id_cms" id="id_cms">
                     <div class="row form-group">
                         <div class="col-sm-1"></div>
                             <label for="title" class="col-sm-2">Title</label>
@@ -27,6 +28,8 @@
                             <label for="slug" class="col-sm-2">Slug</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="slug" id="slug" />
+                                    <div><p id="slug_exist">Slug already exist</p></div>
+
                                 </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -74,57 +77,30 @@
                                     </div>
                                 <div class="col-sm-1"></div>
                                 </div>
-                  
+
                 </div>
                 <div class="card-footer ">
                     <center><button type="submit" class="btn btn-primary sub-cms">Submit</button></center>
                 </div>
               </form>
             </div>
-          
+
           </div>
 
     </div>
  </div>
 </section>
+@endsection
+@section('bottomscript')
 
-
-<script src="//cdn.gaic.com/cdn/ui-bootstrap/0.58.0/js/lib/ckeditor/ckeditor.js"></script>
-  <!--<script src="//cdn.gaic.com/cdn/ui-bootstrap/0.58.0/js/lib/jquery.min.js"></script>-->
-<script src="//cdn.gaic.com/cdn/ui-bootstrap/0.58.0/js/lib/angular.min.js"></script>
-
+<script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
 
 <!--<script src="{!! asset('js/ckeditor.js')!!}"></script>-->
-<!--<script type="text/javascript" src="http://js.nicedit.com/nicEdit-latest.js"></script>-->
-<script src="{!! asset('js/cms.js')!!}"></script>
+<script src="{!! asset('js/module/cms.js')!!}"></script>
 <script type="text/javascript">
     $(document).ready(function (){
-        admin.cms.initialize();
+        admin.cms.initialize(); 
+        CKEDITOR.replace( 'description' );
     }); 
 </script>
-<script>
-    
-    function DemoCtrl() {
-
-  this.foo = 'foo';
-  
-  CKEDITOR.editorConfig = function (config) {
-    config.extraPlugins = 'confighelper';
-  };
-  CKEDITOR.replace('description');
-
-}
-
-</script>
-<!--<script type="text/javascript">
-        bkLib.onDomLoaded(function() { nicEditors.allTextAreas() }); // convert all text areas to rich text editor on that page
- 
-        bkLib.onDomLoaded(function() {
-             new nicEditor().panelInstance('description');
-        }); // convert text area with id area1 to rich text editor.
- 
-        bkLib.onDomLoaded(function() {
-             new nicEditor({fullPanel : true}).panelInstance('meta_description');
-        }); // convert text area with id area2 to rich text editor with full panel.
-</script>-->
 @endsection

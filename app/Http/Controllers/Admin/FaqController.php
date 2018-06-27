@@ -17,7 +17,7 @@ class FaqController extends Controller
     public function __construct()
     {
 //        $this->middleware('auth');
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
@@ -109,7 +109,7 @@ class FaqController extends Controller
             3 => 'f.answer',
             4 => 'f.status',
             5 => 'f.created_at',
-            5 => 'f.updated_at',
+            6 => 'f.updated_at',
         );
         
         $select_query = DB::table('faq as f')

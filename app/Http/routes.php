@@ -63,7 +63,15 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('/dashboard', 'Admin\DashboardController@index');
         
         Route::get('cms', 'Admin\CmsController@index');
-        Route::post('cms/add', 'Admin\CmsController@addrecord');
+        Route::any('cms/add', 'Admin\CmsController@addrecord');
+        Route::any('cms_list', 'Admin\CmsController@cms_list');
+        Route::any('cms_list/getdata', 'Admin\CmsController@anyData');
+        Route::any('cms_list/delete', 'Admin\CmsController@deleterecord');
+        Route::any('cms_list/edit', 'Admin\CmsController@editcms');
+        Route::any('cms/index/{id}', 'Admin\CmsController@index');
+        Route::any('cms/slug', 'Admin\CmsController@check_slug');
+
+        
         
         Route::get('media', 'Admin\MediaController@index');
         Route::get('media/add', 'Admin\MediaController@add');
