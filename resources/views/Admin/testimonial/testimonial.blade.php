@@ -16,8 +16,8 @@
                             <p id="msg"></p>
                             <form id="frm_testimonial" name="frm_testimonial" action="" onsubmit="return false" enctype="multipart/form-data">
                                 {{ csrf_field() }}
+                                <input type="hidden" name="id" id="id">
                                 <div class="form-group">
-                                    <input type="hidden" name="id_test" id="id_test">
                                     <label for="cus_name" class="col-sm-3">Customer Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="cus_name" id="cus_name">
@@ -33,7 +33,7 @@
                                     <label for="user_photo" class="col-sm-3">User Photo</label>
                                     <div class="col-sm-9">
                                         <input type="file" class="form-control" name="user_photo" id="user_photo" />
-                                        <input type="hidden" name="hi_file" id="hi_file">
+                                        <input type="hidden" name="hdn_file" id="hdn_file">
                                     </div>
                                 </div>
                                 <div class="form-group">

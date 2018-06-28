@@ -34,16 +34,16 @@ class TestimonialController extends Controller
         $data_insert=array();
         $result=array();
         $result['status']=0;
-
-        if($_POST){
-            if($request->input('id_test')){
-                $id_test = $request->input('id_test');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id_test = $post['id'];
             }
             $filename  = basename($_FILES['user_photo']['name']);
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            date_default_timezone_set("Asia/Kolkata");
-            
-             $product = new Testimonial($request->input()) ;
+            $testimonialObj = new Testimonial($request->input());
           
                
             if($file = $request->hasFile('user_photo')) {
@@ -63,46 +63,40 @@ class TestimonialController extends Controller
                 $uniquesavename=time().uniqid(rand());
                 $destFile = $uniquesavename . '.'.$extension;
                 $file->move($destinationPath,$destFile);
-                $product->user_photo = $destFile;
+                $testimonialObj->user_photo = $destFile;
 
+             } else {
+                 $testimonialObj->user_photo = isset($post['hdn_file'])?$post['hdn_file']:'';
              }
-             else{
-                 $product->user_photo = $request->input('hi_file');
-             }
-                $cus_name = $request->input('cus_name');
-                $feedback = $request->input('feedback');
-                $user_photo = $product->user_photo;
-                $status = $request->input('status');
-
-             
+                $user_photo = $testimonialObj->user_photo;
+                
                 $data_insert = array();
-                $data_insert['customer_name']=$cus_name;
-                $data_insert['feedback']=$feedback;
-                $data_insert['user_photo']= $user_photo;
-                $data_insert['status']=$status;
+                $data_insert['customer_name'] = isset($post['cus_name'])?$post['cus_name']:'';
+                $data_insert['feedback'] = isset($post['feedback'])?$post['feedback']:'';
+                $data_insert['user_photo'] = $user_photo;
+                $data_insert['status'] = isset($post['status'])?$post['status']:'';
 
                  
-            if(isset($_POST['id_test']) && $_POST['id_test'] != ''){
-              $data_insert['updated_date']=date("Y-m-d h:i:s");
+            if(isset($post['id']) && $post['id'] != ''){
+                
+              $data_insert['updated_at']=date("Y-m-d h:i:s");
+              
               $returnresult= DB::table('testimonial')
                  ->where('id',$id_test)     
                  ->update($data_insert);
+              
               if($returnresult){
                   $result['status']=1;
                   $result['msg']='Record updated successfully.!';
               }
-                    
             }      
             else{
 
-                $data_insert['created_date']=date("Y-m-d h:i:s");
-                $data_insert['updated_date']=date("Y-m-d h:i:s");
+                $data_insert['created_at']=date("Y-m-d h:i:s");
                 if(DB::table('testimonial')->insert($data_insert)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-
-                    }
-           
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
             echo json_encode($result);
             exit;
@@ -153,8 +147,8 @@ class TestimonialController extends Controller
             2 => 'feedback',
             3 => 'user_photo',
             4 => 'status',
-            5 => 'created_date',
-            5 => 'updated_date',
+            5 => 'created_at',
+            5 => 'updated_at',
         );
         
         $select_query = DB::table('testimonial')
@@ -186,8 +180,8 @@ class TestimonialController extends Controller
             $temp['customer_name'] = $row->customer_name;
             $temp['feedback'] = $row->feedback;
             $temp['user_photo'] = $row->user_photo;
-            $temp['created_date'] = $row->created_date;
-            $temp['updated_date'] = $row->updated_date;
+            $temp['created_date'] = $row->created_at;
+            $temp['updated_date'] = $row->updated_at;
             $temp['status'] = $row->status;
             $id = $row->id;
             

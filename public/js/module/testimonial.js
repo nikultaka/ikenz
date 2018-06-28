@@ -144,12 +144,12 @@ edit_row:function(test_id){
                     $("#ins_tes").modal("show");
                     $("#u_photo").show();
                       
-                    $("#id_test").val(data.content.id);
+                    $("#id").val(data.content.id);
                     $("#cus_name").val(data.content.customer_name);
                     $("#feedback").val(data.content.feedback);
                     
                     $('#u_photo').attr('src',BASE_URL+'/upload/testimonial/'+ data.content.user_photo);
-                    $("#hi_file").val(data.content.user_photo);
+                    $("#hdn_file").val(data.content.user_photo);
                     
                     var status_id = $("#status").val(data.content.status);
                     status_id.attr("selected","selected");
