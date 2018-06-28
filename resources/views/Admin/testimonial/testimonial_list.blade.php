@@ -13,16 +13,16 @@
               
             <div class="card-header">
                 <div class="col-sm-12">
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_tes"> Create Testimonial </button>
-            </div>  
+            <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_tes"> Create Testimonial </button>
               <p id="msg_main"></p>
+            </div>  
             </div>
             <!-- /.card-header -->
             <div class="card-body">
               <table class="table table-bordered table-striped with-check test-table">
                 <thead>
                     
-                <th>ID</th>
+                <!--<th>ID</th>-->
                   <th>Customer</th>
                   <th>Feedback</th>
                   <th>User Photo</th>

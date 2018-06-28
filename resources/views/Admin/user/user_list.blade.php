@@ -13,7 +13,7 @@
               
             <div class="card-header">
                 <div class="col-sm-12">
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_user"> Create New User </button>
+            <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_user"> Create New User </button>
             </div>  
               <p id="msg_main"></p>
             </div>

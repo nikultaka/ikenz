@@ -8,13 +8,13 @@ admin.contact_us = {
         });
         
         $('body').on('click','.btnEdit_contact_us',function (){
-            var c_us_id = $(this).data('id'); 
-            this_class.edit_row(c_us_id);
+            var id = $(this).data('id'); 
+            this_class.edit_row(id);
         });
         
         $('body').on('click','.btnDelete_contact_us',function (){
-            var c_us_id = $(this).data('id'); 
-            this_class.delete_row(c_us_id);
+            var id = $(this).data('id'); 
+            this_class.delete_row(id);
         });
 
         admin.contact_us.load_contact_us();
@@ -22,6 +22,10 @@ admin.contact_us = {
         $('body').on('click','.em_reply',function (){
             var id = $(this).data('id'); 
             this_class.email_reply(id);
+        });
+        
+        $(".open-modal").on('click',function (){
+            $('#frm_contact_us')[0].reset();
         });
 
     },
@@ -137,20 +141,20 @@ add_row:function (){
 },
 
 
-edit_row:function(c_us_id){
+edit_row:function(id){
     
     
-        if(c_us_id > 0){
+        if(id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/contact_us/edit',
                 type:'POST',
-                data: {_token:admin.common.get_csrf_token_value(), c_us_id:c_us_id},
+                data: {_token:admin.common.get_csrf_token_value(), id:id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
                         $("#ins_con").modal("show");
-                        $("#id_c_us").val(data.content.id);
+                        $("#id").val(data.content.id);
                         $("#name").val(data.content.name);
                         $("#email").val(data.content.email);
                         $("#phone_no").val(data.content.phone_no);
@@ -168,13 +172,13 @@ edit_row:function(c_us_id){
     
 },
 
-delete_row:function (c_us_id){
+delete_row:function (id){
     
-    if(c_us_id > 0){
+    if(id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/contact_us/delete',
                     type:'POST',
-                    data: {_token:admin.common.get_csrf_token_value(), c_us_id:c_us_id},
+                    data: {_token:admin.common.get_csrf_token_value(), id:id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

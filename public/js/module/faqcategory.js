@@ -8,18 +8,20 @@ admin.faq_category = {
         });
         
         $('body').on('click','.btnEdit_faqcat',function (){
-            var faq_cat_id = $(this).data('id'); 
-            this_class.edit_row(faq_cat_id);
+            var id = $(this).data('id'); 
+            this_class.edit_row(id);
         });
         
         $('body').on('click','.btnDelete_faqcat',function (){
-            var faq_cat_id = $(this).data('id'); 
-            this_class.delete_row(faq_cat_id);
+            var id = $(this).data('id'); 
+            this_class.delete_row(id);
         });
 
         admin.faq_category.load_faq_category();
           
-          
+        $(".open-modal").on('click',function (){
+            $('#frm_faq_cat')[0].reset();
+        });
 
 },
 
@@ -39,7 +41,7 @@ load_faq_category:function(){
                         data: admin.common.get_csrf_toke_object_data()
                     },
                     columns: [
-                        { data: 'id', name: 'id'},
+//                        { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
                         { data: 'status', name: 'status'},
                         { data: 'created_at', name: 'created_at'},
@@ -100,25 +102,23 @@ add_row:function (){
 },
 
 
-edit_row:function(faq_cat_id){
+edit_row:function(id){
     
-        
-        if(faq_cat_id > 0){
+        if(id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/faq_category/edit',
                 type:'POST',
-                data: {_token :admin.common.get_csrf_token_value(), faq_cat_id:faq_cat_id},
+                data: {_token :admin.common.get_csrf_token_value(), id:id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
                         $("#ins_faq_cat").modal("show");
 
-                        $("#id_faq_cat").val(data.content.id);
+                        $("#id").val(data.content.id);
                         $("#category_name").val(data.content.category_name);
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-//                        $('select[name^="status"] option[value=]').attr("selected","selected");
                         admin.faq_category.load_faq_category();
                     }
                 }
@@ -130,13 +130,13 @@ edit_row:function(faq_cat_id){
     
 },
 
-delete_row:function (faq_cat_id){
+delete_row:function (id){
     
-    if(faq_cat_id > 0){
+    if(id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/faq_category/delete',
                     type:'POST',
-                    data: {_token:admin.common.get_csrf_token_value(), faq_cat_id:faq_cat_id},
+                    data: {_token:admin.common.get_csrf_token_value(), id:id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

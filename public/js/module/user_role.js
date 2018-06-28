@@ -8,16 +8,22 @@ admin.user_role = {
         });
         
         $('body').on('click','.btnEdit_user_cat',function (){
-            var user_cat_id = $(this).data('id'); 
-            this_class.edit_row(user_cat_id);
+            var id = $(this).data('id'); 
+            this_class.edit_row(id);
         });
         
         $('body').on('click','.btnDelete_user_cat',function (){
-            var user_cat_id = $(this).data('id'); 
-            this_class.delete_row(user_cat_id);
+            var id = $(this).data('id'); 
+            this_class.delete_row(id);
         });
 
         admin.user_role.load_user_role();
+        
+        $(".open-modal").on('click',function (){
+            $('#frm_user_cat')[0].reset();
+        });
+        
+        
 
 },
 
@@ -37,9 +43,10 @@ load_user_role:function(){
                     data : admin.common.get_csrf_toke_object_data()
                     },  
                     columns: [
-                        { data: 'id', name: 'id'},
-                        { data: 'category', name: 'category'},
+//                        { data: 'id', name: 'id'},
+                        { data: 'role_name', name: 'role_name'},
                         { data: 'status', name: 'status'},
+                        { data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
     }); 
@@ -49,18 +56,16 @@ load_user_role:function(){
  
 add_row:function (){
                 
-//                var _token = $("input[name='_token']").val();
-                var user_category = $("input[name='user_category']").val();
+                var role_name = $("input[name='role_name']").val();
                 var demo = document.getElementById("status");
                 var status = demo.options[demo.selectedIndex].value;
                 
                 var count_error = 0;
-                if (user_category.trim() == '') {
-                     $("input[name='user_category']").addClass('has-error');
+                if (role_name.trim() == '') {
+                     $("input[name='role_name']").addClass('has-error');
                     count_error++;
-                   
                 } else{
-                     $("input[name='user_category']").removeClass('has-error');
+                     $("input[name='role_name']").removeClass('has-error');
                 }
                 
                 if (status == "") {
@@ -83,7 +88,7 @@ add_row:function (){
                         if(data.status==1){
                             $('#msg').html(data.msg);
                             $('#msg').attr('style','color:green;');
-                            $('#frm_faq_cat')[0].reset()
+                            $('#frm_user_cat')[0].reset()
                             admin.user_role.load_user_role();
                             $("#ins_user_cat").modal("hide");
                         }
@@ -97,21 +102,21 @@ add_row:function (){
 },
 
 
-edit_row:function(user_cat_id){
+edit_row:function(id){
     
     
-        if(user_cat_id > 0){
+        if(id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/user_role/edit',
                 type:'POST',
-                data: {_token:admin.common.get_csrf_token_value(), user_cat_id:user_cat_id},
+                data: {_token:admin.common.get_csrf_token_value(), id:id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
                         $("#ins_user_cat").modal("show");
-                        $("#id_user_cat").val(data.content.id);
-                        $("#user_category").val(data.content.category);
+                        $("#id").val(data.content.id);
+                        $("#role_name").val(data.content.role_name);
     
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
@@ -126,13 +131,13 @@ edit_row:function(user_cat_id){
     
 },
 
-delete_row:function (user_cat_id){
+delete_row:function (id){
     
-    if(user_cat_id > 0){
+    if(id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/user_role/delete',
                     type:'POST',
-                    data: {_token:admin.common.get_csrf_token_value(), user_cat_id:user_cat_id},
+                    data: {_token:admin.common.get_csrf_token_value(), id:id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){

@@ -19,7 +19,14 @@ admin.user = {
 
         $("#email_ch").hide();
         admin.user.load_user();
+
+        $(".open-modal").on('click',function (){
+            $('#frm_user')[0].reset();
+//            $("#ins_user").show(); 
+        });
+        
 },
+
 
 load_user:function(){
     
@@ -49,7 +56,8 @@ load_user:function(){
 },
 
 add_row:function (){
-    
+                var id = $("input[name='id']").val();
+                
                 var r_name = document.getElementById("role_name");
                 var role_name = r_name.options[r_name.selectedIndex].value;
                 
@@ -84,7 +92,7 @@ add_row:function (){
                     $.ajax({
                             type: 'POST',
                             url: BASE_URL+'/admin/user/email',
-                            data: {_token:admin.common.get_csrf_token_value(),email:email},
+                            data: {_token:admin.common.get_csrf_token_value(),email:email,id:id},
 
                             success: function(data) {
                                 
@@ -172,12 +180,12 @@ edit_row:function(id){
                         $("#email").val(data.content.email);
                         $("#password").val(data.content.password);
     
-                        var role_name = $("#role_name").val(data.content.user_category);
+                        var role_name = $("#role_name").val(data.content.role_id);
                         role_name.attr("selected","selected");
 
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-                         admin.user.load_user();
+                        admin.user.load_user();
                     }
                 }
             });

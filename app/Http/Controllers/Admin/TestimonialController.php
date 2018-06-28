@@ -105,34 +105,53 @@ class TestimonialController extends Controller
     }
         
     
-    public function edittestimonial(){
-        $id=$_POST['test_id'];
-        $charges =DB::table('testimonial')->where('id','=',$id)->first();
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$charges;
-        $data_result['msg']=$charges;
+    public function edittestimonial(Request $request){
+     
+        $post = $request->input();
+        $data_result = array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $testimonial = DB::table('testimonial')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status'] = 1;
+            $data_result['content'] = $testimonial;
+            }
+        }
         echo json_encode($data_result);
         exit;
+        
+        
+        
+        
     }
     
-     public function deleterecord(){
-        $id=$_POST['id'];
-        if(isset($id) && $id !=''){
-            DB::table('testimonial')
+     public function deleterecord(Request $request){
+
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('testimonial')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
+        
     }
-    
         
         public function anyData(){
         

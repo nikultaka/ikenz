@@ -13,7 +13,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="col-sm-12">
-                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_faq_cat">Create New Category</button>
+                                    <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_faq_cat">Create New Category</button>
                                 </div>  
                                 <p id="msg_main"></p>
                             </div>
@@ -21,7 +21,7 @@
                                     <table class="display nowrap table table-hover table-striped table-bordered faq_category-table" cellspacing="0" width="100%">
                                     <thead>
 
-                                        <th>ID</th>
+                                        <!--<th>ID</th>-->
                                         <th>Category Name</th>
                                         <th>status</th>
                                         <th>Created Date</th>

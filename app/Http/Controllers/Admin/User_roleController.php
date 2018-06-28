@@ -14,7 +14,7 @@ class User_roleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
@@ -23,71 +23,93 @@ class User_roleController extends Controller
         
     }
     
-    public function addrecord(Request $request)
-    {   
+    public function addrecord(Request $request){
+        
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_user_cat')){
-                $id_user_cat = $request->input('id_user_cat');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
-            $data['category'] = $request->input('user_category');
-            $data['status'] = $request->input('status');;
             
+            $data['role_name'] = isset($post['role_name'])?$post['role_name']:'';
+            $data['status'] = isset($post['status'])?$post['status']:'';
             
-            if(isset($_POST['id_user_cat']) && $_POST['id_user_cat'] != ''){
-                $data['gm_updated']=date("Y-m-d h:i:s");
+            if(isset($post['id']) && $post['id'] != ''){
+                
+                $data['updated_at']=date("Y-m-d h:i:s");
+                
                 $returnresult= DB::table('user_role')
-                   ->where('id',$id_user_cat)     
+                   ->where('id',$id)     
                    ->update($data);
-                if($returnresult){
-                    $result['status']=1;
-                    $result['msg']='Record updated successfully.!';
-                }
-           
+                
+                    if($returnresult){
+                        $result['status']=1;
+                        $result['msg']='Record updated successfully.!';
+                    }
             }
             else{
-                $data['gm_created']=date("Y-m-d h:i:s");
-                $data['gm_updated']=date("Y-m-d h:i:s");
+                
+                $data['created_at']=date("Y-m-d h:i:s");
                 if(DB::table('user_role')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
-        
+        exit;
     }
       
-    public function edit_user_role(){
-        $id=$_POST['user_cat_id'];
-        $user_category =DB::table('user_role')->where('id','=',$id)->first();
+    public function edit_user_role(Request $request){
+      
+        $post = $request->input();
         $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$user_category;
-        echo json_encode($data_result);exit;
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $user_role =DB::table('user_role')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status']=1;
+            $data_result['content']=$user_role;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+        
     }
     
-     public function deleterecord(){
-        $id=$_POST['user_cat_id'];
-        if(isset($id) && $id !=''){
-            DB::table('user_role')
+     public function deleterecord(Request $request){
+        
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('user_role')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
     }
         
-     public function anyData()
-    {
+     public function anyData(){
         
         $requestData = $_REQUEST;
 
@@ -96,10 +118,10 @@ class User_roleController extends Controller
         //This is for order 
         $columns = array(
             0. => 'id',
-            1 => 'category',
+            1 => 'role_name',
             2 => 'status',
-            3 => 'gm_created',
-            4 => 'gm_updated',
+            3 => 'created_at',
+            4 => 'updated_at',
         );
         
         $select_query = DB::table('user_role')
@@ -107,14 +129,14 @@ class User_roleController extends Controller
 
         $select_query->select('*',DB::raw("IF(status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("category","like",'%'.$requestData['search']['value'].'%');   
+            $select_query->where("role_name","like",'%'.$requestData['search']['value'].'%');   
         }
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("created_at","DESC");
         }
         
         //This is for count
@@ -126,12 +148,13 @@ class User_roleController extends Controller
             $select_query->limit($requestData['length']);
         }
 
-        $faq_list = $select_query->get();
-        foreach ($faq_list as $row) {
+        $user_role_list = $select_query->get();
+        foreach ($user_role_list as $row) {
             
             $temp['id'] = $row->id;
-            $temp['category'] = $row->category;
+            $temp['role_name'] = $row->role_name;
             $temp['status'] = $row->status;
+            $temp['created_at'] = $row->created_at;
             $id = $row->id;
            
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_user_cat"> Edit</a>  	&nbsp;';

@@ -15,7 +15,7 @@ class FaqcategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
@@ -24,24 +24,30 @@ class FaqcategoryController extends Controller
         
     }
     
-    public function addrecord(Request $request)
-    {   
+    public function addrecord(Request $request){
+        
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_faq_cat')){
-                $id_faq_cat = $request->input('id_faq_cat');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
+            
+            $data['category_name'] = isset($post['category_name'])?$post['category_name']:'';
             $data['category_name'] = $request->input('category_name');
-            $data['status'] = $request->input('status');;
+
+            if(isset($post['id']) && $post['id'] != ''){
             
-            
-            if(isset($_POST['id_faq_cat']) && $_POST['id_faq_cat'] != ''){
                 $data['updated_at']=date("Y-m-d h:i:s");
+                
                 $returnresult= DB::table('faq_category')
-                   ->where('id',$id_faq_cat)     
+                   ->where('id',$id)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
@@ -50,46 +56,66 @@ class FaqcategoryController extends Controller
             }
             else{
                 $data['created_at']=date("Y-m-d h:i:s");
-                $data['updated_at']=date("Y-m-d h:i:s");
+
                 if(DB::table('faq_category')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
+        exit;
+    }
+    
+    public function editfaq_category(Request $request){
+        
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $faq_category =DB::table('faq_category')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status']=1;
+            $data_result['content']=$faq_category;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+        
+        
         
     }
     
-    public function editfaq_category(){
-        $id=$_POST['faq_cat_id'];
-        $faq =DB::table('faq_category')->where('id','=',$id)->first();
+     public function deleterecord(Request $request){
+
+        $post = $request->input();
         $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$faq;
-        echo json_encode($data_result);exit;
-    }
-    
-     public function deleterecord(){
-        $id=$_POST['faq_cat_id'];
-        if(isset($id) && $id !=''){
-            DB::table('faq_category')
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('faq_category')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
+        
     }
     
     
-    public function anyData()
-    {
+    public function anyData(){
         
         $requestData = $_REQUEST;
 
@@ -114,7 +140,7 @@ class FaqcategoryController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("created_at","DESC");
         }
         
         //This is for count
@@ -126,8 +152,8 @@ class FaqcategoryController extends Controller
             $select_query->limit($requestData['length']);
         }
 
-        $media_category_list = $select_query->get();
-        foreach ($media_category_list as $row) {
+        $faq_category_list = $select_query->get();
+        foreach ($faq_category_list as $row) {
             $temp['id'] = $row->id;
             $temp['category_name'] = $row->category_name;
             $temp['created_at'] = $row->created_at;
@@ -141,8 +167,6 @@ class FaqcategoryController extends Controller
             $data[] = $temp;
             $id = "";
         }
-
-
 
         $json_data = array(
             "draw" => intval($requestData['draw']),

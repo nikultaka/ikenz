@@ -1,8 +1,8 @@
 @extends('Admin.layouts.dashboard.main')
 
 
-@section('pageTitle','User Category')
-@section('pageHeadTitle','User Category')
+@section('pageTitle','User Role')
+@section('pageHeadTitle','User Role')
 @section('content')
 <section class="content">
     <div class="container-fluid">
@@ -13,7 +13,7 @@
               
             <div class="card-header">
                 <div class="col-sm-12">
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_user_cat"> Create User Category </button>
+            <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_user_cat"> Create User Role </button>
             </div>  
               <p id="msg_main"></p>
             </div>
@@ -22,9 +22,10 @@
               <table class="table table-bordered table-striped with-check user_role-table">
                 <thead>
                     
-                    <th>ID</th>
+                    <!--<th>ID</th>-->
                     <th>Category Name</th>
                     <th>status</th>
+                    <th>Created Date</th>
                     <th>Action</th>
                 </thead>
               </table>

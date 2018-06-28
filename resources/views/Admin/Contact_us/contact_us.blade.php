@@ -16,7 +16,7 @@
                             <form id="frm_contact_us" name="frm_contact_us">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                <input type="hidden" name="id_c_us" id="id_c_us">
+                                <input type="hidden" name="id" id="id">
                                     <label for="name" class="col-sm-3">Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="name" id="name" />

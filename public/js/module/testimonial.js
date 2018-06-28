@@ -8,13 +8,13 @@ admin.testimonial = {
         });
         
         $('body').on('click','.btnEdit_test',function (){
-            var test_id = $(this).data('id'); 
-            this_class.edit_row(test_id);
+            var id = $(this).data('id'); 
+            this_class.edit_row(id);
         });
         
         $('body').on('click','.btnDelete_test',function (){
-            var test_id = $(this).data('id'); 
-            this_class.delete_row(test_id);
+            var id = $(this).data('id'); 
+            this_class.delete_row(id);
         });
 
         $("#user_photo").change(function() {
@@ -24,7 +24,11 @@ admin.testimonial = {
         
         admin.testimonial.load_testimonial();
         $("#u_photo").hide();  
-          
+        
+        $(".open-modal").on('click',function (){
+            $('#frm_testimonial')[0].reset();
+        });
+        
 
     },
 
@@ -58,7 +62,7 @@ load_testimonial:function(){
                     data : admin.common.get_csrf_toke_object_data()
                     },
                     columns: [
-                        { data: 'id', name: 'id'},
+//                        { data: 'id', name: 'id'},
                         { data: 'customer_name', name: 'customer_name'},
                         { data: 'feedback', name: 'feedback'},
                         { data: 'user_photo', name: 'user_photo'},
@@ -130,14 +134,14 @@ add_row:function (){
 },
 
 
-edit_row:function(test_id){
+edit_row:function(id){
     
     
-        if(test_id > 0){
+        if(id > 0){
         $.ajax({
             url: BASE_URL+'/admin/testimonial/edit',
             type:'POST',
-            data: {_token:admin.common.get_csrf_token_value(), test_id:test_id},
+            data: {_token:admin.common.get_csrf_token_value(), id:id},
             success: function(data) {
                 var data=$.parseJSON(data);
                 if(data.status==1){

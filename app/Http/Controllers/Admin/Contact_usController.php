@@ -30,35 +30,39 @@ class Contact_usController extends Controller
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_c_us')){
-                $id_c_us = $request->input('id_c_us');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
-            $data['name'] = $request->input('name');
-            $data['email'] = $request->input('email');
-            $data['phone_no'] = $request->input('phone_no');
-            $data['description'] = $request->input('description');
-            $data['status'] = $request->input('status');;
             
-            
-            if(isset($_POST['id_c_us']) && $_POST['id_c_us'] != ''){
-                $data['gm_updated']=date("Y-m-d h:i:s");
+            $data['name'] = isset($post['name'])?$post['name']:'';
+            $data['email'] = isset($post['email'])?$post['email']:'';
+            $data['phone_no'] = isset($post['phone_no'])?$post['phone_no']:'';
+            $data['description'] = isset($post['description'])?$post['description']:'';
+            $data['status'] = isset($post['status'])?$post['status']:'';
+
+            if(isset($post['id']) && $post['id'] != ''){
+                
+                $data['updated_at']=date("Y-m-d h:i:s");
+
                 $returnresult= DB::table('contact_us')
-                   ->where('id',$id_c_us)     
+                   ->where('id',$id)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
                 }
-           
             }
             else{
-                $data['gm_created']=date("Y-m-d h:i:s");
-                $data['gm_updated']=date("Y-m-d h:i:s");
+                $data['created_at']=date("Y-m-d h:i:s");
                 if(DB::table('contact_us')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
@@ -66,40 +70,77 @@ class Contact_usController extends Controller
         
     }
       
-    public function editcontact_us(){
-        $id=$_POST['c_us_id'];
-        $contact_us =DB::table('contact_us')->where('id','=',$id)->first();
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$contact_us;
-        echo json_encode($data_result);exit;
+    public function editcontact_us(Request $request){
+
+        $post = $request->input();
+        $data_result = array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $contact_us = DB::table('contact_us')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status'] = 1;
+            $data_result['content'] = $contact_us;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+        
+        
+        
     }
     
-    public function email_reply(){
-        $id=$_POST['id'];
-        $contact_us =DB::table('contact_us')->select('email')->where('id','=',$id)->first();
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$contact_us;
-        echo json_encode($data_result);exit;
+    public function email_reply(Request $request){
+        
+        $post = $request->input();
+        $data_result = array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+                
+                $email_reply = DB::table('contact_us')
+                        ->select('email')
+                        ->where('id','=',$id)->first();
+                
+                $data_result['status'] = 1;
+                $data_result['content'] = $email_reply;
+            }
+        }
+        
+        echo json_encode($data_result);
+        exit;
     }
     
     
-     public function deleterecord(){
-        $id=$_POST['c_us_id'];
-        if(isset($id) && $id !=''){
-            DB::table('contact_us')
+     public function deleterecord(Request $request){
+        
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('contact_us')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted successfully.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+       
+        
+        
+        
+        
     }
     
     

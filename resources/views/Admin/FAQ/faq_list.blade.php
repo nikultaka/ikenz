@@ -13,7 +13,7 @@
               
             <div class="card-header">
                 <div class="col-sm-12">
-            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ins_faq">Create New Faq</button>
+            <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_faq">Create New Faq</button>
             </div>  
               <p id="msg_main"></p>
             </div>
@@ -22,7 +22,7 @@
               <table class="table table-bordered table-striped with-check faq-table">
                 <thead>
                     
-                    <th>ID</th>
+                    <!--<th>ID</th>-->
                     <th>Category Name</th>
                     <th>Question</th>
                     <th>Answer</th>

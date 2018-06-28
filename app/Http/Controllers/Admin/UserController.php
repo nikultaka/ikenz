@@ -28,74 +28,97 @@ class UserController extends Controller
         
     }
     
-    public function addrecord(Request $request)
-    {   
+    public function addrecord(Request $request){   
+        
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_user')){
-                $id_faq = $request->input('id_user');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
-            $data['role_id'] = $request->input('role_name');
-            $data['name'] = $request->input('u_name');
-            $data['email'] = $request->input('email');
-            $data['password'] = $request->input('password');
-            $data['status'] = $request->input('status');
+            
+            $data['role_id'] = isset($post['role_name'])?$post['role_name']:'';
+            $data['name'] = isset($post['u_name'])?$post['u_name']:'';
+            $data['email'] = isset($post['email'])?$post['email']:'';
+            $data['password'] = isset($post['password'])?$post['password']:'';
+            $data['status'] = isset($post['status'])?$post['status']:'';
             
             
-            if(isset($_POST['id_user']) && $_POST['id_user'] != ''){
+            if(isset($post['id']) && $post['id'] != ''){
+                
                 $data['updated_at']=date("Y-m-d h:i:s");
+                
                 $returnresult= DB::table('users')
-                   ->where('id',$id_faq)     
+                   ->where('id',$id)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
                 }
-           
             }
             else{
+                
                 $data['created_at']=date("Y-m-d h:i:s");
-                $data['updated_at']=date("Y-m-d h:i:s");
                 if(DB::table('users')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
+        exit;
         
     }
       
-    public function edituser(){
-        $id=$_POST['id'];
-        $user =DB::table('users')->where('id','=',$id)->first();
+    public function edituser(Request $request){
+        
+        $post = $request->input();
         $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$user;
-        echo json_encode($data_result);exit;
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $user =DB::table('users')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status']=1;
+            $data_result['content']=$user;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
     }
     
-     public function deleterecord(){
-        $id=$_POST['id'];
-        if(isset($id) && $id !=''){
-            DB::table('user')
+     public function deleterecord(Request $request){
+   
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('users')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
     }
         
-     public function anyData()
-    {
+     public function anyData(){
         
         $requestData = $_REQUEST;
 
@@ -117,7 +140,6 @@ class UserController extends Controller
         $select_query = DB::table('users as u')
                         ->join('user_role as ur','u.role_id','=','ur.id')
                         ->where('u.status','!=',-1);
-//                        ->get();
         
         $select_query->select('u.*','ur.role_name',DB::raw("IF(u.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
@@ -125,7 +147,6 @@ class UserController extends Controller
                          ->oRwhere("ur.role_name","like",'%'.$requestData['search']['value'].'%')
                          ->oRwhere("u.name","like",'%'.$requestData['search']['value'].'%')
                          ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%');
-//            
         }
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
@@ -144,8 +165,8 @@ class UserController extends Controller
             $select_query->limit($requestData['length']);
         }
 
-        $faq_list = $select_query->get();
-        foreach ($faq_list as $row) {
+        $user_list = $select_query->get();
+        foreach ($user_list as $row) {
             
             $temp['role_name'] = $row->role_name;
             $temp['name'] = $row->name;
@@ -179,12 +200,14 @@ class UserController extends Controller
     
     public function check_email(Request $request) {
         
-        $email_id = $request->input('email');
-        
+        $post = $request->input();        
+        $id = $post['id'];
+        $email_id = $post['email'];
         $valid = TRUE;
         $email =DB::table('users')
                 ->select('id')
                 ->select('email')
+                ->where('id','!=',$id)
                 ->where('email','=',$email_id)
                 ->get();
         

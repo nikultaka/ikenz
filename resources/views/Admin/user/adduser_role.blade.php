@@ -9,17 +9,17 @@
                     <!--                modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4>Create new category</h4>
+                            <h4>Create new Role</h4>
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
                             <form id="frm_user_cat" name="frm_user_cat">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                    <input type="hidden" name="id_user_cat" id="id_user_cat">
-                                    <label for="user_category" class="col-sm-3">Category Name</label>
+                                    <input type="hidden" name="id" id="id">
+                                    <label for="role_name" class="col-sm-3">Role Name</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="user_category" id="user_category">
+                                        <input type="text" class="form-control" name="role_name" id="role_name">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -29,7 +29,6 @@
                                             <option value="">----Select Status----</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
-                                            <!--<option value="-1">Deleted</option>-->
                                         </select>
                                     </div>
                                 </div>

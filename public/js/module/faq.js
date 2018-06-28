@@ -8,17 +8,21 @@ admin.faq = {
         });
         
         $('body').on('click','.btnEdit_faq',function (){
-            var faq_id = $(this).data('id'); 
-            this_class.edit_row(faq_id);
+            var id = $(this).data('id'); 
+            this_class.edit_row(id);
         });
         
         $('body').on('click','.btnDelete_faq',function (){
-            var faq_id = $(this).data('id'); 
-            this_class.delete_row(faq_id);
+            var id = $(this).data('id'); 
+            this_class.delete_row(id);
         });
 
         admin.faq.load_faq();
-
+        
+        $(".open-modal").on('click',function (){
+            $('#frm_faq')[0].reset();
+        });
+        
 },
 
 load_faq:function(){
@@ -37,7 +41,7 @@ load_faq:function(){
                     data : admin.common.get_csrf_toke_object_data()
                     },  
                     columns: [
-                        { data: 'id', name: 'id'},
+//                        { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
                         { data: 'question', name: 'question'},
                         { data: 'answer', name: 'answer'},
@@ -110,26 +114,26 @@ add_row:function (){
                             return false;
                         }
                     }
-                });
+                    });
                 }
     
 },
 
 
-edit_row:function(faq_id){
+edit_row:function(id){
     
     
-        if(faq_id > 0){
+        if(id > 0){
             $.ajax({
                 url: BASE_URL+'/admin/faq/edit',
                 type:'POST',
-                data: {_token:admin.common.get_csrf_token_value(), faq_id:faq_id},
+                data: {_token:admin.common.get_csrf_token_value(), id:id},
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
                         $("#ins_faq").modal("show");
-                        $("#id_faq").val(data.content.id);
+                        $("#id").val(data.content.id);
                         $("#question").val(data.content.question);
                         $("#answer").val(data.content.answer);
     
@@ -149,13 +153,13 @@ edit_row:function(faq_id){
     
 },
 
-delete_row:function (faq_id){
+delete_row:function (id){
     
-    if(faq_id > 0){
+    if(id > 0){
             $.ajax({
                     url: BASE_URL+'/admin/faq/delete',
                     type:'POST',
-                    data: {_token:admin.common.get_csrf_token_value(), faq_id:faq_id},
+                    data: {_token:admin.common.get_csrf_token_value(), id:id},
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
