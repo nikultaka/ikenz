@@ -49,71 +49,119 @@ load_faq:function(){
 },
 
  
-add_row:function (){
-                
-                var _token = $("input[name='_token']").val();
-                
-                var c_id = document.getElementById("category_id");
-                var category_id = c_id.options[c_id.selectedIndex].value;
-                
-                var question = $("input[name='question']").val();
-                var answer = $("input[name='answer']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
-                
-                var count_error = 0;
-                if (category_id == '') {
-                     $("select[name='category_id']").addClass('has-error');
-                    count_error++;
-                   
-                } else{
-                     $("select[name='category_id']").removeClass('has-error');
-                }
-                if (question.trim() == '') {
-                    $("input[name='question']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("input[name='question']").removeClass('has-error');
-                }
-                if (answer.trim() == '') {
-                     $("input[name='answer']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("input[name='answer']").removeClass('has-error');
-                }
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-                if(count_error == 0){
-                
-                    
-                    $.ajax({
-                    url: BASE_URL+'/admin/faq/addrecord',
-                    type:'POST',
-                    data: $('#frm_faq').serialize(),
-                    datatype:'json',
-                    
-                    success: function(data) {
-                        var data=$.parseJSON(data);
-                        if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
-                            $('#frm_faq')[0].reset()
-                            admin.faq.load_faq();
-                            $("#ins_faq").modal("hide");
+//add_row:function (){
+//                
+//                var _token = $("input[name='_token']").val();
+//                
+//                var c_id = document.getElementById("category_id");
+//                var category_id = c_id.options[c_id.selectedIndex].value;
+//                
+//                var question = $("input[name='question']").val();
+//                var answer = $("input[name='answer']").val();
+//                var demo = document.getElementById("status");
+//                var status = demo.options[demo.selectedIndex].value;
+//                
+//                var count_error = 0;
+//                if (category_id == '') {
+//                     $("select[name='category_id']").addClass('has-error');
+//                    count_error++;
+//                   
+//                } else{
+//                     $("select[name='category_id']").removeClass('has-error');
+//                }
+//                if (question.trim() == '') {
+//                    $("input[name='question']").addClass('has-error');
+//                    count_error++;
+//                } else{
+//                    $("input[name='question']").removeClass('has-error');
+//                }
+//                if (answer.trim() == '') {
+//                     $("input[name='answer']").addClass('has-error');
+//                    count_error++;
+//                } else{
+//                    $("input[name='answer']").removeClass('has-error');
+//                }
+//                if (status == "") {
+//                     $("select[name='status']").addClass('has-error');
+//                    count_error++;
+//                } else{
+//                     $("select[name='status']").removeClass('has-error');
+//                }
+//                if(count_error == 0){
+//                
+//                    
+//                    $.ajax({
+//                    url: BASE_URL+'/admin/faq/addrecord',
+//                    type:'POST',
+//                    data: $('#frm_faq').serialize(),
+//                    datatype:'json',
+//                    
+//                    success: function(data) {
+//                        var data=$.parseJSON(data);
+//                        if(data.status==1){
+//                            $('#msg').html(data.msg);
+//                            $('#msg').attr('style','color:green;');
+//                            $('#frm_faq')[0].reset()
+//                            admin.faq.load_faq();
+//                            $("#ins_faq").modal("hide");
+//
+//                        }
+//                        else{
+//                            return false;
+//                        }
+//                    }
+//                });
+//                }
+//    
+//},
 
-                        }
-                        else{
-                            return false;
-                        }
+add_row:function (){
+    
+     $("#frm_faq").bootstrapValidator({
+         
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+//                        item_name: {
+//                            validators: {
+//                                notEmpty: {
+//                                    message: 'Field required'
+//                                }
+//                            }
+//                        },
+                        question: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        answer: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+//                        item_quantity: {
+//                            validators: {
+//                                numeric: {
+//                                    message: 'Please enter number'
+//                                },
+//                                notEmpty: {
+//                                    message: 'Field required'
+//                                }
+//                            }
+//                        },
                     }
                 });
-                }
+    
     
 },
+
 
 
 edit_row:function(faq_id){

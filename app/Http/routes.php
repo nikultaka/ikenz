@@ -89,7 +89,7 @@ Route::group(['prefix' => 'admin'], function()
          Route::any('upload-media/getdatatabel', 'Admin\UploadmediaController@getdatatable');
          Route::any('upload-media/delete_media', 'Admin\UploadmediaController@delete_media');
         
-    });
+    
     
     
 
@@ -171,3 +171,5 @@ Route::group(['prefix' => 'admin'], function()
 
 Route::get('multifileupload', 'HomeController@multifileupload')->name('multifileupload');
 Route::post('multifileupload', 'HomeController@store')->name('multifileupload');
+
+});

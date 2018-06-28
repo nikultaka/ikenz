@@ -40,7 +40,8 @@
                                 <div class="form-group">
                                     <label for="answer" class="col-sm-3">Answer</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="answer" id="answer" />
+                                        <textarea class="form-control" name="answer" id="answer" rows="5"></textarea>
+                                        <!--<input type="text" class="form-control" name="answer" id="answer" />-->
                                     </div>
                                 </div>
                                 <div class="form-group">
