@@ -24,8 +24,7 @@
                     
                     <th>ID</th>
                     <th>Category</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Name</th>
                     <th>Email</th>
                     <th>Password</th>
                     <th>status</th>

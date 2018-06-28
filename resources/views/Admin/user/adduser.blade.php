@@ -1,3 +1,4 @@
+<?php // print_r($user_role); exit;?>
 <section class="content">
 
     <div class="col-xs-12">
@@ -16,14 +17,14 @@
                             <form id="frm_user" name="frm_user">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                        <!--<input type="hidden" name="id_faq" id="id_faq">-->
-                                    <label for="user_category" class="col-sm-3">Category</label>
+                                        <input type="hidden" name="id_user" id="id_user">
+                                    <label for="role_name" class="col-sm-3">Category</label>
                                     <div class="col-sm-9">
-                                        <select id="user_category" name="user_category" class="form-control">
+                                        <select id="role_name" name="role_name" class="form-control">
                                             <option value="">----Select Category----</option>
                                             @if($user_role > 0)
                                                 @foreach($user_role as $category)
-                                                 <option value="{{$category->id}}">{{$category  ->category}}</option>
+                                                 <option value="{{$category->id}}">{{$category  ->role_name}}</option>
                                                 @endForeach
                                                 @else
                                                  No Record Found
@@ -32,18 +33,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                        <input type="hidden" name="id_user" id="id_user">
-                                    <label for="f_name" class="col-sm-3">First Name</label>
+                                    <label for="u_name" class="col-sm-3">Name</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="f_name" id="f_name" />
+                                        <input type="text" class="form-control" name="u_name" id="u_name" />
                                     </div>
                                 </div>
-                                <div class="form-group">
+<!--                                <div class="form-group">
                                     <label for="l_name" class="col-sm-3">Last Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="l_name" id="l_name" />
                                     </div>
-                                </div>
+                                </div>-->
                                 <div class="form-group">
                                     <label for="email" class="col-sm-3">Email</label>
                                     <div class="col-sm-9">

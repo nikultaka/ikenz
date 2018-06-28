@@ -38,9 +38,9 @@ load_user:function(){
                     },  
                     columns: [
                         { data: 'id', name: 'id'},
-                        { data: 'category', name: 'category'},
-                        { data: 'f_name', name: 'f_name'},
-                        { data: 'l_name', name: 'l_name'},
+                        { data: 'role_name', name: 'role_name'},
+                        { data: 'name', name: 'name'},
+//                        { data: 'l_name', name: 'l_name'},
                         { data: 'email', name: 'email'},
                         { data: 'password', name: 'password'},
                         { data: 'status', name: 'status'},
@@ -51,8 +51,12 @@ load_user:function(){
 },
 
 add_row:function (){
+    
+                var r_name = document.getElementById("role_name");
+                var role_name = r_name.options[r_name.selectedIndex].value;
                 
-                var f_name = $("input[name='f_name']").val();
+                
+                var u_name = $("input[name='u_name']").val();
                 var l_name = $("input[name='l_name']").val();
                 var email = $("input[name='email']").val();
                 var password = $("input[name='password']").val();

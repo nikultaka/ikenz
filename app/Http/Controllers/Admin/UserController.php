@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
@@ -115,18 +115,18 @@ class UserController extends Controller
             8 => 'ur.category',
         );
         
-        $select_query = DB::table('user as u')
-                        ->join('user_role as ur','u.user_category','=','ur.id')
+        $select_query = DB::table('users as u')
+                        ->join('user_role as ur','u.role_id','=','ur.id')
                         ->where('u.status','!=',-1);
 //                        ->get();
         
-        $select_query->select('u.*','ur.category',DB::raw("IF(u.status = 1,'Active','Inactive') as status"));
+        $select_query->select('u.*','ur.role_name',DB::raw("IF(u.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("u.f_name","like",'%'.$requestData['search']['value'].'%')
-                         ->oRwhere("u.l_name","like",'%'.$requestData['search']['value'].'%')
-                         ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%')
-                         ->oRwhere("ur.user_category","like",'%'.$requestData['search']['value'].'%');
-            
+            $select_query->where("u.name","like",'%'.$requestData['search']['value'].'%');
+//                         ->oRwhere("u.l_name","like",'%'.$requestData['search']['value'].'%')
+//                         ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%')
+//                         ->oRwhere("ur.user_category","like",'%'.$requestData['search']['value'].'%');
+//            
         }
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
@@ -146,12 +146,12 @@ class UserController extends Controller
         }
 
         $faq_list = $select_query->get();
+        $num = 1;
         foreach ($faq_list as $row) {
             
-            $temp['id'] = $row->id;
-            $temp['category'] = $row->category;
-            $temp['f_name'] = $row->f_name;
-            $temp['l_name'] = $row->l_name;
+            $temp['id'] = $num;
+            $temp['role_name'] = $row->role_name;
+            $temp['name'] = $row->name;
             $temp['email'] = $row->email;
             $temp['password'] = $row->password;
             $temp['status'] = $row->status;
@@ -164,7 +164,10 @@ class UserController extends Controller
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
+            $num++;
         }
+        
+//        print_r($data);exit;
 
 
         $json_data = array(

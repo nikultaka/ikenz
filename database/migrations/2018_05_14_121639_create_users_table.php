@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
+            $table->tinyInteger('status');
             $table->timestamps();
             });
             
@@ -30,6 +31,7 @@ class CreateUsersTable extends Migration
                     'email' => 'admin@admin.com',
                     'password' => '$2y$10$yCQoSMJ4ktGE16kwwTFK8OtWclZRQEOydRK8ceYb.PElk4/vZd/te',
                     'remember_token' => 'BwWVSivqzGfmPjcTFbal2icm0fiBzpQOYVGVXvi1cxr2xM6xzLnOzwlNklwB',
+                    'status' => '1',
                     'created_at' => date('Y-m-d H:i:s')
                 )
             );
