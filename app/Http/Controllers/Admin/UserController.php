@@ -37,17 +37,16 @@ class UserController extends Controller
             if($request->input('id_user')){
                 $id_faq = $request->input('id_user');
             }
-            $data['user_category'] = $request->input('user_category');
-            $data['f_name'] = $request->input('f_name');
-            $data['l_name'] = $request->input('l_name');
+            $data['role_id'] = $request->input('role_name');
+            $data['name'] = $request->input('u_name');
             $data['email'] = $request->input('email');
             $data['password'] = $request->input('password');
             $data['status'] = $request->input('status');
             
             
             if(isset($_POST['id_user']) && $_POST['id_user'] != ''){
-                $data['gm_updated']=date("Y-m-d h:i:s");
-                $returnresult= DB::table('user')
+                $data['updated_at']=date("Y-m-d h:i:s");
+                $returnresult= DB::table('users')
                    ->where('id',$id_faq)     
                    ->update($data);
                 if($returnresult){
@@ -57,9 +56,9 @@ class UserController extends Controller
            
             }
             else{
-                $data['gm_created']=date("Y-m-d h:i:s");
-                $data['gm_updated']=date("Y-m-d h:i:s");
-                if(DB::table('user')->insert($data)){
+                $data['created_at']=date("Y-m-d h:i:s");
+                $data['updated_at']=date("Y-m-d h:i:s");
+                if(DB::table('users')->insert($data)){
                 $result['status']=1;
                 $result['msg']="Record add sucessfully..!";
             }
@@ -70,8 +69,8 @@ class UserController extends Controller
     }
       
     public function edituser(){
-        $id=$_POST['user_id'];
-        $user =DB::table('user')->where('id','=',$id)->first();
+        $id=$_POST['id'];
+        $user =DB::table('users')->where('id','=',$id)->first();
         $data_result=array();
         $data_result['status']=1;
         $data_result['content']=$user;
@@ -79,7 +78,7 @@ class UserController extends Controller
     }
     
      public function deleterecord(){
-        $id=$_POST['user_id'];
+        $id=$_POST['id'];
         if(isset($id) && $id !=''){
             DB::table('user')
                     ->where('id', $id)
@@ -105,14 +104,14 @@ class UserController extends Controller
         //This is for order 
         $columns = array(
             0. => 'u.id',
-            1 => 'u.f_name',
-            2 => 'u.l_name',
+            1 => 'u.role_id',
+            2 => 'u.name',
             3 => 'u.email',
             4 => 'u.password',
             5 => 'u.status',
-            6 => 'u.gm_created',
-            7 => 'u.gm_updated',
-            8 => 'ur.category',
+            6 => 'u.created_at',
+            7 => 'u.updated_at',
+            8 => 'ur.role_name',
         );
         
         $select_query = DB::table('users as u')
@@ -122,10 +121,10 @@ class UserController extends Controller
         
         $select_query->select('u.*','ur.role_name',DB::raw("IF(u.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("u.name","like",'%'.$requestData['search']['value'].'%');
-//                         ->oRwhere("u.l_name","like",'%'.$requestData['search']['value'].'%')
-//                         ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%')
-//                         ->oRwhere("ur.user_category","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("u.name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("ur.role_name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("u.name","like",'%'.$requestData['search']['value'].'%')
+                         ->oRwhere("u.email","like",'%'.$requestData['search']['value'].'%');
 //            
         }
         
@@ -133,7 +132,7 @@ class UserController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("u.id","DESC");
+            $select_query->orderBy("u.created_at","DESC");
         }
         
         //This is for count
@@ -146,10 +145,8 @@ class UserController extends Controller
         }
 
         $faq_list = $select_query->get();
-        $num = 1;
         foreach ($faq_list as $row) {
             
-            $temp['id'] = $num;
             $temp['role_name'] = $row->role_name;
             $temp['name'] = $row->name;
             $temp['email'] = $row->email;
@@ -164,7 +161,6 @@ class UserController extends Controller
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
-            $num++;
         }
         
 //        print_r($data);exit;
@@ -186,7 +182,7 @@ class UserController extends Controller
         $email_id = $request->input('email');
         
         $valid = TRUE;
-        $email =DB::table('user')
+        $email =DB::table('users')
                 ->select('id')
                 ->select('email')
                 ->where('email','=',$email_id)

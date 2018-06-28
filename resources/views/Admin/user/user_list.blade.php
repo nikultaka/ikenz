@@ -22,7 +22,6 @@
               <table class="table table-bordered table-striped with-check user-table">
                 <thead>
                     
-                    <th>ID</th>
                     <th>Category</th>
                     <th>Name</th>
                     <th>Email</th>

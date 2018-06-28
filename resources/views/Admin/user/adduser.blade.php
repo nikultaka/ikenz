@@ -17,7 +17,7 @@
                             <form id="frm_user" name="frm_user">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                        <input type="hidden" name="id_user" id="id_user">
+                                    <input type="hidden" name="id" id="id">
                                     <label for="role_name" class="col-sm-3">Category</label>
                                     <div class="col-sm-9">
                                         <select id="role_name" name="role_name" class="form-control">
