@@ -3,6 +3,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
+            <form id="frm_faq" name="frm_faq" action="" method="post" onsubmit="return false;">
             <div class="modal fade commonModel" id="ins_faq" role="dialog">
                 <div class="modal-dialog">
 
@@ -13,7 +14,7 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_faq" name="frm_faq">
+                            
                                 {{ csrf_field() }}
                                     <div class="form-group">
                                         <input type="hidden" name="id" id="id">
@@ -54,7 +55,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </form>
 
                         </div>
                         <div class="modal-footer justify-content-center" >
@@ -64,6 +64,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </section>

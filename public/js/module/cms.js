@@ -36,13 +36,11 @@ admin.cms = {
         
         $("#slug_exist").hide();
 
-
-
 },
 
 check_slug: function (){
                 var slug = $("input[name='slug']").val();
-                var id = $("input[name='id_cms']").val();
+                var id = $("input[name='id']").val();
 
                  $.ajax({
                             type: 'POST',
@@ -76,7 +74,7 @@ get_details_foredit:function (id){
             success: function (data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
-                        $("#id_cms").val(data.content.id);
+                        $("#id").val(data.content.id);
                         $("#title").val(data.content.title);
                         $("#slug").val(data.content.slug_url);
                         $("#description").val(data.content.description);
@@ -85,10 +83,10 @@ get_details_foredit:function (id){
                         $("#meta_description").val(data.content.meta_description);
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-                }
+                   }
                 }
 
-        });
+            });
     }
                 else{
                     return false;

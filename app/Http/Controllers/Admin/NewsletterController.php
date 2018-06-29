@@ -12,7 +12,7 @@ class NewsletterController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     
     public function index()
@@ -20,26 +20,31 @@ class NewsletterController extends Controller
         return view("admin.newsletter.newsletter_list");
         
     }
-    public function deleterecord(){
-        $id=$_POST['id'];
-        if(isset($id) && $id !=''){
-            DB::table('news_latter')
+    public function deleterecord(Request $request){
+
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('news_latter')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
+        
     }
     
     
-    public function anyData()
-    {
+    public function anyData(){
         
         $requestData = $_REQUEST;
 
@@ -50,8 +55,8 @@ class NewsletterController extends Controller
             0. => 'id',
             1 => 'email',
             2 => 'status',
-            3 => 'gm_created',
-            4 => 'gm_updated',
+            3 => 'created_at',
+            4 => 'updated_at',
         );
         
         $select_query = DB::table('news_latter')->where('status','!=',-1);
@@ -64,7 +69,7 @@ class NewsletterController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("created_at","DESC");
         }
         
         //This is for count
@@ -81,8 +86,8 @@ class NewsletterController extends Controller
             $temp['id'] = $row->id;
             $temp['email'] = $row->email;
             $temp['status'] = $row->status;
-            $temp['gm_created'] = $row->gm_created;
-            $temp['gm_updated'] = $row->gm_updated;
+            $temp['created_at'] = $row->created_at;
+            $temp['updated_at'] = $row->updated_at;
             $id = $row->id;
             
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_news_latter"> Delete</a></div>';
@@ -101,7 +106,6 @@ class NewsletterController extends Controller
         );
         echo json_encode($json_data);
         exit(0);
-            
     }
     
 }

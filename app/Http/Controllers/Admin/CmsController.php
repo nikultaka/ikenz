@@ -22,42 +22,45 @@ class CmsController extends Controller
         return view('Admin.cms.cms_list');
     }
     
-     public function addrecord(Request $request)
-    {   
+     public function addrecord(Request $request){   
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_cms')){
-                $id_cms = $request->input('id_cms');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
-            $data['title'] = $request->input('title');
-            $data['slug_url'] = $request->input('slug');
-            $data['description'] = $request->input('description');
-            $data['meta_title'] = $request->input('meta_title');
-            $data['meta_keyword'] = $request->input('meta_keyword');
-            $data['meta_description'] = $request->input('meta_description');
-            $data['status'] = $request->input('status');
-            
-            
-            if(isset($_POST['id_cms']) && $_POST['id_cms'] != ''){
+
+            $data['title'] = isset($post['title'])?$post['title']:'';
+            $data['slug_url'] = isset($post['slug'])?$post['slug']:'';
+            $data['description'] = isset($post['description'])?$post['description']:'';
+            $data['meta_title'] = isset($post['meta_title'])?$post['meta_title']:'';
+            $data['meta_keyword'] = isset($post['meta_keyword'])?$post['meta_keyword']:'';
+            $data['meta_description'] = isset($post['meta_description'])?$post['meta_description']:'';
+            $data['status'] = isset($post['status'])?$post['status']:'';
+
+            if(isset($post['id']) && $post['id'] != ''){
+                    
                 $data['updated_at']=date("Y-m-d h:i:s");
+            
                 $returnresult= DB::table('cms')
-                   ->where('id',$id_cms)     
+                   ->where('id',$id)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
                 }
-           
             }
             else{
                 $data['created_at']=date("Y-m-d h:i:s");
-                $data['updated_at']=date("Y-m-d h:i:s");
                 if(DB::table('cms')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
@@ -65,15 +68,27 @@ class CmsController extends Controller
         
     }
     
-      public function editcms(){
-        $id=$_POST['id'];
-        $cms =DB::table('cms')->where('id','=',$id)->first();
+      public function editcms(Request $request){
+        
+        $post = $request->input();
         $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$cms;
-        echo json_encode($data_result);exit;
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $user =DB::table('cms')
+                    ->where('id','=',$id)->first();
+        
+            $data_result['status']=1;
+            $data_result['content']=$user;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+        
     }
-    
     
     public function check_slug(Request $request) {
         
@@ -95,34 +110,38 @@ class CmsController extends Controller
                 $valid = TRUE;
             }            
             return json_encode(array('valid' => $valid));exit;
-   
             
     }   
     
     
     
-     public function deleterecord(){
-        $id=$_POST['id'];
-        if(isset($id) && $id !=''){
-            DB::table('cms')
+     public function deleterecord(Request $request){
+       
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('cms')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted successfully.";
-        
-        echo json_encode($data_result);exit;
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
+        
     }
     
     
     
      public function anyData()
     {
-//         return view('Admin.cms.cms_list');
                  
         $requestData = $_REQUEST;
 
@@ -158,7 +177,7 @@ class CmsController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("created_at","DESC");
         }
         
         //This is for count
@@ -203,52 +222,4 @@ class CmsController extends Controller
             
     }
     
-    
-    
-    
-    
-    
-    
-    
-//    public function save_details(Request $request){
-//       $site=new site();
-//       $data['status']=0;
-//       
-//      $current_date_time=date("Y-m-d h:i:sa");
-//       $site_title=$request->input('site_title');
-//       $email_id=$request->input('email_id');
-//       $smtp_email=$request->input('smtp_email');
-//       $smtp_host=$request->input('smtp_host');
-//       $smtp_password=$request->input('smtp_password');
-//       $smtp_port=$request->input('smtp_port');
-//       $option_name=array('site_title'=>$site_title,'user_email'=>$email_id,'smtp_email'=>$smtp_email,'smtp_host'=>$smtp_host,'smtp_password'=>$smtp_password,'smtp_port'=>$smtp_port);
-//       foreach ($option_name as $key=>$option){
-//          
-//       $data_site_title= $site->get_value_by_option_name($key);
-//       if(!empty($data_site_title)){
-//           $site->update_value_by_option_name($key,$option);
-//           $data['status']=1;
-//           $data['msg']="Data Add Successfully..!";
-//        }
-//       else {
-//            $data=array();
-//            $data['option_name']=$key;
-//            $data['option_value']=$option;
-//            $data['status']=1;
-//            $data['created_date']=$current_date_time;
-//            $data['updated_date']=$current_date_time;
-//            $site->insert_value_site_setting($data);
-//            $data['status']=1;
-//            $data['msg']="Data Add Successfully..!";
-//        }    
-//       }
-//       return json_encode($data);
-//       
-//       
-//    }
-//    public function uploadlogo(Request $request){
-//        echo '<pre>';
-//        print_r($_FILES);
-//        die;
-//    }
 }

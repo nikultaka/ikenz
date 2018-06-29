@@ -3,9 +3,9 @@ admin.faq = {
     {
         var this_class = this;
 
-        $('.sub_faq').on('click',function (){
-            this_class.add_row();
-        });
+//        $('.sub_faq').on('click',function (){
+//            this_class.add_row();
+//        });
         
         $('body').on('click','.btnEdit_faq',function (){
             var id = $(this).data('id'); 
@@ -19,10 +19,60 @@ admin.faq = {
 
         admin.faq.load_faq();
         
-        $(".open-modal").on('click',function (){
-            $('#frm_faq')[0].reset();
-        });
+        admin.faq.refresh_validator();
         
+        
+                
+//            $('#frm_faq').on('shown.bs.modal', function() {
+//            });
+//                
+        $(".open-modal").on('click',function (){
+
+            $('#frm_faq')[0].reset();
+            $('#frm_faq').bootstrapValidator('resetForm', true);
+            
+        });
+
+//        $('#frm_faq').remove('data-bv-field');
+//        $('#frm_faq').data('bootstrapValidator').resetForm();
+
+  
+//            $('#frm_faq').bootstrapValidator('resetForm', true);
+
+    //            $('#ins_faq').on('hidden.bs.modal', function () {
+    //                $("#frm_faq").validate().resetForm();
+    //            });
+
+            //        
+//        $('#ins_faq').empty();
+//            $('#frm_faq').reset();
+//            $('#frm_faq').removeClass('has-success','has-error');
+            
+//            return false;
+//            $("form#frm_faq").validator("destroy");
+//            var validator = $( "#frm_faq" ).validate();
+//            validator.resetForm();
+//        var validator = $("#ins_faq").validate();
+//        $('#ins_faq').on('shown.bs.modal', function (){
+//           validator.resetForm();
+//        });
+            $('.modal').on('hidden.bs.modal', function(){
+//                alert("fsd");
+//                $('#frm_faq').bootstrapValidator('resetForm', true);
+//                $('#frm_faq').bootstrapValidator('resetForm', true);
+//                alert("asdfs");
+//                $(this).find('form')[0].reset();
+            });
+
+//        $('.modal-overlay').on('click', function() {
+//            alert("dfs");
+//            $('.modal-overlay').hide();
+//            $('.modal').hide();
+//        });
+////            $('.modal').on('hidden.bs.modal', function () {
+//                $(this).find('input').val('');
+//            });
+
 },
 
 load_faq:function(){
@@ -50,50 +100,57 @@ load_faq:function(){
                             ],
     }); 
     
+        
+        
+        
+    
 },
 
- 
-add_row:function (){
+refresh_validator:function()
+{
+    $('#frm_faq').data('bootstrapValidator', null);
+    
+    $("#frm_faq").bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        category_id: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        question: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        answer: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                    },
                 
-                var _token = $("input[name='_token']").val();
+                })
                 
-                var c_id = document.getElementById("category_id");
-                var category_id = c_id.options[c_id.selectedIndex].value;
+                .on('success.form.bv', function (e) {
                 
-                var question = $("input[name='question']").val();
-                var answer = $("textarea[name='answer']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
-                
-                var count_error = 0;
-                if (category_id == '') {
-                     $("select[name='category_id']").addClass('has-error');
-                    count_error++;
-                   
-                } else{
-                     $("select[name='category_id']").removeClass('has-error');
-                }
-                if (question.trim() == '') {
-                    $("input[name='question']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("input[name='question']").removeClass('has-error');
-                }
-                if (answer.trim() == '') {
-                     $("textarea[name='answer']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("textarea[name='answer']").removeClass('has-error');
-                }
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-                if(count_error == 0){
-                
-                    
                     $.ajax({
                     url: BASE_URL+'/admin/faq/addrecord',
                     type:'POST',
@@ -103,22 +160,29 @@ add_row:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
-                            $('#frm_faq')[0].reset()
-                            admin.faq.load_faq();
                             $("#ins_faq").modal("hide");
-
+//                            $('#msg').html(data.msg);
+//                            $('#msg').attr('style','color:green;');
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
+                            $('#frm_faq')[0].reset();
+                            $('#frm_faq').bootstrapValidator('resetForm', true);
+                            admin.faq.load_faq();
                         }
                         else{
                             return false;
                         }
                     }
                     });
-                }
-    
+                    
+        });
 },
 
+add_row:function (){
+            
+            
+
+},
 
 edit_row:function(id){
     
@@ -131,18 +195,23 @@ edit_row:function(id){
                 success: function(data) {
                     var data=$.parseJSON(data);
                     if(data.status==1){
-
-                        $("#ins_faq").modal("show");
+                        
                         $("#id").val(data.content.id);
                         $("#question").val(data.content.question);
                         $("#answer").val(data.content.answer);
+                        
     
                         var category_id = $("#category_id").val(data.content.category_id);
                         category_id.attr("selected","selected");
 
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-                        admin.faq.load_faq();
+                        
+                        admin.faq.refresh_validator();
+                        $("#frm_faq").bootstrapValidator('disableSubmitButtons',false);
+                        
+                        $("#ins_faq").modal("show");
+                        //admin.faq.load_faq();
                     }
                 }
             });

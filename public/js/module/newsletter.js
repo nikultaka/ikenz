@@ -33,6 +33,7 @@ load_news_latter:function(){
                         { data: 'id', name: 'id'},
                         { data: 'email', name: 'email'},
                         { data: 'status', name: 'status'},
+                        { data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                             ],
     }); 

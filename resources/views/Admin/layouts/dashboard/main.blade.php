@@ -18,9 +18,8 @@
     <!-- Custom CSS -->
     <link href="{{url('css/helper.css')}}" rel="stylesheet">
     <link href="{{url('css/style.css')}}" rel="stylesheet">
-<!--    <link href="{{url('cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css')}}" rel="stylesheet" />
-    <script src="{{url('cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js')}}"></script>-->
-    
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"/>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
         
     @yield('headLink')
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -32,8 +31,8 @@
     
 <style>
     .has-error{
-        border: 2px solid red;
-        border-radius: 5px;
+/*        border: 2px solid red;
+        border-radius: 5px;*/
     }
 </style>
 <script type="text/javascript">
@@ -86,13 +85,12 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="{{url('js/lib/bootstrap/js/popper.min.js')}}"></script>
     <script src="{{url('js/lib/bootstrap/js/bootstrap.min.js')}}"></script>
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"/>
-    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+<!--    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"/>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>-->
     
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src="{{url('js/jquery.slimscroll.js')}}"></script>
     <!--Menu sidebar -->
-    <script src="{{url('js/sidebarmenu.js')}}"></script>
     <!--stickey kit -->
     <script src="{{url('js/lib/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
     <!--Custom JavaScript -->

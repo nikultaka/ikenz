@@ -14,7 +14,7 @@
                 <form role="form" method="post" id="frm_cms" name="frm_cms" onsubmit="return false"> 
                     {{ csrf_field() }}
                   <div class="card-body">
-                        <input type="hidden" name="id_cms" id="id_cms">
+                        <input type="hidden" name="id" id="id">
                     <div class="row form-group">
                         <div class="col-sm-1"></div>
                             <label for="title" class="col-sm-2">Title</label>

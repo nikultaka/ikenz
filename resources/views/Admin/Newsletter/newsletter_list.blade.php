@@ -24,6 +24,7 @@
                     <th>ID</th>
                     <th>Email</th>
                     <th>status</th>
+                    <th>Created Date</th>
                     <th>Action</th>
                 </thead>
               </table>
