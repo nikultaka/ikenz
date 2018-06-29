@@ -22,7 +22,9 @@ class UploadmediaController extends Controller
 
     }
     public function index(){
-        return view('Admin.media.Upload_media');
+        $data=array();
+        $data['media_category']=DB::table('media_category')->where('status','1')->get();
+        return view('Admin.media.Upload_media')->with($data);
     }
     
     public function upload(Request $request){
@@ -30,7 +32,8 @@ class UploadmediaController extends Controller
         
         $result=array();
         $result['status']=0;
-        if($request->input('mediatype')==1){
+        $insert_data=array();
+        if($request->input('mediatype') == 1 && $request->input('media_category') != 0){
             $image = $request->file('file');
             $filename  = basename($image->getClientOriginalName());
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -49,9 +52,15 @@ class UploadmediaController extends Controller
            // $upload_success = $image->move(public_path('upload/image'),$imageName);
 
             if($image->move($destinationPath,$destFile)){
-                $input['media_type_id']=$request->input('mediatype');
-                $input['gm_created']=date('y-m-d h:i:s');
-               $insert_id = DB::table('media')->insertGetId($input);
+                $insert_data['media_category']=$request->input('media_category');
+                $insert_data['media_type']=$request->input('mediatype');
+                $insert_data['media_name']=$destFile;
+                $insert_data['media_url']='';
+                $insert_data['status']=1;
+                
+                $insert_data['created_at']=date('y-m-d h:i:s');
+                $insert_data['updated_at']=date('y-m-d h:i:s');
+               $insert_id = DB::table('media')->insertGetId($insert_data);
                 $result['status'] = 1;
                 $result['id'] = $insert_id;
                 $result['msg'] = 'Image Uploaded';
@@ -71,6 +80,7 @@ class UploadmediaController extends Controller
     public function videoupload(Request $request){
         $result=array();
         $result['status']=0;
+        $inser_data=array();
         $video = $request->file('file');
         $filename  = basename($video->getClientOriginalName());
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
@@ -78,10 +88,14 @@ class UploadmediaController extends Controller
          $uniquesavename=time().uniqid(rand());   
         $destFile = $uniquesavename . '.'.$extension;
         if($video->move($destinationPath,$destFile)){
-            $input['media_type_id']='2';
-            $input['gm_created']=date('y-m-d h:i:s');
-            $input['media_name'] = $destFile;
-            $insert_id = DB::table('media')->insertGetId($input);
+            $insert_data['media_category']=$request->input('media_category');
+            $insert_data['media_type']=$request->input('media_type');
+            $insert_data['media_name']=$destFile;
+            $insert_data['media_url']='';
+            $insert_data['status']=1;
+            $insert_data['created_at']=date('y-m-d h:i:s');
+            $insert_data['updated_at']=date('y-m-d h:i:s');
+            $insert_id = DB::table('media')->insertGetId($insert_data);
             if(isset($insert_id) && $insert_id != ''){
                 $result['status'] = 1;
                 $result['msg'] = 'Video Uploaded';
@@ -94,18 +108,23 @@ class UploadmediaController extends Controller
 
         $data = array();
 
-        $select_query = DB::table('media');
-        $select_query->select('*');
+        $select_query = DB::table('media as ml');
+        $select_query->join('media_category as mc','ml.media_category','=','mc.id');
+        $select_query->select('ml.*','mc.category_name');
         //This is for search value
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("media_name","like",'%'.$requestData['search']['value'].'%');
+            $select_query->where("ml.media_name","like",'%'.$requestData['search']['value'].'%')
+                         ->orwhere("mc.category_name","like",'%'.$requestData['search']['value'].'%');
                     
         }
 
         //This is for order 
         $columns = array(
-            0. => 'id',
-            1 => 'media_name',
+            0. => 'ml.id',
+            1 => 'ml.media_name',
+            2 => 'mc.category_name',
+            3 => 'ml.media_name',
+            4 => 'ml.media_type',
             
         );
         
@@ -113,11 +132,8 @@ class UploadmediaController extends Controller
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("ml.id","DESC");
         }
-        
-        //This is for count
-        $totalData = $select_query->count();
         
         //This is for count
         
@@ -136,7 +152,6 @@ class UploadmediaController extends Controller
         }
 
         $service_price_list = $select_query->get();
-        
         $arr_data = Array();
         $arr_data = $result;
 
@@ -144,7 +159,7 @@ class UploadmediaController extends Controller
         foreach ($service_price_list as $row) {
             
             $temp['id'] = $row->id;
-            if ($row->media_type_id =='1'){
+            if ($row->media_type =='1'){
             $media="<div> <img src='".$baseurl."/upload/image/thumbnail/".$row->media_name."' style='height:100px;' /></div>";
             $mediatype="Image";
             }
@@ -155,14 +170,14 @@ class UploadmediaController extends Controller
             $temp['media_image']= $media;
             $temp['media_name'] = $row->media_name;
             $temp['media_type'] = $mediatype;
-            
+           $temp['category_name']=$row->category_name;
             $id = $row->id;
             
             
             $action = '<div class="datatable_btn">';
             //<a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEditfilddetails"> Edit</a>  	&nbsp;';
                 
-            $action .= '<a data-id="'.$id.'" data-mediatype="'.$row->media_type_id.'" class="btn btn-xs btn-danger btnDeleteMediaUploded"> Delete</a></div>';
+            $action .= '<a data-id="'.$id.'" data-mediatype="'.$row->media_type.'" class="btn btn-xs btn-danger btnDeleteMediaUploded"> Delete</a></div>';
             
             $temp['action'] = $action;
             $data[] = $temp;

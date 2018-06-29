@@ -206,9 +206,10 @@ admin.media_upload={
                     columns: [
                        { data: 'id', name: 'id'},
                        { data: 'media_image', name: 'media_image'},
+                       { data: 'category_name', name: 'category_name'},
                         { data: 'media_name', name: 'media_name'},
                         { data: 'media_type', name: 'media_type'},
-                        {data: 'action', name: 'action'},
+                        {data: 'action', name: 'action',targets: 'no-sort', orderable: false},
                             ],
     });
     },
@@ -236,6 +237,8 @@ admin.media_upload={
     },
     upload_video:function (){
         var formData = new FormData($('#VideoUploadForm')[0]);
+        formData.append('media_type',$('#mediaTypehidden').val());
+        formData.append('media_category',$('select#MediaCategory option:selected').val());
         $.ajax({
                type : 'post',
                url : BASE_URL+'/admin/upload-media/videoupload',

@@ -56,6 +56,7 @@
                     
                 <th>id</th>
                 <th>Media</th>
+                <th>Media category</th>
                 <th>Media Name</th>
                 <th>Media Type</th>
                 <th>Action</th>
@@ -88,7 +89,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     
-                    <label class="col-sm-2 control-label ">Input Select</label>
+                    <label class="col-sm-12 control-label ">Media Type</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="MediaType" >
                             <option value="1">Image</option>
@@ -97,10 +98,32 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="dropzone" id="dropzoneFileUpload">
-                    <input type="hidden" id="mediaTypehidden" value="1">
+                <div class="form-group">
+                    
+                    <label class="col-sm-12 control-label ">Media Category</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="MediaCategory">
+                        @if($media_category)
+                        @foreach($media_category as $media)
+                         <option  value="{{$media->id}}">{{$media->category_name}}</option>
+                        @endForeach
+                        @else
+                        <option  value="0">No Record Found</option>
+                        @endif   
+                        
+                        </select>
+                    </div>
                 </div>
+                <div class="form-group">
+                    
+                    <label class="col-sm-12 control-label ">Upload Image</label>
+                    <div class="col-sm-10">
+                
+                        <div class="dropzone" id="dropzoneFileUpload">
+                            <input type="hidden" id="mediaTypehidden" value="1">
+                        </div>
+                    </div>
+                </div>    
                 <div id="video-section" style="display: none;">    
                     <form method="post" onsubmit="return false" id="VideoUploadForm" enctype="multipart/form-data">
                         {{ csrf_field() }}
@@ -165,6 +188,7 @@
             init: function() {
                  this.on("sending", function(file, xhr, formData){
                     formData.append("mediatype", $('#mediaTypehidden').val());
+                    formData.append("media_category", $('select#MediaCategory option:selected').val());
                 });
                 this.on("complete", function(file) {
                     $(".dz-remove").html('<div class="datatable_btn"><a data-id="" id="image_delete_btn" class="btn btn-xs btn-danger btnDeleteMediaUploded"> Delete</a></div>');
