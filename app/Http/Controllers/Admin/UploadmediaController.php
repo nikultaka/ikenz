@@ -82,16 +82,33 @@ class UploadmediaController extends Controller
         $result['status']=0;
         $inser_data=array();
         $video = $request->file('file');
-        $filename  = basename($video->getClientOriginalName());
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
-         $destinationPath = public_path().'/upload/video/';
-         $uniquesavename=time().uniqid(rand());   
-        $destFile = $uniquesavename . '.'.$extension;
-        if($video->move($destinationPath,$destFile)){
+        if(isset($video) && $video != ''){
+            $filename  = basename($video->getClientOriginalName());
+            $extension = pathinfo($filename, PATHINFO_EXTENSION);
+             $destinationPath = public_path().'/upload/video/';
+             $uniquesavename=time().uniqid(rand());   
+            $destFile = $uniquesavename . '.'.$extension;
+        
+            if($video->move($destinationPath,$destFile)){
+                $insert_data['media_category']=$request->input('media_category');
+                $insert_data['media_type']=$request->input('media_type');
+                $insert_data['media_name']=$destFile;
+                $insert_data['media_url']='';
+                $insert_data['status']=1;
+                $insert_data['created_at']=date('y-m-d h:i:s');
+                $insert_data['updated_at']=date('y-m-d h:i:s');
+                $insert_id = DB::table('media')->insertGetId($insert_data);
+                if(isset($insert_id) && $insert_id != ''){
+                    $result['status'] = 1;
+                    $result['msg'] = 'Video Uploaded';
+                }
+            }
+        }
+        else {
             $insert_data['media_category']=$request->input('media_category');
             $insert_data['media_type']=$request->input('media_type');
-            $insert_data['media_name']=$destFile;
-            $insert_data['media_url']='';
+            $insert_data['media_name']='';
+            $insert_data['media_url']=$request->input('media_url');
             $insert_data['status']=1;
             $insert_data['created_at']=date('y-m-d h:i:s');
             $insert_data['updated_at']=date('y-m-d h:i:s');
@@ -168,7 +185,13 @@ class UploadmediaController extends Controller
             $mediatype="Video";
             }
             $temp['media_image']= $media;
-            $temp['media_name'] = $row->media_name;
+            if(isset($row->media_name) && $row->media_name != ''){
+                $media_name=$row->media_name;
+            }
+            else{
+                $media_name=$row->media_url;
+            }
+            $temp['media_name'] = $media_name;
             $temp['media_type'] = $mediatype;
            $temp['category_name']=$row->category_name;
             $id = $row->id;

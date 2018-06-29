@@ -187,6 +187,9 @@ admin.media_upload={
         $('body').on('click','#upload_video',function (){
             this_class.upload_video();
         });
+        $('body').on('click','#submit_video_url',function (){
+            this_class.upload_video();
+        });
          admin.media_upload.load_datatabel();
     },
     load_datatabel:function (){

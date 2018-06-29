@@ -116,7 +116,7 @@
                 </div>
                 <div class="form-group">
                     
-                    <label class="col-sm-12 control-label ">Upload Image</label>
+                    <label class="col-sm-12 control-label ">Upload Media</label>
                     <div class="col-sm-10">
                 
                         <div class="dropzone" id="dropzoneFileUpload">
@@ -128,11 +128,12 @@
                     <form method="post" onsubmit="return false" id="VideoUploadForm" enctype="multipart/form-data">
                         {{ csrf_field() }}
                     <video width="400" controls>
-                      <source src="mov_bbb.mp4" id="video_here">
+                      <source src="" id="video_here">
                         Your browser does not support HTML5 video.
                     </video>
                     <div class="form-group">
-                    <label for="exampleInputFile">Select Video </label>
+                    <label class="col-sm-12 control-label">Select Video </label>
+                    <div class="col-sm-10">
                     <div class="input-group">
                       <div class="custom-file">
                           <input class="custom-file-input file_multi_video" accept="video/*" id="setting_logo_upload" name="file" type="file">
@@ -142,6 +143,21 @@
                         <span class="input-group-text" id="upload_video">Upload</span>
                       </div>
                     </div>
+                    </div>
+                  </div>
+                    <div> <h1 style="text-align: center;">OR</h1></div>
+                    <div class="form-group">
+                        <label class="col-sm-12 control-label">Enter Video URL </label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                              <div class="custom-file">
+                                 <input type="text" class="form-control" name="media_url" id="media_url">
+                              </div>
+                              <div class="input-group-append">
+                                <span class="input-group-text" id="submit_video_url">Submit</span>
+                              </div>
+                            </div>
+                        </div>
                   </div>
                    </form>
                 </div>
@@ -149,6 +165,7 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center">
+                
                 <button type="button" class="btn btn-warning btn-outline btn-rounded m-b-10 m-l-5" data-dismiss="modal">Close</button>
             </div>
         </div>
