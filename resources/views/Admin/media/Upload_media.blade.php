@@ -56,6 +56,7 @@
                     
                 <th>id</th>
                 <th>Media</th>
+                <th>Media category</th>
                 <th>Media Name</th>
                 <th>Media Type</th>
                 <th>Action</th>
@@ -88,7 +89,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     
-                    <label class="col-sm-2 control-label ">Input Select</label>
+                    <label class="col-sm-12 control-label ">Media Type</label>
                     <div class="col-sm-10">
                         <select class="form-control" id="MediaType" >
                             <option value="1">Image</option>
@@ -97,28 +98,66 @@
                         </select>
                     </div>
                 </div>
-
-                <div class="dropzone" id="dropzoneFileUpload">
-                    <input type="hidden" id="mediaTypehidden" value="1">
+                <div class="form-group">
+                    
+                    <label class="col-sm-12 control-label ">Media Category</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" id="MediaCategory">
+                        @if($media_category)
+                        @foreach($media_category as $media)
+                         <option  value="{{$media->id}}">{{$media->category_name}}</option>
+                        @endForeach
+                        @else
+                        <option  value="0">No Record Found</option>
+                        @endif   
+                        
+                        </select>
+                    </div>
                 </div>
+                <div class="form-group">
+                    
+                    <label class="col-sm-12 control-label ">Upload Media</label>
+                    <div class="col-sm-10">
+                
+                        <div class="dropzone" id="dropzoneFileUpload">
+                            <input type="hidden" id="mediaTypehidden" value="1">
+                        </div>
+                    </div>
+                </div>    
                 <div id="video-section" style="display: none;">    
                     <form method="post" onsubmit="return false" id="VideoUploadForm" enctype="multipart/form-data">
                         {{ csrf_field() }}
-                    <video width="400" controls>
-                      <source src="mov_bbb.mp4" id="video_here">
+                        <video width="200" controls id="video_frame" style="display: none;">
+                      <source src="" id="video_here">
                         Your browser does not support HTML5 video.
                     </video>
                     <div class="form-group">
-                    <label for="exampleInputFile">Select Video </label>
+                    <label class="col-sm-12 control-label">Select Video </label>
+                    <div class="col-sm-10">
                     <div class="input-group">
                       <div class="custom-file">
-                          <input class="custom-file-input file_multi_video" accept="video/*" id="setting_logo_upload" name="file" type="file">
+                          <input class="custom-file-input file_multi_video" accept="video/*" id="video_file" name="file" type="file">
                         <label class="custom-file-label logo-upload" for="setting_logo_upload">Choose file</label>
                       </div>
-                      <div class="input-group-append">
-                        <span class="input-group-text" id="upload_video">Upload</span>
+                        <div class="input-group-append remove-btn-for-file" style="display: none;">
+                        <span class="input-group-text" id="remove_video">Remove</span>
                       </div>
                     </div>
+                    </div>
+                  </div>
+                    <div> <h1 style="text-align: center;">OR</h1></div>
+                    <div class="form-group" id="url_section">
+                        <label class="col-sm-12 control-label">Enter Video URL </label>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                              <div class="custom-file">
+                                 <input type="text" class="form-control" name="media_url" id="media_url">
+                              </div>
+<!--                              <div class="input-group-append">
+                                <span class="input-group-text" id="submit_video_url">Submit</span>
+                              </div>-->
+                            </div>
+                        </div>
                   </div>
                    </form>
                 </div>
@@ -126,7 +165,8 @@
                 </div>
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-warning btn-outline btn-rounded m-b-10 m-l-5" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary sub-cms video-details" id="submit_video_file" style="display: none;">Submit</button>
+                <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -165,6 +205,7 @@
             init: function() {
                  this.on("sending", function(file, xhr, formData){
                     formData.append("mediatype", $('#mediaTypehidden').val());
+                    formData.append("media_category", $('select#MediaCategory option:selected').val());
                 });
                 this.on("complete", function(file) {
                     $(".dz-remove").html('<div class="datatable_btn"><a data-id="" id="image_delete_btn" class="btn btn-xs btn-danger btnDeleteMediaUploded"> Delete</a></div>');
@@ -188,26 +229,6 @@
  
             },
         };
-        $('#MediaType').on('change',function (){
-           var valuechange = $('select#MediaType option:selected').val(); 
-           $('#mediaTypehidden').val(valuechange);
-           if(valuechange==1){
-               $('#video-section').hide();
-               $('#dropzoneFileUpload').show();
-           }
-           else if(valuechange==2){
-               $('#video-section').show();
-               $('#dropzoneFileUpload').hide();
-           }
-           else{
-               return false;
-           }
-        });
-        $(document).on("change", ".file_multi_video", function(evt) {
-            var $source = $('#video_here');
-            $source[0].src = URL.createObjectURL(this.files[0]);
-            $source.parent()[0].load();
-        });
         
     </script>
 @endsection

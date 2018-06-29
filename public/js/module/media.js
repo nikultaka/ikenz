@@ -159,24 +159,6 @@ admin.media_upload={
     ini:function (){
         
         var this_class = this;
-//        Dropzone.autoDiscover = false;
-//        var myDropzone = new Dropzone("div#dropzoneFileUpload", {
-//            addRemoveLinks: true,
-//            url: BASE_URL + "/admin/upload-media/upload",
-//            params: {
-//                _token: admin.common.get_csrf_token_value(),
-//                
-//            },
-//            
-//        });
-//        Dropzone.options.myAwesomeDropzone = {
-//            paramName: "file", // The name that will be used to transfer the file
-//            maxFilesize: 250, // MB
-//            addRemoveLinks: true,
-//            accept: function(file, done) {
-// 
-//            },
-//        };
         $('body').on('click','.btnDeleteMediaUploded',function (){
             
             var mediaid = $(this).data("id");
@@ -184,8 +166,26 @@ admin.media_upload={
              this_class.delete_uploaded_media(mediaid,mediatype);
             
         });
-        $('body').on('click','#upload_video',function (){
+        $('body').on('click','#submit_video_file',function (){
             this_class.upload_video();
+        });
+        $('#MediaType').on('change',function (){
+           var valuechange = $('select#MediaType option:selected').val(); 
+           this_class.ChangeMediaType(valuechange);
+        });
+        $(document).on("change", ".file_multi_video", function(evt) {
+            
+            var $source = $('#video_here');
+            $source[0].src = URL.createObjectURL(this.files[0]);
+            $source.parent()[0].load();
+            $('#video_frame').show();
+            $('#url_section').hide();
+            $('.remove-btn-for-file').show();
+            $('#media_url').val('');
+            
+        });
+        $(document).on('click','#remove_video',function (){
+            this_class.ClearVideoType();
         });
          admin.media_upload.load_datatabel();
     },
@@ -206,9 +206,10 @@ admin.media_upload={
                     columns: [
                        { data: 'id', name: 'id'},
                        { data: 'media_image', name: 'media_image'},
+                       { data: 'category_name', name: 'category_name'},
                         { data: 'media_name', name: 'media_name'},
                         { data: 'media_type', name: 'media_type'},
-                        {data: 'action', name: 'action'},
+                        {data: 'action', name: 'action',targets: 'no-sort', orderable: false},
                             ],
     });
     },
@@ -236,6 +237,8 @@ admin.media_upload={
     },
     upload_video:function (){
         var formData = new FormData($('#VideoUploadForm')[0]);
+        formData.append('media_type',$('#mediaTypehidden').val());
+        formData.append('media_category',$('select#MediaCategory option:selected').val());
         $.ajax({
                type : 'post',
                url : BASE_URL+'/admin/upload-media/videoupload',
@@ -249,5 +252,33 @@ admin.media_upload={
                    admin.media_upload.load_datatabel();
                }
         });
+    },
+    ChangeMediaType:function (valuechange){
+        $('#mediaTypehidden').val(valuechange);
+           if(valuechange==1){
+               $('#video-section').hide();
+               $('#dropzoneFileUpload').show();
+               $('.video-details').hide();
+           }
+           else if(valuechange==2){
+               $('#video-section').show();
+               $('#dropzoneFileUpload').hide();
+               $('.video-details').show();
+           }
+           else{
+               return false;
+           }
+    },
+    VideoPreview:function (){
+            
+    },
+    ClearVideoType:function (){
+            var $source = $('#video_here');
+            $source[0].src = '';
+            $source.parent()[0].load();
+            $('#video_frame').hide();
+            $('#url_section').show();
+            $('#video_file').val('');
+            $('.remove-btn-for-file').hide();  
     }
 };
