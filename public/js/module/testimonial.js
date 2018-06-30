@@ -2,11 +2,9 @@ admin.testimonial = {
     initialize:function()
     {   
         var this_class = this;
-
-        $('.sub_tes').on('click',function (){
-            this_class.add_row();
-        });
         
+        $("#u_photo").hide();  
+
         $('body').on('click','.btnEdit_test',function (){
             var id = $(this).data('id'); 
             this_class.edit_row(id);
@@ -23,10 +21,11 @@ admin.testimonial = {
         });
         
         admin.testimonial.load_testimonial();
-        $("#u_photo").hide();  
+        admin.testimonial.refresh_validator();
         
-        $(".open-modal").on('click',function (){
+        $('#ins_tes').on('hidden.bs.modal', function () {
             $('#frm_testimonial')[0].reset();
+            $('#frm_testimonial').bootstrapValidator('resetForm', true);
         });
         
 
@@ -73,40 +72,49 @@ load_testimonial:function(){
     
 },
 
- 
-add_row:function (){
-                
-                var _token = $("input[name='_token']").val();
-                var cus_name = $("input[name='cus_name']").val();
-                var feedback = $("textarea[name='feedback']").val();
-                var user_photo = $("input[name='user_photo']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
-                
-                var count_error = 0;
-                if (cus_name.trim() == '') {
-                     $("input[name='cus_name']").addClass('has-error');
-                    count_error++;
-                   
-                } else{
-                     $("input[name='cus_name']").removeClass('has-error');
-                }
-                if (feedback.trim() == '') {
-                    $("textarea[name='feedback']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("textarea[name='feedback']").removeClass('has-error');
-                }
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-                if(count_error == 0){
-                
+refresh_validator:function (){
+            $("#frm_testimonial").bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: ':disabled',
+                    fields: {
+                        cus_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        feedback: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+//                        user_photo: {
+//                            validators: {
+//                                notEmpty: {
+//                                    message: 'Field required'
+//                                }
+//                            }
+//                        },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                    },
+
+            })  
+            .on('success.form.bv', function (e) {
                     
-                   var formData = new FormData($('#frm_testimonial')[0]);
+                    var formData = new FormData($('#frm_testimonial')[0]);
                     $.ajax({
                     url: BASE_URL+'/admin/testimonial/addrecord',
                     type:'POST',
@@ -118,8 +126,8 @@ add_row:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
                             $('#frm_testimonial')[0].reset()
                             admin.testimonial.load_testimonial();
                             $("#ins_tes").modal("hide");
@@ -128,11 +136,10 @@ add_row:function (){
                             return false;
                         }
                     }
-                });
-                }
-    
+                    });
+            });
+                
 },
-
 
 edit_row:function(id){
     
@@ -145,7 +152,6 @@ edit_row:function(id){
             success: function(data) {
                 var data=$.parseJSON(data);
                 if(data.status==1){
-                    $("#ins_tes").modal("show");
                     $("#u_photo").show();
                       
                     $("#id").val(data.content.id);
@@ -157,6 +163,7 @@ edit_row:function(id){
                     
                     var status_id = $("#status").val(data.content.status);
                     status_id.attr("selected","selected");
+                    $("#ins_tes").modal("show");
                     admin.testimonial.load_testimonial();
                 }
             }

@@ -92,15 +92,18 @@ class CmsController extends Controller
     
     public function check_slug(Request $request) {
         
-        $id = $request->input('id');
-        $slug_url = $request->input('slug');
-        $valid = TRUE;
+        $post = $request->input();
+        
+        $id = $post['id'];
+        $slug_url = $post['slug']; 
+        
         $slug =DB::table('cms')
-                ->select('id')
-                ->select('slug_url')
+                ->select('*')
                 ->where('id','!=',$id)
                 ->where('slug_url','=',$slug_url)
                 ->get();
+        
+        $valid = TRUE;
         $slug_all = count($slug);
             
             if($slug_all > 0){
@@ -192,7 +195,7 @@ class CmsController extends Controller
         $cms_list = $select_query->get();
         foreach ($cms_list as $row) {
             
-            $temp['id'] = $row->id;
+//            $temp['id'] = $row->id;
             $temp['title'] = $row->title;
             $temp['slug_url'] = $row->slug_url;
             $temp['meta_title'] = $row->meta_title;

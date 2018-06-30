@@ -3,6 +3,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
 
+        <form id="frm_testimonial" name="frm_testimonial" action="" onsubmit="return false" enctype="multipart/form-data">
             <!--        modal-->
             <div class="modal fade" id="ins_tes" role="dialog">
                 <div class="modal-dialog">
@@ -14,7 +15,6 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_testimonial" name="frm_testimonial" action="" onsubmit="return false" enctype="multipart/form-data">
                                 {{ csrf_field() }}
                                 <input type="hidden" name="id" id="id">
                                 <div class="form-group">
@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                        <img id="u_photo" src="" alt="No Image" class="form-control" style="height: 100px; width: 100px;"/>
+                                <img id="u_photo" src="" alt="No Image" class="form-control" style="height: 100px; width: 100px;"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="status" class="col-sm-3">Status</label>
@@ -49,7 +49,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </form>
 
                         </div>
                         <div class="modal-footer justify-content-center" >
@@ -59,6 +58,7 @@
                     </div>
                 </div>
             </div>
+        </form>
         </div>
     </div>
 </section>

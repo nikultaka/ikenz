@@ -28,8 +28,6 @@
                             <label for="slug" class="col-sm-2">Slug</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="slug" id="slug" />
-                                    <div><p id="slug_exist">Slug already exist</p></div>
-
                                 </div>
                         <div class="col-sm-1"></div>
                     </div>
@@ -61,7 +59,7 @@
                         <div class="col-sm-1"></div>
                             <label for="editor" class="col-sm-2">Meta Description</label>
                                 <div class="col-sm-8">
-                                    <textarea class="form-control" id="meta_description" name="meta_description" cols="50" rows="5"></textarea>
+                                        <textarea class="form-control" id="meta_description" name="meta_description" cols="50" rows="5"></textarea>
                                 </div>
                         <div class="col-sm-1"></div>
                     </div>

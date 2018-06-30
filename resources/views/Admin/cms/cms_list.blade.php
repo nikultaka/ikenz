@@ -21,7 +21,7 @@
                                     <table class="display nowrap table table-hover table-striped table-bordered cms-table" cellspacing="0" width="100%">
                                     <thead>
 
-                                        <th>ID</th>
+                                        <!--<th>ID</th>-->
                                         <th>Title</th>
                                         <th>Slug URL</th>
                                         <th>Meta Title</th>

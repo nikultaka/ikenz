@@ -2,11 +2,7 @@ admin.user = {
     initialize:function()
     {
         var this_class = this;
-
-        $('.sub_user').on('click',function (){
-            this_class.add_row();
-        });
-        
+     
         $('body').on('click','.btnEdit_user',function (){
             var id = $(this).data('id'); 
             this_class.edit_row(id);
@@ -17,16 +13,16 @@ admin.user = {
             this_class.delete_row(user_id);
         });
 
-        $("#email_ch").hide();
         admin.user.load_user();
-
-        $(".open-modal").on('click',function (){
-            $('#frm_user')[0].reset();
-//            $("#ins_user").show(); 
-        });
         
-},
+        admin.user.refresh_validator();
+        
+        $('#ins_user').on('hidden.bs.modal', function () {
+            $('#frm_user')[0].reset();
+            $('#frm_user').bootstrapValidator('resetForm', true);
+        });
 
+},
 
 load_user:function(){
     
@@ -55,87 +51,71 @@ load_user:function(){
     
 },
 
-add_row:function (){
-                var id = $("input[name='id']").val();
-                
-                var r_name = document.getElementById("role_name");
-                var role_name = r_name.options[r_name.selectedIndex].value;
-                
-                
-                var u_name = $("input[name='u_name']").val();
-                var email = $("input[name='email']").val();
-                var password = $("input[name='password']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
-                
-                var reemail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-
-                var count_error = 0;
-                if (role_name == "") {
-                     $("select[name='role_name']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='role_name']").removeClass('has-error');
-                }
-                if (u_name == '') {
-                     $("input[name='u_name']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("input[name='u_name']").removeClass('has-error');
-                }
-                if (email.trim() == '') {
-                     $("input[name='email']").addClass('has-error');
-                    count_error++;
-                } 
-                else {
-                    if(reemail.test(email.trim())){
-                    $.ajax({
-                            type: 'POST',
-                            url: BASE_URL+'/admin/user/email',
-                            data: {_token:admin.common.get_csrf_token_value(),email:email,id:id},
-
-                            success: function(data) {
-                                
-                                var data=$.parseJSON(data);
-                                
-                                if(data.valid == false){
-                                    count_error++;
-                                    $("#email_ch").show();
-                                    $("input[name='email']").addClass('has-error');
+refresh_validator:function (){
+    $("#frm_user").bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: ':disabled',
+                    fields: {
+                        role_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
                                 }
-                                else if(data.value == true){   
-                                    $("#email_ch").hide(); 
-                                    $("input[name='email']").removeClass('has-error');
-                                }
-                                else{
-                                    $("#email_ch").hide();
-                                    $("input[name='email']").removeClass('has-error');   
-                                }
-                    
                             }
-                        });
-                    }
-                    else{
-                        $("input[name='email']").addClass('has-error');
-                        count_error++;
-                    }
-                    
-                }
-                if (password.trim() == '') {
-                     $("input[name='password']").addClass('has-error');
-                    count_error++;
-                } else{
-                    $("input[name='password']").removeClass('has-error');
-                }
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-//                alert(count_error);
-                if(count_error == 0){
-                    
+                        },
+                        u_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        email: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                },
+                                emailAddress: {
+                                    message: 'The email address is not valid'
+                                },
+                                remote: {
+                                    type: 'POST',
+                                    url: BASE_URL+'/admin/user/email',
+                                    data: function(validator) {
+                                        return {
+                                            '_token':admin.common.get_csrf_token_value(),
+                                            email: validator.getFieldElements('email').val(),
+                                            id:$("#id").val()
+                                        };
+                                    },
+                                    message: 'The email is not available',
+                                    delay: 2000
+                                }
+                            }
+                        },
+                        password: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                    },
+                
+                })  
+                
+                .on('success.form.bv', function (e) {
                     $.ajax({
                     url: BASE_URL+'/admin/user/addrecord',
                     type:'POST',
@@ -145,20 +125,21 @@ add_row:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
-                            $('#frm_faq')[0].reset()
+                            $("#ins_user").modal("hide");
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
+                            $('#frm_user')[0].reset()
                              admin.user.load_user();
-                            $("#ins_faq").modal("hide");
 
                         }
                         else{
                             return false;
                         }
                     }
+                    });
                 });
-                }
-    
+                
+                
 },
 
 
@@ -174,7 +155,6 @@ edit_row:function(id){
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
-                        $("#ins_user").modal("show");
                         $("#id").val(data.content.id);
                         $("#u_name").val(data.content.name);
                         $("#email").val(data.content.email);
@@ -185,6 +165,7 @@ edit_row:function(id){
 
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
+                        $("#ins_user").modal("show");
                         admin.user.load_user();
                     }
                 }

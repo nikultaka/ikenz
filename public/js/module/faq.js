@@ -20,58 +20,15 @@ admin.faq = {
         admin.faq.load_faq();
         
         admin.faq.refresh_validator();
-        
-        
-                
-//            $('#frm_faq').on('shown.bs.modal', function() {
-//            });
-//                
-        $(".open-modal").on('click',function (){
+                  
+//        $(".open-modal").on('click',function (){
+//            $('form')[0].reset();
+//        });
 
+        $('#ins_faq').on('hidden.bs.modal', function () {
             $('#frm_faq')[0].reset();
             $('#frm_faq').bootstrapValidator('resetForm', true);
-            
-        });
-
-//        $('#frm_faq').remove('data-bv-field');
-//        $('#frm_faq').data('bootstrapValidator').resetForm();
-
-  
-//            $('#frm_faq').bootstrapValidator('resetForm', true);
-
-    //            $('#ins_faq').on('hidden.bs.modal', function () {
-    //                $("#frm_faq").validate().resetForm();
-    //            });
-
-            //        
-//        $('#ins_faq').empty();
-//            $('#frm_faq').reset();
-//            $('#frm_faq').removeClass('has-success','has-error');
-            
-//            return false;
-//            $("form#frm_faq").validator("destroy");
-//            var validator = $( "#frm_faq" ).validate();
-//            validator.resetForm();
-//        var validator = $("#ins_faq").validate();
-//        $('#ins_faq').on('shown.bs.modal', function (){
-//           validator.resetForm();
-//        });
-            $('.modal').on('hidden.bs.modal', function(){
-//                alert("fsd");
-//                $('#frm_faq').bootstrapValidator('resetForm', true);
-//                $('#frm_faq').bootstrapValidator('resetForm', true);
-//                alert("asdfs");
-//                $(this).find('form')[0].reset();
-            });
-
-//        $('.modal-overlay').on('click', function() {
-//            alert("dfs");
-//            $('.modal-overlay').hide();
-//            $('.modal').hide();
-//        });
-////            $('.modal').on('hidden.bs.modal', function () {
-//                $(this).find('input').val('');
-//            });
+          })
 
 },
 
@@ -108,7 +65,6 @@ load_faq:function(){
 
 refresh_validator:function()
 {
-    $('#frm_faq').data('bootstrapValidator', null);
     
     $("#frm_faq").bootstrapValidator({
                     feedbackIcons: {
@@ -116,6 +72,7 @@ refresh_validator:function()
                         invalid: 'glyphicon glyphicon-remove',
                         validating: 'glyphicon glyphicon-refresh'
                     },
+                    excluded: ':disabled',
                     fields: {
                         category_id: {
                             validators: {
@@ -163,10 +120,11 @@ refresh_validator:function()
                             $("#ins_faq").modal("hide");
 //                            $('#msg').html(data.msg);
 //                            $('#msg').attr('style','color:green;');
+                            $('#frm_faq')[0].reset()
                             $('#msg_main').html(data.msg);
                             $('#msg_main').attr('style','color:green;');
-                            $('#frm_faq')[0].reset();
                             $('#frm_faq').bootstrapValidator('resetForm', true);
+//                            window.location.reload();
                             admin.faq.load_faq();
                         }
                         else{
@@ -176,12 +134,6 @@ refresh_validator:function()
                     });
                     
         });
-},
-
-add_row:function (){
-            
-            
-
 },
 
 edit_row:function(id){

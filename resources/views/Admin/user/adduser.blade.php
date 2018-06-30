@@ -4,6 +4,7 @@
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
+            <form id="frm_user" name="frm_user" action="" method="post" onsubmit="return false;">
             <div class="modal fade" id="ins_user" role="dialog">
                 <div class="modal-dialog">
 
@@ -14,7 +15,6 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_user" name="frm_user">
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <input type="hidden" name="id" id="id">
@@ -38,17 +38,10 @@
                                         <input type="text" class="form-control" name="u_name" id="u_name" />
                                     </div>
                                 </div>
-<!--                                <div class="form-group">
-                                    <label for="l_name" class="col-sm-3">Last Name</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="l_name" id="l_name" />
-                                    </div>
-                                </div>-->
                                 <div class="form-group">
                                     <label for="email" class="col-sm-3">Email</label>
                                     <div class="col-sm-9">
                                         <input type="email" class="form-control" name="email" id="email" />
-                                        <div id="email_ch"><p>Email already exist</p></div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -67,7 +60,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </form>
 
                         </div>
                         <div class="modal-footer justify-content-center" >
@@ -77,6 +69,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </section>

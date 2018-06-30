@@ -200,17 +200,16 @@ class UserController extends Controller
     
     public function check_email(Request $request) {
         
-        $post = $request->input();        
+        $post = $request->input(); 
         $id = $post['id'];
         $email_id = $post['email'];
-        $valid = TRUE;
+        
         $email =DB::table('users')
-                ->select('id')
-                ->select('email')
+                ->select('*')
                 ->where('id','!=',$id)
                 ->where('email','=',$email_id)
                 ->get();
-        
+        $valid = TRUE;
         $email_all = count($email);
             
             if($email_all > 0){

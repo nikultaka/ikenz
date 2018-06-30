@@ -3,10 +3,6 @@ admin.user_role = {
     {
         var this_class = this;
 
-        $('.sub_user_cat').on('click',function (){
-            this_class.add_row();
-        });
-        
         $('body').on('click','.btnEdit_user_cat',function (){
             var id = $(this).data('id'); 
             this_class.edit_row(id);
@@ -18,12 +14,12 @@ admin.user_role = {
         });
 
         admin.user_role.load_user_role();
+        admin.user_role.refresh_validator();
         
-        $(".open-modal").on('click',function (){
+        $('#ins_user_cat').on('hidden.bs.modal', function () {
             $('#frm_user_cat')[0].reset();
+            $('#frm_user_cat').bootstrapValidator('resetForm', true);
         });
-        
-        
 
 },
 
@@ -53,30 +49,33 @@ load_user_role:function(){
     
 },
 
- 
-add_row:function (){
+refresh_validator:function (){
+            $("#frm_user_cat").bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: ':disabled',
+                    fields: {
+                        role_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                    },
                 
-                var role_name = $("input[name='role_name']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
-                
-                var count_error = 0;
-                if (role_name.trim() == '') {
-                     $("input[name='role_name']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("input[name='role_name']").removeClass('has-error');
-                }
-                
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-                if(count_error == 0){
-                
-                    
+                })  
+                .on('success.form.bv', function (e) {
                     $.ajax({
                     url: BASE_URL+'/admin/user_role/addrecord',
                     type:'POST',
@@ -86,24 +85,21 @@ add_row:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
+                            $("#ins_user_cat").modal("hide");
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
                             $('#frm_user_cat')[0].reset()
                             admin.user_role.load_user_role();
-                            $("#ins_user_cat").modal("hide");
                         }
                         else{
                             return false;
                         }
                     }
+                }); 
                 });
-                }
-    
+                
 },
-
-
 edit_row:function(id){
-    
     
         if(id > 0){
             $.ajax({
@@ -114,12 +110,12 @@ edit_row:function(id){
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
-                        $("#ins_user_cat").modal("show");
                         $("#id").val(data.content.id);
                         $("#role_name").val(data.content.role_name);
     
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
+                        $("#ins_user_cat").modal("show");
                         admin.user_role.load_user_role();
                     }
                 }
