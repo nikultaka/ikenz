@@ -6,6 +6,8 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\Cms;
 use App\Models\SiteSetting as site;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class CmsController extends Controller
 {
@@ -15,10 +17,19 @@ class CmsController extends Controller
 //        $this->middleware('admin');
     }
     public function index(){
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("CMS",URL::to('/admin/cms/list'));
+        CommonHelper::add_breadcrumb("Add CMS",URL::to('/admin/cms'));
+        //This is for breadcrumb
+        
         return view('Admin.cms.add');
     }
     
     public function cms_list(){
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("CMS",URL::to('/admin/cms/list'));
+        
+        
         return view('Admin.cms.cms_list');
     }
     
