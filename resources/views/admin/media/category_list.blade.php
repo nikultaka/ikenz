@@ -23,9 +23,10 @@
               <table class="table table-bordered table-striped with-check media_category_table">
                 <thead>
                     
-                    <th>ID</th>
+                    <!--<th>ID</th>-->
                     <th>Category Name</th>
                     <th>status</th>
+                    <th>Created Date</th>
                     <th>Action</th>
                 </thead>
               </table>

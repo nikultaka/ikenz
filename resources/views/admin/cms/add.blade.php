@@ -35,7 +35,7 @@
                         <div class="col-sm-1"></div>
                             <label for="description" class="col-sm-2">Description Editor</label>
                                 <div class="col-sm-8">
-                                    <textarea id="description" class="form-control" name="description" rows="10" cols="80"></textarea>
+                                    <textarea id="description" class="form-control" class="editor" name="description" rows="10" cols="80"></textarea>
                                 </div>
                         <div class="col-sm-1"></div>
                     </div>

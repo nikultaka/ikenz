@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class NewsletterController extends Controller
 {
@@ -17,6 +19,10 @@ class NewsletterController extends Controller
     
     public function index()
     {   
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Newsletter",URL::to('/admin/newsletter'));
+        //This is for breadcrumb
+        
         return view("admin.newsletter.newsletter_list");
         
     }

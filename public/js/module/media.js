@@ -3,10 +3,6 @@ admin.media_category = {
     {
         var this_class = this;
 
-        $('.sub_media').on('click',function (){
-            this_class.add_row();
-        });
-        
         $('body').on('click','.btnEdit_media',function (){
             var id_media = $(this).data('id'); 
             this_class.edit_row(id_media);
@@ -18,7 +14,12 @@ admin.media_category = {
         });
 
         admin.media_category.load_media_category();
+        admin.media_category.refresh_validator();
           
+        $('#ins_media').on('hidden.bs.modal', function () {
+            $('#frm_media')[0].reset();
+            $('#frm_media').bootstrapValidator('resetForm', true);
+        })
           
 
 },
@@ -39,9 +40,10 @@ load_media_category:function(){
                         data: admin.common.get_csrf_toke_object_data()
                     },
                     columns: [
-                        { data: 'id', name: 'id'},
+//                        { data: 'id', name: 'id'},
                         { data: 'category_name', name: 'category_name'},
                         { data: 'status', name: 'status'},
+                        { data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action', orderable: false, searchable: false},
                     ],
     }); 
@@ -49,30 +51,35 @@ load_media_category:function(){
 },
 
  
-add_row:function (){
+refresh_validator:function()
+{
+    $("#frm_media").bootstrapValidator({
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok',
+                        invalid: 'glyphicon glyphicon-remove',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    excluded: ':disabled',
+                    fields: {
+                        category_name: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                        status: {
+                            validators: {
+                                notEmpty: {
+                                    message: 'Field required'
+                                }
+                            }
+                        },
+                    },
                 
-                var category_name = $("input[name='category_name']").val();
-                var demo = document.getElementById("status");
-                var status = demo.options[demo.selectedIndex].value;
+                })
                 
-                var count_error = 0;
-                if (category_name.trim() == '') {
-                     $("input[name='category_name']").addClass('has-error');
-                    count_error++;
-                   
-                } else{
-                     $("input[name='category_name']").removeClass('has-error');
-                }
-                
-                if (status == "") {
-                     $("select[name='status']").addClass('has-error');
-                    count_error++;
-                } else{
-                     $("select[name='status']").removeClass('has-error');
-                }
-                if(count_error == 0){
-                
-                    
+                .on('success.form.bv', function (e) {
                     $.ajax({
                     url: BASE_URL+'/admin/media/addrecord',
                     type:'POST',
@@ -82,21 +89,19 @@ add_row:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
-                            $('#msg').html(data.msg);
-                            $('#msg').attr('style','color:green;');
+                            $("#ins_media").modal("hide");
+                            $('#msg_main').html(data.msg);
+                            $('#msg_main').attr('style','color:green;');
                             $('#frm_media')[0].reset()
                             admin.media_category.load_media_category();
-                            $("#ins_media").modal("hide");
                         }
                         else{
                             return false;
                         }
                     }
+                    });
                 });
-                }
-    
 },
-
 
 edit_row:function(id_media){
     
@@ -110,13 +115,12 @@ edit_row:function(id_media){
                     var data=$.parseJSON(data);
                     if(data.status==1){
 
-                        $("#ins_media").modal("show");
 
                         $("#id_media").val(data.content.id);
                         $("#category_name").val(data.content.category_name);
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
-//                        $('select[name^="status"] option[value=]').attr("selected","selected");
+                        $("#ins_media").modal("show");
                         admin.media_category.load_media_category();
                     }
                 }

@@ -11,6 +11,8 @@ use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
 use Image;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class TestimonialController extends Controller
 {
@@ -21,11 +23,11 @@ class TestimonialController extends Controller
     
     public function index()
     {
-//        $data_result=array();
-//        $test_list = Testimonial::where('status', '=', 1)->get();
-//        $data_result['test_list']=$test_list;
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Testimonial",URL::to('/admin/testimonial'));
+        //This is for breadcrumb
+        
         return view("admin.testimonial.testimonial_list");
-//        ->with($data_result);
         
     }
     

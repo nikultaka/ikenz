@@ -11,6 +11,9 @@ use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
+
 
 class UserController extends Controller
 {
@@ -21,6 +24,10 @@ class UserController extends Controller
     
     public function index()
     {
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("User",URL::to('/admin/user'));
+        //This is for breadcrumb
+        
         $data_result=array();
         $user_role = DB::table('user_role')->where('status', '=', 1)->get();
         $data_result['user_role']=$user_role;
@@ -184,8 +191,6 @@ class UserController extends Controller
             $id = "";
         }
         
-//        print_r($data);exit;
-
 
         $json_data = array(
             "draw" => intval($requestData['draw']),
@@ -207,6 +212,7 @@ class UserController extends Controller
         $email =DB::table('users')
                 ->select('*')
                 ->where('id','!=',$id)
+                ->where('status','!=',-1)
                 ->where('email','=',$email_id)
                 ->get();
         $valid = TRUE;

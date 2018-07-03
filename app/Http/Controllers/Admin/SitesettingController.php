@@ -6,6 +6,9 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting as site;
 use Image;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
+
 class SitesettingController extends Controller
 {
      public function __construct()
@@ -13,8 +16,13 @@ class SitesettingController extends Controller
        // $this->middleware('admin');
     }
     public function index(){
+        
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Setting",URL::to('/admin/setting'));
+        //This is for breadcrumb
+        
         $data=array();
-        $result=DB::table('site_setting_option')->get();
+        $result=DB::table('site_setting')->get();
         foreach ($result as $key=>$value){
             $data[$value->option_name] =$value->option_value;
         }

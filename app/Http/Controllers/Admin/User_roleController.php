@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class User_roleController extends Controller
 {
@@ -19,6 +21,10 @@ class User_roleController extends Controller
     
     public function index()
     {
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("User Role",URL::to('/admin/user_role'));
+        //This is for breadcrumb
+        
         return view("admin.user.user_role_list");
         
     }

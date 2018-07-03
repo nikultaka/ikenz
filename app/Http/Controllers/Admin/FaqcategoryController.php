@@ -10,6 +10,8 @@ use App\Models\Faq;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class FaqcategoryController extends Controller
 {
@@ -20,6 +22,10 @@ class FaqcategoryController extends Controller
     
     public function index()
     {
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Faq category",URL::to('/admin/faq_category'));
+        //This is for breadcrumb
+        
         return view("admin.faq_category.faqcategory_list");
         
     }

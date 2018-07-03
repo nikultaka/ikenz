@@ -10,6 +10,8 @@ use App\Models\Contact_us;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class Contact_usController extends Controller
 {
@@ -21,6 +23,10 @@ class Contact_usController extends Controller
     
     public function index()
     {
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Contact us",URL::to('/admin/contact_us'));
+        //This is for breadcrumb
+        
         return view("admin.contact_us.contact_us_list");
         
     }

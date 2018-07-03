@@ -9,11 +9,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Image;
 use Video;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class UploadmediaController extends Controller
 {
     private $photos_path;
-     public function __construct()
+    public function __construct()
     {
 
         //$this->middleware('auth');
@@ -22,6 +24,11 @@ class UploadmediaController extends Controller
 
     }
     public function index(){
+        
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Media Upload",URL::to('/admin/upload-media'));
+        //This is for breadcrumb
+        
         $data=array();
         $data['media_category']=DB::table('media_category')->where('status','1')->get();
         return view('Admin.media.Upload_media')->with($data);

@@ -27,22 +27,18 @@ admin.advance_custom = {
                     processing: true,
                     serverSide: true,
                     "order": [[ 0, "desc" ]],
-                    headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                         },
                     ajax: {
                         url: BASE_URL+'/admin/advancesettings/getdata',
                         type: "POST",
                         data: admin.common.get_csrf_toke_object_data()
                     },
                     columns: [
-                        { data: 'id', name: 'id'},
+//                        { data: 'id', name: 'id'},
                         { data: 'label', name: 'label'},
                         { data: 'fild_name', name: 'fild_name'},
                         { data: 'fild_value', name: 'fild_value'},
                         { data: 'status', name: 'status'},
-                        
-                        
+                        { data: 'created_at', name: 'created_at'},
                         {data: 'action', name: 'action'},
                             ],
         });

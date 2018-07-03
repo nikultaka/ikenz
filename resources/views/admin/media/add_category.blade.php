@@ -3,6 +3,7 @@
 
     <div class="col-xs-12">
         <div class="card card-primary">
+            <form id="frm_media" name="frm_media" action="" method="post" onsubmit="return false;">
             <!--        modal-->
             <div class="modal fade" id="ins_media" role="dialog">
                 <div class="modal-dialog">
@@ -14,7 +15,6 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_media" name="frm_media">
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <input type="hidden" name="id_media" id="id_media">
@@ -27,6 +27,7 @@
                                     <label for="status" class="col-sm-3">Status</label>
                                     <div class="col-sm-9">
                                         <select id="status" name="status" class="form-control">
+                                            <option value="">----Select Status----</option>
                                             <option value="1">Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
@@ -38,7 +39,6 @@
                                     </div>
                                 </div>
 
-                            </form>
 
                         </div>
                         <div class="modal-footer justify-content-center" >
@@ -48,6 +48,7 @@
                     </div>
                 </div>
             </div>
+        </form>
         </div>
     </div>
 </section>

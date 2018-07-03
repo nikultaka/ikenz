@@ -24,11 +24,12 @@
               <table class="table table-bordered table-striped with-check advance_custome_filds_table">    
                 <thead>
                     
-                <th>ID</th>
+                <!--<th>ID</th>-->
                 <th>Label</th>
                 <th>Fild Name</th>
                 <th>Fild value</th>
                 <th>Status</th>
+                <th>Created Date</th>
                 <th>Action</th>
                 </thead>
               </table>

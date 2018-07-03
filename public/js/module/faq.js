@@ -2,10 +2,6 @@ admin.faq = {
     initialize:function()
     {
         var this_class = this;
-
-//        $('.sub_faq').on('click',function (){
-//            this_class.add_row();
-//        });
         
         $('body').on('click','.btnEdit_faq',function (){
             var id = $(this).data('id'); 
@@ -21,10 +17,6 @@ admin.faq = {
         
         admin.faq.refresh_validator();
                   
-//        $(".open-modal").on('click',function (){
-//            $('form')[0].reset();
-//        });
-
         $('#ins_faq').on('hidden.bs.modal', function () {
             $('#frm_faq')[0].reset();
             $('#frm_faq').bootstrapValidator('resetForm', true);
@@ -118,13 +110,10 @@ refresh_validator:function()
                         var data=$.parseJSON(data);
                         if(data.status==1){
                             $("#ins_faq").modal("hide");
-//                            $('#msg').html(data.msg);
-//                            $('#msg').attr('style','color:green;');
                             $('#frm_faq')[0].reset()
                             $('#msg_main').html(data.msg);
                             $('#msg_main').attr('style','color:green;');
                             $('#frm_faq').bootstrapValidator('resetForm', true);
-//                            window.location.reload();
                             admin.faq.load_faq();
                         }
                         else{
@@ -159,8 +148,8 @@ edit_row:function(id){
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected","selected");
                         
-                        admin.faq.refresh_validator();
-                        $("#frm_faq").bootstrapValidator('disableSubmitButtons',false);
+//                        admin.faq.refresh_validator();
+//                        $("#frm_faq").bootstrapValidator('disableSubmitButtons',false);
                         
                         $("#ins_faq").modal("show");
                         //admin.faq.load_faq();

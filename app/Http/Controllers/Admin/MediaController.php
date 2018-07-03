@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting as site;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class MediaController extends Controller
 {
@@ -13,6 +15,11 @@ class MediaController extends Controller
 //        $this->middleware('admin');
     }
     public function index(){
+        
+         //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Media",URL::to('/admin/media'));
+        //This is for breadcrumb
+        
         return view('Admin.media.category_list');
     }
     
@@ -25,19 +32,31 @@ class MediaController extends Controller
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('id_media')){
-                $id_media = $request->input('id_media');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id_media'])){
+                $id_media = $post['id_media'];
             }
-            $data['category_name'] = $request->input('category_name');
-            $data['status'] = $request->input('status');;
+            
+//            if($request->input('id_media')){
+//                $id_media = $request->input('id_media');
+//            }
+            $data['category_name'] = isset($post['category_name'])?$post['category_name']:'';
+            $data['status'] = isset($post['status'])?$post['status']:'';
+//            $data['category_name'] = $request->input('category_name');
+//            $data['status'] = $request->input('status');;
             
             
-            if(isset($_POST['id_media']) && $_POST['id_media'] != ''){
+            if(isset($post['id_media']) && $post['id_media'] != ''){
+                
                 $data['updated_at']=date("Y-m-d h:i:s");
+                
                 $returnresult= DB::table('media_category')
                    ->where('id',$id_media)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
@@ -46,41 +65,59 @@ class MediaController extends Controller
             }
             else{
                 $data['created_at']=date("Y-m-d h:i:s");
-                $data['updated_at']=date("Y-m-d h:i:s");
                 if(DB::table('media_category')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }
             }
         }
         echo json_encode($result);
+        exit;
         
     }
     
-    public function editmedia(){
-        $id=$_POST['id_media'];
-        $media =DB::table('media_category')->where('id','=',$id)->first();
+    public function editmedia(Request $request){
+        
+        $post = $request->input();
         $data_result=array();
-        $data_result['status']=1;
-        $data_result['content']=$media;
-        echo json_encode($data_result);exit;
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id_media'])?$post['id_media']:'';
+            if($id != ""){
+                
+            $media =DB::table('media_category')
+                    ->where('id','=',$id)->first();
+            
+            $data_result['status']=1;
+            $data_result['content']=$media;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+        
     }
     
-    public function deleterecord(){
-        $id=$_POST['id_media'];
-        if(isset($id) && $id !=''){
-            DB::table('media_category')
+    public function deleterecord(Request $request){
+        
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id_media'])?$post['id_media']:'';
+            if($id != ""){
+                DB::table('media_category')
                     ->where('id', $id)
                     ->update(array('status'=>-1));
-        $data_result=array();
-        $data_result['status']=1;
-        $data_result['msg']="Record deleted success.";
-        
-        echo json_encode($data_result);exit;
+                
+            $data_result['status']=1;
+            $data_result['msg']="Record deleted successfully.";
+            }
         }
-        else {
-            return response()->json(['error'=>'record Not Found']);
-        }   
+        echo json_encode($data_result);
+        exit;
+        
     }
     
     

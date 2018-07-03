@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Datatables;
 use App\Http\Requests;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class AdvancesettingController extends Controller
 {
@@ -16,10 +18,14 @@ class AdvancesettingController extends Controller
      */
      public function __construct()
     {
-        $this->middleware('admin');
+//        $this->middleware('admin');
     }
     public function index()
-    {
+    {   
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Advance Settings",URL::to('/admin/advancesettings'));
+        //This is for breadcrumb
+        
         return view('Admin.setting.advance_custom_filds');
     }
 
@@ -55,7 +61,7 @@ class AdvancesettingController extends Controller
             
             
             if(isset($_POST['fild_id']) && $_POST['fild_id'] != ''){
-                $data['gm_updated']=date("Y-m-d h:i:s");
+                $data['updated_at']=date("Y-m-d h:i:s");
                 $returnresult= DB::table('advance_custom_details')
                    ->where('id',$fild_id)     
                    ->update($data);
@@ -66,8 +72,7 @@ class AdvancesettingController extends Controller
            
             }
             else{
-                $data['gm_created']=date("Y-m-d h:i:s");
-                $data['gm_updated']=date("Y-m-d h:i:s");
+                $data['created_at']=date("Y-m-d h:i:s");
                 if(DB::table('advance_custom_details')->insert($data)){
                 $result['status']=1;
                 $result['msg']="Record add sucessfully..!";
@@ -175,14 +180,15 @@ class AdvancesettingController extends Controller
             2 => 'fild_name',
             3 => 'fild_value',
             4 => 'status',
-            5 => 'gm_created',
+            5 => 'created_at',
+            6 => 'updated_at',
         );
         
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by,$requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id","DESC");
+            $select_query->orderBy("created_at","DESC");
         }
         
         //This is for count
@@ -216,7 +222,8 @@ class AdvancesettingController extends Controller
             $temp['label'] = $row->label;
             $temp['fild_name'] = $row->fild_name;
             $temp['fild_value'] = $row->fild_value;
-            $temp['gm_created'] = $row->gm_created;
+            $temp['created_at'] = $row->created_at;
+            $temp['updated_at'] = $row->updated_at;
             $temp['status'] = $row->status;
 
             $id = $row->id;

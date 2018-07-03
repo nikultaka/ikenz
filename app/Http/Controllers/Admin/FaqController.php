@@ -11,6 +11,8 @@ use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
+use App\Helper\CommonHelper;
+use Illuminate\Support\Facades\URL;
 
 class FaqController extends Controller
 {
@@ -21,7 +23,11 @@ class FaqController extends Controller
     }
     
     public function index()
-    {
+    {   
+        //This is for breadcrumb
+        CommonHelper::add_breadcrumb("Faq",URL::to('/admin/faq'));
+        //This is for breadcrumb
+        
         $data_result=array();
         $cate_id = DB::table('faq_category')->where('status', '=', 1)->get();
         $data_result['cate_id']=$cate_id;

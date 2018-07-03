@@ -2,12 +2,12 @@
     <nav class="navbar top-navbar navbar-expand-md navbar-light">
         <!-- Logo -->
         <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="{{url('admin/dashboard')}}">
                 <!-- Logo icon -->
-                <b><img src="img_old/logo.png" alt="homepage" class="dark-logo" /></b>
+                <b><img src="{{url('img_old/logo.png')}}" alt="homepage" class="dark-logo" style="width: 240px;"/></b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
-                <span><img src="images/logo-text.png" alt="homepage" class="dark-logo" /></span>
+                <!--<span><img src="{{url('images/logo.png')}}" alt="homepage" class="dark-logo" /></span>-->
             </a>
         </div>
         <!-- End Logo -->
