@@ -132,7 +132,7 @@ class TestimonialController extends Controller
         
     }
     
-     public function deleterecord(Request $request){
+    public function deleterecord(Request $request){
 
         $post = $request->input();
         $data_result=array();
@@ -155,7 +155,7 @@ class TestimonialController extends Controller
         
     }
         
-        public function anyData(){
+    public function anyData(){
         
         $requestData = $_REQUEST;
 

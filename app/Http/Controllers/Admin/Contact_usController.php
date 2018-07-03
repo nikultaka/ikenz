@@ -124,7 +124,7 @@ class Contact_usController extends Controller
     }
     
     
-     public function deleterecord(Request $request){
+    public function deleterecord(Request $request){
         
         $post = $request->input();
         $data_result=array();
