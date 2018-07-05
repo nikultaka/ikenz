@@ -51,7 +51,7 @@
 
 
 <!--Model Popup-->
-<form id="advance-custom-fild-form" onsubmit="return false;" data-toggle="validator" role="form">
+<form id="advance-custom-fild-form" name="advance-custom-fild-form" method="post" action="" onsubmit="return false;" >
 
 		{{ csrf_field() }}
 <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -65,30 +65,28 @@
             </div>
             <div class="modal-body">
                 <p id="msg"></p>
-                <input type="hidden" name="fild_id" id="fild_id" value="">
-                <div class="control-group">
-                    <label class="control-label">Label</label>
-                    <div class="controls">
-                      <input type="text" class="form-control" id="adc_label" name="adc_label" placeholder="Please enter label name" >
+                <input type="hidden" name="id" id="id" value="">
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Label</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="adc_label" name="adc_label" >
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">Fild name</label>
-                    <div class="controls">
-                      <input type="text" class="form-control" id="adc_fild_name" name="adc_fild_name" placeholder="Please enter fild name" required>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Fild name</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="adc_fild_name" name="adc_fild_name">
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">Fild Value</label>
-                    <div class="controls">
-                      <input type="text" class="form-control" id="adc_fild_value" name="adc_fild_value" placeholder="Please enter fild value" required>
+                <div class="form-group">
+                    <label class="control-label col-sm-3">Fild Value</label>
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="adc_fild_value" name="adc_fild_value" >
                     </div>
                 </div>
-                
-                
             </div>
             <div class="modal-footer d-flex justify-content-center">
-                <button class="btn btn-deep-orange btn-info add-advance-custom-fild-details">Save</button>
+                <button type="submit" name="submit" class="btn btn-deep-orange btn-info add-advance-custom-fild-details">Save</button>
             </div>
         </div>
     </div>

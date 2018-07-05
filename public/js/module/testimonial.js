@@ -26,6 +26,8 @@ admin.testimonial = {
         $('#ins_tes').on('hidden.bs.modal', function () {
             $('#frm_testimonial')[0].reset();
             $('#frm_testimonial').bootstrapValidator('resetForm', true);
+            $("#u_photo").hide();
+            $('#u_photo').attr('src', '');
         });
         
 
@@ -126,11 +128,11 @@ refresh_validator:function (){
                     success: function(data) {
                         var data=$.parseJSON(data);
                         if(data.status==1){
+                            $("#ins_tes").modal("hide");
                             $('#msg_main').html(data.msg);
                             $('#msg_main').attr('style','color:green;');
                             $('#frm_testimonial')[0].reset()
                             admin.testimonial.load_testimonial();
-                            $("#ins_tes").modal("hide");
                         }
                         else{
                             return false;
@@ -158,7 +160,7 @@ edit_row:function(id){
                     $("#cus_name").val(data.content.customer_name);
                     $("#feedback").val(data.content.feedback);
                     
-                    $('#u_photo').attr('src',BASE_URL+'/upload/testimonial/'+ data.content.user_photo);
+                    $('#u_photo').attr('src',BASE_URL+'/upload/testimonial/thumbnail/'+ data.content.user_photo);
                     $("#hdn_file").val(data.content.user_photo);
                     
                     var status_id = $("#status").val(data.content.status);

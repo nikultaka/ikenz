@@ -200,7 +200,7 @@ class UploadmediaController extends Controller
             }
             $temp['media_name'] = $media_name;
             $temp['media_type'] = $mediatype;
-           $temp['category_name']=$row->category_name;
+            $temp['category_name']=$row->category_name;
             $id = $row->id;
             
             

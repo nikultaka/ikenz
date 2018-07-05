@@ -53,8 +53,8 @@ class SitesettingController extends Controller
             $data['option_name']=$key;
             $data['option_value']=$option;
             $data['status']=1;
-            $data['created_date']=$current_date_time;
-            $data['updated_date']=$current_date_time;
+            $data['created_at']=$current_date_time;
+            $data['updated_at']=$current_date_time;
             $site->insert_value_site_setting($data);
             $data['status']=1;
             $data['msg']="Data Add Successfully..!";
@@ -98,8 +98,8 @@ class SitesettingController extends Controller
                     $data['option_name']='site_logo';
                     $data['option_value']=$destFile;
                     $data['status']=1;
-                    $data['created_date']=date('Y-m-d');
-                    $data['updated_date']=date('Y-m-d');
+                    $data['created_at']=date('Y-m-d');
+                    $data['updated_at']=date('Y-m-d');
                     $site->insert_value_site_setting($data);
                  }
             }

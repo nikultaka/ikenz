@@ -50,36 +50,53 @@ class AdvancesettingController extends Controller
         $data=array();
         $result=array();
         $result['status']=0;
-        if($_POST){
-            if($request->input('fild_id')){
-                $fild_id=$request->input('fild_id');
+        
+        $post = $request->input();
+        
+        if(!empty($post)){
+            if(isset($post['id'])){
+                $id = $post['id'];
             }
-            $data['label']=$request->input('adc_label');
-            $data['fild_name']=$request->input('adc_fild_name');
-            $data['fild_value']=$request->input('adc_fild_value');
+//        }
+//        
+//        if($_POST){
+//            if($request->input('fild_id')){
+//                $fild_id=$request->input('fild_id');
+//            }
+            $data['label'] = isset($post['adc_label'])?$post['adc_label']:'';
+            $data['fild_name'] = isset($post['adc_fild_name'])?$post['adc_fild_name']:'';
+            $data['fild_value'] = isset($post['adc_fild_value'])?$post['adc_fild_value']:'';
+//            $data['label']=$request->input('adc_label');
+//            $data['fild_name']=$request->input('adc_fild_name');
+//            $data['fild_value']=$request->input('adc_fild_value');
             $data['status']=1;
             
             
-            if(isset($_POST['fild_id']) && $_POST['fild_id'] != ''){
+            if(isset($post['id']) && $post['id'] != ''){
+                
                 $data['updated_at']=date("Y-m-d h:i:s");
+                
                 $returnresult= DB::table('advance_custom_details')
-                   ->where('id',$fild_id)     
+                   ->where('id',$id)     
                    ->update($data);
+                
                 if($returnresult){
                     $result['status']=1;
                     $result['msg']='Record updated successfully.!';
                 }
-           
             }
             else{
+                
                 $data['created_at']=date("Y-m-d h:i:s");
+                
                 if(DB::table('advance_custom_details')->insert($data)){
-                $result['status']=1;
-                $result['msg']="Record add sucessfully..!";
-            }
+                    $result['status']=1;
+                    $result['msg']="Record add sucessfully..!";
+                }   
             }
         }
         echo json_encode($result);
+        exit;
         
     }
 
@@ -102,22 +119,27 @@ class AdvancesettingController extends Controller
      */
     public function edit(Request $request)
     {
-        $result=array();
-        $result['status']=0;
         
-        if(isset($_POST['fildid']) && $_POST['fildid'] !='' ){
-            $fild_id=$request->input('fildid');
-           $returnresult= DB::table('advance_custom_details')
-                   ->where('id',$fild_id)     
-                   ->first();
-                        
-           if($returnresult){
-               $result['status']=1;
-               $result['msg']=$returnresult;
-           } 
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
+        
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+            $adv_set =DB::table('advance_custom_details')
+                    ->where('id','=',$id)->first();
+        
+            $data_result=array();
+            $data_result['status']=1;
+            $data_result['content']=$adv_set;
+            }
         }
-        echo json_encode($result);
+        echo json_encode($data_result);
+        exit;
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -139,25 +161,29 @@ class AdvancesettingController extends Controller
      */
     public function destroy(Request $request)
     {   
-        $result=array();
-        $result['status']=0;
+        $post = $request->input();
+        $data_result=array();
+        $data_result['status'] = 0;
         
-        if(isset($_POST['fildid']) && $_POST['fildid'] !='' ){
-            $fild_id=$request->input('fildid');
-           $returnresult= DB::table('advance_custom_details')
-                   ->where('id',$fild_id)     
-                   ->update(array('status'=>-1));
-                        
-           if($returnresult){
-               $result['status']=1;
-               $result['msg']='Record deleted successfully.!';
-           } 
+        if(!empty($post)){
+            $id = isset($post['id'])?$post['id']:'';
+            if($id != ""){
+
+                DB::table('advance_custom_details')
+                    ->where('id', $id)
+                    ->update(array('status'=>-1));
+
+                $data_result['status']=1;
+                $data_result['msg']="Record deleted successfully.";
+            }
         }
-        echo json_encode($result);
+        echo json_encode($data_result);
+        exit;
+        
     }
         
         
-         public function getdatatable()
+    public function getdatatable()
     {
         
         $requestData = $_REQUEST;
@@ -197,13 +223,7 @@ class AdvancesettingController extends Controller
         //This is for count
         
         $result= $select_query->count();
-        $totalData = 0;
-        $totalFiltered = 0;
-        if ($result > 0) {
-            $totalData = $result;
-            $totalFiltered = $result;
-        }
-
+        
         //This is for pagination
         if (isset($requestData['start']) && $requestData['start'] != '' && isset($requestData['length']) && $requestData['length'] != '') {
             $select_query->offset($requestData['start']);
@@ -212,10 +232,6 @@ class AdvancesettingController extends Controller
 
         $service_price_list = $select_query->get();
         
-        $arr_data = Array();
-        $arr_data = $result;
-
-
         foreach ($service_price_list as $row) {
             
             $temp['id'] = $row->id;
@@ -227,7 +243,6 @@ class AdvancesettingController extends Controller
             $temp['status'] = $row->status;
 
             $id = $row->id;
-            
             
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEditfilddetails"> Edit</a>  	&nbsp;';
             $action .= '<a data-id="'.$id.'" class="btn btn-xs btn-danger btnDeletefilddetails"> Delete</a></div>';
@@ -241,8 +256,8 @@ class AdvancesettingController extends Controller
 
         $json_data = array(
             "draw" => intval($requestData['draw']),
-            "recordsTotal" => intval($totalData),
-            "recordsFiltered" => intval($totalData),
+            "recordsTotal" => intval($result),
+            "recordsFiltered" => intval($result),
             "data" => $data
             
         );

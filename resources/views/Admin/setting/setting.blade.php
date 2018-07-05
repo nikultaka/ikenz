@@ -57,11 +57,11 @@
                   <div class="card-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Site Title</label>
-                    <input class="form-control" id="site_title" name="site_title" placeholder="Enter Site Title" value="{{$site_title}}" type="text">
+                    <input class="form-control" id="site_title" name="site_title" placeholder="Enter Site Title" value="{{isset($site_title) ? $site_title : ""}}" type="text">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Email Address</label>
-                    <input class="form-control" id="email_id" name="email_id" value="{{$user_email}}" placeholder="Email Address" type="email">
+                    <input class="form-control" id="email_id" name="email_id" value="{{isset($user_email) ? $user_email : ""}}" placeholder="Email Address" type="email">
                   </div>
                     <hr>
                         <h3 class="card-title">Smtp setting</h3>
@@ -69,15 +69,15 @@
                     
                   <div class="form-group">
                     <label for="exampleInputPassword1">Email Address</label>
-                    <input class="form-control" id="smtp_email" name="smtp_email" placeholder="email" value="{{$smtp_email}}" type="email">
+                    <input class="form-control" id="smtp_email" name="smtp_email" placeholder="email" value="{{isset($smtp_email) ? $smtp_email : ""}}" type="email">
                   </div>
                      <div class="form-group">
                     <label for="exampleInputPassword1">password</label>
-                    <input class="form-control" id="smtp_password" name="smtp_password" value="{{$smtp_password}}" placeholder="Password" type="password">
+                    <input class="form-control" id="smtp_password" name="smtp_password" value="{{isset($smtp_password) ? $smtp_password : ""}}" placeholder="Password" type="password">
                   </div>
                     <div class="form-group">
                     <label for="exampleInputPassword1">SMTP host</label>
-                    <input class="form-control" id="smtp_host" name="smtp_host" placeholder="SMTP host" value="{{$smtp_host}}" type="text">
+                    <input class="form-control" id="smtp_host" name="smtp_host" placeholder="SMTP host" value="{{isset($smtp_host) ? $smtp_host : ""}}" type="text">
                   </div>
                      <div class="form-group">
                     <label for="exampleInputPassword1">Port</label>

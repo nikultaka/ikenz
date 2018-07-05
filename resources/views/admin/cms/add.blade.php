@@ -63,7 +63,7 @@
                                 </div>
                         <div class="col-sm-1"></div>
                     </div>
-                      <div class="row form-group">
+                    <div class="row form-group">
                         <div class="col-sm-1"></div>
                                     <label for="status" class="col-sm-2">Status</label>
                                     <div class="col-sm-8">
@@ -74,7 +74,7 @@
                                         </select>
                                     </div>
                                 <div class="col-sm-1"></div>
-                                </div>
+                    </div>
 
                 </div>
                 <div class="card-footer ">

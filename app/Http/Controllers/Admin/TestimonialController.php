@@ -46,6 +46,7 @@ class TestimonialController extends Controller
             $filename  = basename($_FILES['user_photo']['name']);
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             $testimonialObj = new Testimonial($request->input());
+            $uniquesavename=time().uniqid(rand());
           
                
             if($file = $request->hasFile('user_photo')) {
@@ -56,14 +57,21 @@ class TestimonialController extends Controller
 
                 $destinationPath = public_path().'/upload/testimonial/thumbnail';
                 $img = Image::make($file->getRealPath());
-                $img->fit(100,100, function ($constraint) {
-                    $constraint->aspectRatio();        
-                })->save($destinationPath.'/'.$input['user_photo']);
+                $destFile = $uniquesavename . '.'.$extension;
+                $input['user_photo'] = $destFile;
+                $img = Image::make($file->getRealPath())->resize(100, 100);
+
+//                $img->fit(100,100, function ($constraint) {
+//                    $constraint->aspectRatio();        
+//                });
+                $img->save($destinationPath.'/'.$input['user_photo']);
+//                $img = Image::make($file->getRealPath())->resize(500, 500);
+//                echo $img;exit;
 
 
                 $destinationPath = public_path().'/upload/testimonial/';
-                $uniquesavename=time().uniqid(rand());
-                $destFile = $uniquesavename . '.'.$extension;
+//                $uniquesavename=time().uniqid(rand());
+//                $destFile = $uniquesavename . '.'.$extension;
                 $file->move($destinationPath,$destFile);
                 $testimonialObj->user_photo = $destFile;
 
@@ -196,11 +204,22 @@ class TestimonialController extends Controller
         }
 
         $testimonial_list = $select_query->get();
+        
+        $baseurl = url('/');
         foreach ($testimonial_list as $row) {
+            
+            $file = public_path()."/upload/testimonial/thumbnail/".$row->user_photo;
+            
+            if (file_exists($file)){
+                $media="<div> <img src='".$baseurl."/upload/testimonial/thumbnail/".$row->user_photo."'/></div>";
+            } else {
+                $media = "<div> <img src='".$baseurl."/images/noimage100.png'></div>";
+            }
+//            echo $media;exit;
             $temp['id'] = $row->id;
             $temp['customer_name'] = $row->customer_name;
             $temp['feedback'] = $row->feedback;
-            $temp['user_photo'] = $row->user_photo;
+            $temp['user_photo'] = $media;
             $temp['created_date'] = $row->created_at;
             $temp['updated_date'] = $row->updated_at;
             $temp['status'] = $row->status;
@@ -209,13 +228,10 @@ class TestimonialController extends Controller
             $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
             $action .= '<a href="javascript:void(0);" data-id="'.$id.'" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
             
-            
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
         }
-
-
 
         $json_data = array(
             "draw" => intval($requestData['draw']),

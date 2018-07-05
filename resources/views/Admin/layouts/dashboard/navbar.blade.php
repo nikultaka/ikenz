@@ -4,7 +4,7 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{{url('admin/dashboard')}}">
                 <!-- Logo icon -->
-                <b><img src="{{url('img_old/logo.png')}}" alt="homepage" class="dark-logo" style="width: 240px;"/></b>
+                <b><img src="{{url('images/logo.png')}}" alt="homepage" class="dark-logo" style="width: 240px;"/></b>
                 <!--End Logo icon -->
                 <!-- Logo text -->
                 <!--<span><img src="{{url('images/logo.png')}}" alt="homepage" class="dark-logo" /></span>-->

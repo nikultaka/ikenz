@@ -33,13 +33,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <div class="col-sm-3"></div>
-                                    <div class="col-sm-9">
-                                    </div>
-                                </div>
-
-
                         </div>
                         <div class="modal-footer justify-content-center" >
                             <button type="submit" class="btn btn-primary sub_media" name="submit">Submit</button>
