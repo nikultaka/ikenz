@@ -57,18 +57,10 @@ class AdvancesettingController extends Controller
             if(isset($post['id'])){
                 $id = $post['id'];
             }
-//        }
-//        
-//        if($_POST){
-//            if($request->input('fild_id')){
-//                $fild_id=$request->input('fild_id');
-//            }
+
             $data['label'] = isset($post['adc_label'])?$post['adc_label']:'';
             $data['fild_name'] = isset($post['adc_fild_name'])?$post['adc_fild_name']:'';
             $data['fild_value'] = isset($post['adc_fild_value'])?$post['adc_fild_value']:'';
-//            $data['label']=$request->input('adc_label');
-//            $data['fild_name']=$request->input('adc_fild_name');
-//            $data['fild_value']=$request->input('adc_fild_value');
             $data['status']=1;
             
             
