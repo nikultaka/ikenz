@@ -6,42 +6,42 @@
 @section('content')
 
 <!-- Container fluid  -->
-            <div class="container-fluid">
-                <!-- Start Page Content -->
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                                <p id="msg_main"></p>
-                            <div class="card-body">
-                                    <table class="display nowrap table table-hover table-striped table-bordered cms-table" cellspacing="0" width="100%">
-                                    <thead>
+<div class="container-fluid">
+    <!-- Start Page Content -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <p id="msg_main"></p>
+                <div class="card-body">
+                    <table class="display nowrap table table-hover table-striped table-bordered cms-table" cellspacing="0" width="100%">
+                        <thead>
 
                                         <!--<th>ID</th>-->
-                                        <th>Title</th>
-                                        <th>Slug URL</th>
-                                        <th>Meta Title</th>
-                                        <th>Meta Keyword</th>
-                                        <th>Created Date</th>
-                                        <th>status</th>
-                                        <th>Action</th>
-                                    </thead>
-                                  </table>
-                            </div>
-                        </div>
-                        
-                    </div>
+                        <th>Title</th>
+                        <th>Slug URL</th>
+                        <th>Meta Title</th>
+                        <th>Meta Keyword</th>
+                        <th>Created Date</th>
+                        <th>status</th>
+                        <th>Action</th>
+                        </thead>
+                    </table>
                 </div>
-                <!-- End PAge Content -->
             </div>
-            <!-- End Container fluid  -->
+
+        </div>
+    </div>
+    <!-- End PAge Content -->
+</div>
+<!-- End Container fluid  -->
 
 @endsection
 
 @section('bottomscript')
 <script src="{!! asset('js/module/cms.js')!!}"></script>
 <script type="text/javascript">
-$(document).ready(function () {
-     admin.cms.initialize();
-});
+    $(document).ready(function () {
+        admin.cms.initialize();
+    });
 </script>
 @endsection

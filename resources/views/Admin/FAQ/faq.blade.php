@@ -4,31 +4,31 @@
         <div class="card card-primary">
             <!--        modal-->
             <form id="frm_faq" name="frm_faq" action="" method="post" onsubmit="return false;">
-            <div class="modal fade commonModel" id="ins_faq" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal fade commonModel" id="ins_faq" role="dialog">
+                    <div class="modal-dialog">
 
-                    <!--modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4>Create new faq</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p id="msg"></p>
-                            
+                        <!--modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Create new faq</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id="msg"></p>
+
                                 {{ csrf_field() }}
-                                    <div class="form-group">
-                                        <input type="hidden" name="id" id="id">
-                                        <label for="category_id" class="col-sm-3">Category</label>
+                                <div class="form-group">
+                                    <input type="hidden" name="id" id="id">
+                                    <label for="category_id" class="col-sm-3">Category</label>
                                     <div class="col-sm-9">
                                         <select id="category_id" name="category_id" class="form-control">
                                             <option value="">----Select Category----</option>
                                             @if($cate_id > 0)
-                                                @foreach($cate_id as $category)
-                                                 <option value="{{$category->id}}">{{$category  ->category_name}}</option>
-                                                @endForeach
-                                                @else
-                                                 No Record Found
-                                                  @endif 
+                                            @foreach($cate_id as $category)
+                                            <option value="{{$category->id}}">{{$category  ->category_name}}</option>
+                                            @endForeach
+                                            @else
+                                            No Record Found
+                                            @endif 
                                         </select>
                                     </div>
                                 </div>
@@ -56,14 +56,14 @@
                                     </div>
                                 </div>
 
-                        </div>
-                        <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_faq" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="modal-footer justify-content-center" >
+                                <button type="submit" class="btn btn-primary sub_faq" name="submit">Submit</button>
+                                <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </form>
         </div>
     </div>

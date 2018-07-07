@@ -2,6 +2,7 @@
 
     <div class="col-xs-12">
         <div class="card card-primary">
+            <form id="frm_contact_us" name="frm_contact_us" action="" method="post" onsubmit="return false;">
             <!--        modal-->
             <div class="modal fade" id="ins_con" role="dialog">
                 <div class="modal-dialog">
@@ -13,10 +14,9 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="frm_contact_us" name="frm_contact_us">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                <input type="hidden" name="id" id="id">
+                                    <input type="hidden" name="id" id="id">
                                     <label for="name" class="col-sm-3">Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="name" id="name" />
@@ -50,7 +50,6 @@
                                         </select>
                                     </div>
                                 </div>
-                            </form>
 
                         </div>
                         <div class="modal-footer justify-content-center" >
@@ -60,10 +59,12 @@
                     </div>
                 </div>
             </div>
-            
-             <div class="modal fade" id="reply_email" role="dialog">
+            </form>
+
+            <div class="modal fade" id="reply_email" role="dialog">
                 <div class="modal-dialog">
 
+                    <form id="frm_email_send" name="frm_email_send" action="" method="post" onsubmit="return false;">
                     <!--modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
@@ -71,13 +72,18 @@
                         </div>
                         <div class="modal-body">
                             <p id="msg"></p>
-                            <form id="" name="">
                                 {{ csrf_field() }}
                                 <div class="form-group">
-                                <input type="hidden" name="" id="">
+                                    <input type="hidden" name="" id="">
                                     <label for="em_name" class="col-sm-3">Email</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" name="em_name" id="em_name" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject" class="col-sm-3">Subject</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="subject" id="subject" />
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -86,17 +92,16 @@
                                         <textarea class="form-control" name="reply" id="reply"></textarea>
                                     </div>
                                 </div>
-                            </form>
-
                         </div>
                         <div class="modal-footer justify-content-center" >
                             <button type="submit" class="btn btn-primary send" name="submit">Send</button>
                             <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
+                </form>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </section>  

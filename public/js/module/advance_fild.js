@@ -87,7 +87,6 @@ admin.advance_custom = {
             return false;
         }
     },
-
     refresh_validator: function () {
 
         $("#advance-custom-fild-form").bootstrapValidator({

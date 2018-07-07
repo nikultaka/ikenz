@@ -88,11 +88,11 @@ class CmsController extends Controller {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-                $user = DB::table('cms')
+                $cms = DB::table('cms')
                                 ->where('id', '=', $id)->first();
 
                 $data_result['status'] = 1;
-                $data_result['content'] = $user;
+                $data_result['content'] = $cms;
             }
         }
         echo json_encode($data_result);
@@ -109,7 +109,7 @@ class CmsController extends Controller {
         $slug = DB::table('cms')
                 ->select('*')
                 ->where('id', '!=', $id)
-                ->where('status','!=',-1)
+                ->where('status', '!=', -1)
                 ->where('slug_url', '=', $slug_url)
                 ->get();
 
@@ -197,7 +197,7 @@ class CmsController extends Controller {
         $cms_list = $select_query->get();
         foreach ($cms_list as $row) {
 
-//            $temp['id'] = $row->id;
+            $temp['id'] = $row->id;
             $temp['title'] = $row->title;
             $temp['slug_url'] = $row->slug_url;
             $temp['meta_title'] = $row->meta_title;

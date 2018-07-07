@@ -1,20 +1,19 @@
-<?php // print_r($user_role); exit;?>
 <section class="content">
 
     <div class="col-xs-12">
         <div class="card card-primary">
             <!--        modal-->
             <form id="frm_user" name="frm_user" action="" method="post" onsubmit="return false;">
-            <div class="modal fade" id="ins_user" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal fade" id="ins_user" role="dialog">
+                    <div class="modal-dialog">
 
-                    <!--modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4>Create new User</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p id="msg"></p>
+                        <!--modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Create new User</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id="msg"></p>
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <input type="hidden" name="id" id="id">
@@ -23,12 +22,12 @@
                                         <select id="role_name" name="role_name" class="form-control">
                                             <option value="">----Select Category----</option>
                                             @if($user_role > 0)
-                                                @foreach($user_role as $category)
-                                                 <option value="{{$category->id}}">{{$category  ->role_name}}</option>
-                                                @endForeach
-                                                @else
-                                                 No Record Found
-                                                  @endif 
+                                            @foreach($user_role as $category)
+                                            <option value="{{$category->id}}">{{$category  ->role_name}}</option>
+                                            @endForeach
+                                            @else
+                                            No Record Found
+                                            @endif 
                                         </select>
                                     </div>
                                 </div>
@@ -61,14 +60,14 @@
                                     </div>
                                 </div>
 
-                        </div>
-                        <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_user" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="modal-footer justify-content-center" >
+                                <button type="submit" class="btn btn-primary sub_user" name="submit">Submit</button>
+                                <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </form>
         </div>
     </div>

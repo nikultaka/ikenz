@@ -4,16 +4,16 @@
         <div class="card card-primary">
             <!--        modal-->
             <form id="frm_user_cat" name="frm_user_cat" action="" method="post" onsubmit="return false;">
-            <div class="modal fade" id="ins_user_cat" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal fade" id="ins_user_cat" role="dialog">
+                    <div class="modal-dialog">
 
-                    <!--                modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4>Create new Role</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p id="msg"></p>
+                        <!--                modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Create new Role</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id="msg"></p>
                                 {{ csrf_field() }}
                                 <div class="form-group">
                                     <input type="hidden" name="id" id="id">
@@ -32,15 +32,15 @@
                                         </select>
                                     </div>
                                 </div>
-                        </div>
-                        <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_user_cat" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="modal-footer justify-content-center" >
+                                <button type="submit" class="btn btn-primary sub_user_cat" name="submit">Submit</button>
+                                <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
 </section>

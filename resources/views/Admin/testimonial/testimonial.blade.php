@@ -3,18 +3,18 @@
     <div class="col-xs-12">
         <div class="card card-primary">
 
-        <form id="frm_testimonial" name="frm_testimonial" action="" onsubmit="return false" enctype="multipart/form-data">
-            <!--        modal-->
-            <div class="modal fade" id="ins_tes" role="dialog">
-                <div class="modal-dialog">
+            <form id="frm_testimonial" name="frm_testimonial" action="" onsubmit="return false" enctype="multipart/form-data">
+                <!--        modal-->
+                <div class="modal fade" id="ins_tes" role="dialog">
+                    <div class="modal-dialog">
 
-                    <!--                modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4>Create new account</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p id="msg"></p>
+                        <!--                modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4>Create new account</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p id="msg"></p>
                                 {{ csrf_field() }}
                                 <input type="hidden" name="id" id="id">
                                 <div class="form-group">
@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                <img id="u_photo" src="" alt="No Image" class="form-control" style="height: 100px; width: 100px;"/>
+                                    <img id="u_photo" src="" alt="No Image" class="form-control" style="height: 100px; width: 100px;"/>
                                 </div>
                                 <div class="form-group">
                                     <label for="status" class="col-sm-3">Status</label>
@@ -50,16 +50,16 @@
                                     </div>
                                 </div>
 
-                        </div>
-                        <div class="modal-footer justify-content-center" >
-                            <button type="submit" class="btn btn-primary sub_tes" name="submit">Submit</button>
-                            <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                            <div class="modal-footer justify-content-center" >
+                                <button type="submit" class="btn btn-primary sub_tes" name="submit">Submit</button>
+                                <button type="submit" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
         </div>
     </div>
 </section>
- 
+

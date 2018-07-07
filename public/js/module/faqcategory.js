@@ -105,7 +105,6 @@ admin.faq_category = {
                     var data = $.parseJSON(data);
                     if (data.status == 1) {
 
-
                         $("#id").val(data.content.id);
                         $("#category_name").val(data.content.category_name);
                         var status_id = $("#status").val(data.content.status);

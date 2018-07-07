@@ -15,7 +15,7 @@ class CreateCmsTable extends Migration
         Schema::create('cms', function (Blueprint $table) {
         $table->increments('id');
         $table->string('title');
-        $table->string('slug_url')->unique();
+        $table->string('slug_url');
         $table->text('description');
         $table->string('meta_title')->nullable();
         $table->string('meta_keyword')->nullable();

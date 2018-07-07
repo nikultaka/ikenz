@@ -71,8 +71,6 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('cms_list/edit', 'Admin\CmsController@editcms');
         Route::any('cms/index/{id}', 'Admin\CmsController@index');
         Route::any('cms/slug', 'Admin\CmsController@check_slug');
-
-        
         
         Route::get('media', 'Admin\MediaController@index');
         Route::get('media/add', 'Admin\MediaController@add');
@@ -81,15 +79,12 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('media/edit', 'Admin\MediaController@editmedia');
         Route::any('media/delete', 'Admin\MediaController@deleterecord');
 
-        
-
         Route::get('upload-media', 'Admin\UploadmediaController@index');
 
-
-         Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
-         Route::any('upload-media/videoupload', 'Admin\UploadmediaController@videoupload');
-         Route::any('upload-media/getdatatabel', 'Admin\UploadmediaController@getdatatable');
-         Route::any('upload-media/delete_media', 'Admin\UploadmediaController@delete_media');
+        Route::any('upload-media/upload', 'Admin\UploadmediaController@upload');
+        Route::any('upload-media/videoupload', 'Admin\UploadmediaController@videoupload');
+        Route::any('upload-media/getdatatabel', 'Admin\UploadmediaController@getdatatable');
+        Route::any('upload-media/delete_media', 'Admin\UploadmediaController@delete_media');
     
         Route::get('testimonial', 'Admin\TestimonialController@index');
         Route::any('testimonial/addrecord', 'Admin\TestimonialController@addrecord');
@@ -115,12 +110,11 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('contact_us/delete', 'Admin\Contact_usController@deleterecord');
         Route::any('contact_us/edit', 'Admin\Contact_usController@editcontact_us');
         Route::any('contact_us/email', 'Admin\Contact_usController@email_reply');
-
+        Route::any('contact_us/email_send', 'Admin\Contact_usController@email');
 
         Route::get('newsletter', 'Admin\NewsletterController@index');
         Route::any('newsletter/getdata', 'Admin\NewsletterController@anydata')->name('news_latter/getdata');
         Route::any('newsletter/delete', 'Admin\NewsletterController@deleterecord');
-
 
         Route::get('user', 'Admin\UserController@index');
         Route::any('user/addrecord', 'Admin\UserController@addrecord');
@@ -129,15 +123,11 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('user/edit', 'Admin\UserController@edituser');
         Route::any('user/email', 'Admin\UserController@check_email');
 
-
         Route::get('user_role', 'Admin\User_roleController@index');
         Route::any('user_role/addrecord', 'Admin\User_roleController@addrecord');
         Route::any('user_role/getdata', 'Admin\User_roleController@anydata')->name('contact_us/getdata');
         Route::any('user_role/delete', 'Admin\User_roleController@deleterecord');
         Route::any('user_role/edit', 'Admin\User_roleController@edit_user_role');
-//    Route::any('admin/user_role/email', 'Admin\User_roleController@check_email');
-    
-    
     
     // Authentication Routes...
 //    $this->get('login', 'Auth\AuthController@showLoginForm');
@@ -154,7 +144,6 @@ Route::group(['prefix' => 'admin'], function()
         Route::get('setting','Admin\SitesettingController@index'); 
         Route::post('sitesetting/save_details','Admin\SitesettingController@save_details'); 
         Route::any('sitesetting/uploadlogo','Admin\SitesettingController@uploadlogo');
-
 
         // Advance Custom Filds Section Routes
         Route::get('advancesettings','admin\AdvancesettingController@index'); 

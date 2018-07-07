@@ -29,23 +29,23 @@ class UploadmediaController extends Controller
         CommonHelper::add_breadcrumb("Media Upload",URL::to('/admin/upload-media'));
         //This is for breadcrumb
         
-        $data=array();
-        $data['media_category']=DB::table('media_category')->where('status','1')->get();
+        $data = array();
+        $data['media_category'] = DB::table('media_category')->where('status','1')->get();
         return view('Admin.media.Upload_media')->with($data);
     }
     
     public function upload(Request $request){
         
         
-        $result=array();
-        $result['status']=0;
-        $insert_data=array();
+        $result = array();
+        $result['status'] = 0;
+        $insert_data = array();
         if($request->input('mediatype') == 1 && $request->input('media_category') != 0){
             $image = $request->file('file');
             $filename  = basename($image->getClientOriginalName());
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
             $destinationPath = public_path().'/upload/image/thumbnail/';
-            $uniquesavename=time().uniqid(rand());
+            $uniquesavename = time().uniqid(rand());
             $destFile = $uniquesavename . '.'.$extension;
             $input['media_name'] = $destFile;
             $img = Image::make($image->getRealPath())->resize(500, 500);
@@ -59,14 +59,14 @@ class UploadmediaController extends Controller
            // $upload_success = $image->move(public_path('upload/image'),$imageName);
 
             if($image->move($destinationPath,$destFile)){
-                $insert_data['media_category']=$request->input('media_category');
-                $insert_data['media_type']=$request->input('mediatype');
-                $insert_data['media_name']=$destFile;
-                $insert_data['media_url']='';
-                $insert_data['status']=1;
+                $insert_data['media_category'] = $request->input('media_category');
+                $insert_data['media_type'] = $request->input('mediatype');
+                $insert_data['media_name'] = $destFile;
+                $insert_data['media_url'] = '';
+                $insert_data['status'] = 1;
                 
-                $insert_data['created_at']=date('y-m-d h:i:s');
-                $insert_data['updated_at']=date('y-m-d h:i:s');
+                $insert_data['created_at'] = date('y-m-d h:i:s');
+                $insert_data['updated_at'] = date('y-m-d h:i:s');
                $insert_id = DB::table('media')->insertGetId($insert_data);
                 $result['status'] = 1;
                 $result['id'] = $insert_id;
@@ -85,25 +85,25 @@ class UploadmediaController extends Controller
         return response()->json($result);
     }
     public function videoupload(Request $request){
-        $result=array();
-        $result['status']=0;
-        $inser_data=array();
+        $result = array();
+        $result['status'] = 0;
+        $inser_data = array();
         $video = $request->file('file');
         if(isset($video) && $video != ''){
-            $filename  = basename($video->getClientOriginalName());
+            $filename = basename($video->getClientOriginalName());
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
              $destinationPath = public_path().'/upload/video/';
-             $uniquesavename=time().uniqid(rand());   
+             $uniquesavename = time().uniqid(rand());   
             $destFile = $uniquesavename . '.'.$extension;
         
             if($video->move($destinationPath,$destFile)){
-                $insert_data['media_category']=$request->input('media_category');
-                $insert_data['media_type']=$request->input('media_type');
-                $insert_data['media_name']=$destFile;
-                $insert_data['media_url']='';
-                $insert_data['status']=1;
-                $insert_data['created_at']=date('y-m-d h:i:s');
-                $insert_data['updated_at']=date('y-m-d h:i:s');
+                $insert_data['media_category'] = $request->input('media_category');
+                $insert_data['media_type'] = $request->input('media_type');
+                $insert_data['media_name'] = $destFile;
+                $insert_data['media_url'] = '';
+                $insert_data['status'] = 1;
+                $insert_data['created_at'] = date('y-m-d h:i:s');
+                $insert_data['updated_at'] = date('y-m-d h:i:s');
                 $insert_id = DB::table('media')->insertGetId($insert_data);
                 if(isset($insert_id) && $insert_id != ''){
                     $result['status'] = 1;
@@ -112,13 +112,13 @@ class UploadmediaController extends Controller
             }
         }
         else {
-            $insert_data['media_category']=$request->input('media_category');
-            $insert_data['media_type']=$request->input('media_type');
-            $insert_data['media_name']='';
-            $insert_data['media_url']=$request->input('media_url');
-            $insert_data['status']=1;
-            $insert_data['created_at']=date('y-m-d h:i:s');
-            $insert_data['updated_at']=date('y-m-d h:i:s');
+            $insert_data['media_category'] = $request->input('media_category');
+            $insert_data['media_type'] = $request->input('media_type');
+            $insert_data['media_name'] = '';
+            $insert_data['media_url'] = $request->input('media_url');
+            $insert_data['status'] = 1;
+            $insert_data['created_at'] = date('y-m-d h:i:s');
+            $insert_data['updated_at'] = date('y-m-d h:i:s');
             $insert_id = DB::table('media')->insertGetId($insert_data);
             if(isset($insert_id) && $insert_id != ''){
                 $result['status'] = 1;
@@ -179,28 +179,28 @@ class UploadmediaController extends Controller
         $arr_data = Array();
         $arr_data = $result;
 
-        $baseurl=url('/');
+        $baseurl = url('/');
         foreach ($service_price_list as $row) {
             
             $temp['id'] = $row->id;
-            if ($row->media_type =='1'){
-            $media="<div> <img src='".$baseurl."/upload/image/thumbnail/".$row->media_name."' style='height:100px;' /></div>";
-            $mediatype="Image";
+            if ($row->media_type == '1'){
+            $media = "<div> <img src='".$baseurl."/upload/image/thumbnail/".$row->media_name."' style='height:100px;' /></div>";
+            $mediatype = "Image";
             }
             else{
-            $media="<video controls='' width='150'><source src='".$baseurl."/upload/video/".$row->media_name."' id='video_here'>Your browser does not support HTML5 video.</video>";    
-            $mediatype="Video";
+            $media = "<video controls='' width='150'><source src='".$baseurl."/upload/video/".$row->media_name."' id='video_here'>Your browser does not support HTML5 video.</video>";    
+            $mediatype = "Video";
             }
-            $temp['media_image']= $media;
+            $temp['media_image'] = $media;
             if(isset($row->media_name) && $row->media_name != ''){
-                $media_name=$row->media_name;
+                $media_name = $row->media_name;
             }
             else{
-                $media_name=$row->media_url;
+                $media_name = $row->media_url;
             }
             $temp['media_name'] = $media_name;
             $temp['media_type'] = $mediatype;
-            $temp['category_name']=$row->category_name;
+            $temp['category_name'] = $row->category_name;
             $id = $row->id;
             
             
@@ -228,12 +228,12 @@ class UploadmediaController extends Controller
         
     }
     public function delete_media(Request $request){
-        $result=array();
-        $result['status']=0;
-        $media_id=$request->input('media_id');
+        $result = array();
+        $result['status'] = 0;
+        $media_id = $request->input('media_id');
         $image = DB::table('media')->where('id', $media_id)->first();
-        $file= $image->media_name;
-        if($request->input('mediatype')==1){
+        $file = $image->media_name;
+        if($request->input('mediatype') == 1){
             $filename_thum = public_path().'/upload/image/thumbnail/'.$file;
              File::delete($filename_thum);
             $filename = public_path().'/upload/image/'.$file;
@@ -245,8 +245,8 @@ class UploadmediaController extends Controller
          
        if(DB::table('media')->delete($media_id)){
            
-           $result['status']=1;
-           $result['msg']="Record Deleted..";
+           $result['status'] = 1;
+           $result['msg'] = "Record Deleted..";
        }
        echo json_encode($result);
 
