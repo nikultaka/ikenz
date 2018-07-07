@@ -188,9 +188,8 @@ class BulletController extends Controller {
         $unpublish = '<a href="javascript:void(0);"  class="btn btn-xs btn-info btn_unpublish"> Unpublish</a>  	&nbsp;';
         
         $select_query->select('*', DB::raw("IF(status = 1,'Active','Inactive') as status"));
-        $select_query->select('*', DB::raw("IF(is_publish = 1,'".$publish."','".$unpublish."') as is_publish"));
-//        $select_query->select('*', DB::raw("IF(is_publish = 1,'<a href='javascript:void(0);' class='btn btn-xs btn-info btn_publish'> Publish </a>',"
-//                . "'<a href='javascript:void(0);' class='btn btn-xs btn-info btn_unpublish> Unpublish</a>  	&nbsp;') as is_publish"));
+//        $select_query->select('*', DB::raw("IF(is_publish = 1,'".$publish."','".$unpublish."') as is_publish"));
+
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
             $select_query->where("title", "like", '%' . $requestData['search']['value'] . '%');
         }
