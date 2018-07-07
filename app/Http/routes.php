@@ -153,4 +153,13 @@ Route::group(['prefix' => 'admin'], function()
         Route::post('advancesettings/edit','admin\AdvancesettingController@edit');
         Route::get('multifileupload', 'HomeController@multifileupload')->name('multifileupload');
         Route::post('multifileupload', 'HomeController@store')->name('multifileupload');
-});
+
+        Route::get('bullet','admin\BulletController@index'); 
+        Route::any('bullet/addrecord', 'Admin\BulletController@addrecord');
+        Route::any('bullet/getdata', 'Admin\BulletController@anydata')->name('testimonial/getdata');
+        Route::any('bullet/delete', 'Admin\BulletController@deleterecord');
+        Route::any('bullet/edit', 'Admin\BulletController@editbullet');
+        Route::any('bullet/is_publish', 'Admin\BulletController@is_publish');
+        
+        
+    });

@@ -54,7 +54,10 @@
                         <li><a href="{{url('admin/upload-media')}}"> Media Upload </a></li>
                     </ul>
                 </li>
-
+                
+                 <li><a href="{{url('admin/bullet')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Bullet</span></a>
+                </li>
+                
                 <li><a href="{{url('logout')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Logout</span></a>
                 </li>
                 

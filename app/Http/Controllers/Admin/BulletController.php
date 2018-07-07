@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Testimonial;
+use App\Models\Bullet;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
@@ -13,7 +13,7 @@ use Image;
 use App\Helper\CommonHelper;
 use Illuminate\Support\Facades\URL;
 
-class TestimonialController extends Controller {
+class BulletController extends Controller {
 
     public function __construct() {
 //        $this->middleware('admin');
@@ -21,10 +21,10 @@ class TestimonialController extends Controller {
 
     public function index() {
         //This is for breadcrumb
-        CommonHelper::add_breadcrumb("Testimonial", URL::to('/admin/testimonial'));
+        CommonHelper::add_breadcrumb("Bullet", URL::to('/admin/bullet'));
         //This is for breadcrumb
 
-        return view("admin.testimonial.testimonial_list");
+        return view("admin.bullet.bullet_list");
     }
 
     public function addrecord(Request $request) {
@@ -39,37 +39,37 @@ class TestimonialController extends Controller {
             if (isset($post['id'])) {
                 $id_test = $post['id'];
             }
-            $filename = basename($_FILES['user_photo']['name']);
+            $filename = basename($_FILES['image_upload']['name']);
             $extension = pathinfo($filename, PATHINFO_EXTENSION);
-            $testimonialObj = new Testimonial($request->input());
+            $bulletObj = new Bullet($request->input());
             $uniquesavename = time() . uniqid(rand());
 
 
-            if ($file = $request->hasFile('user_photo')) {
+            if ($file = $request->hasFile('image_upload')) {
 
-                $file = $request->file('user_photo');
-                $input['user_photo'] = time() . '.' . $file->getClientOriginalExtension();
+                $file = $request->file('image_upload');
+                $input['image_upload'] = time() . '.' . $file->getClientOriginalExtension();
 
 
-                $destinationPath = public_path() . '/upload/testimonial/thumbnail';
+                $destinationPath = public_path() . '/upload/bullet/thumbnail';
                 $img = Image::make($file->getRealPath());
                 $destFile = $uniquesavename . '.' . $extension;
-                $input['user_photo'] = $destFile;
+                $input['image_upload'] = $destFile;
                 $img = Image::make($file->getRealPath())->resize(100, 100);
-                $img->save($destinationPath . '/' . $input['user_photo']);
+                $img->save($destinationPath . '/' . $input['image_upload']);
 
-                $destinationPath = public_path() . '/upload/testimonial/';
+                $destinationPath = public_path() . '/upload/bullet/';
                 $file->move($destinationPath, $destFile);
-                $testimonialObj->user_photo = $destFile;
+                $bulletObj->image_upload = $destFile;
             } else {
-                $testimonialObj->user_photo = isset($post['hdn_file']) ? $post['hdn_file'] : '';
+                $bulletObj->image_upload = isset($post['hdn_file']) ? $post['hdn_file'] : '';
             }
-            $user_photo = $testimonialObj->user_photo;
+            $image_upload = $bulletObj->image_upload;
 
             $data_insert = array();
-            $data_insert['customer_name'] = isset($post['cus_name']) ? $post['cus_name'] : '';
-            $data_insert['feedback'] = isset($post['feedback']) ? $post['feedback'] : '';
-            $data_insert['user_photo'] = $user_photo;
+            $data_insert['title'] = isset($post['title']) ? $post['title'] : '';
+            $data_insert['description'] = isset($post['description']) ? $post['description'] : '';
+            $data_insert['image_upload'] = $image_upload;
             $data_insert['status'] = isset($post['status']) ? $post['status'] : '';
 
 
@@ -77,7 +77,7 @@ class TestimonialController extends Controller {
 
                 $data_insert['updated_at'] = date("Y-m-d h:i:s");
 
-                $returnresult = DB::table('testimonial')
+                $returnresult = DB::table('bullet')
                         ->where('id', $id_test)
                         ->update($data_insert);
 
@@ -88,7 +88,7 @@ class TestimonialController extends Controller {
             } else {
 
                 $data_insert['created_at'] = date("Y-m-d h:i:s");
-                if (DB::table('testimonial')->insert($data_insert)) {
+                if (DB::table('bullet')->insert($data_insert)) {
                     $result['status'] = 1;
                     $result['msg'] = "Record add sucessfully..!";
                 }
@@ -98,7 +98,7 @@ class TestimonialController extends Controller {
         }
     }
 
-    public function edittestimonial(Request $request) {
+    public function editbullet(Request $request) {
 
         $post = $request->input();
         $data_result = array();
@@ -108,11 +108,33 @@ class TestimonialController extends Controller {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-                $testimonial = DB::table('testimonial')
+                $bullet = DB::table('bullet')
                                 ->where('id', '=', $id)->first();
 
                 $data_result['status'] = 1;
-                $data_result['content'] = $testimonial;
+                $data_result['content'] = $bullet;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+    }
+    
+    public function is_publish(Request $request) {
+
+        $post = $request->input();
+        $data_result = array();
+        $data_result['status'] = 0;
+
+        if (!empty($post)) {
+            $id = isset($post['id']) ? $post['id'] : '';
+            if ($id != "") {
+
+                $bullet = DB::table('bullet')
+                            ->select('is_publish')
+                            ->where('id', '=', $id)->first();
+
+                $data_result['status'] = 1;
+                $data_result['content'] = $bullet;
             }
         }
         echo json_encode($data_result);
@@ -129,7 +151,7 @@ class TestimonialController extends Controller {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-                DB::table('testimonial')
+                DB::table('bullet')
                         ->where('id', $id)
                         ->update(array('status' => -1));
 
@@ -150,19 +172,27 @@ class TestimonialController extends Controller {
         //This is for order 
         $columns = array(
             0. => 'id',
-            1 => 'customer_name',
-            2 => 'feedback',
-            3 => 'user_photo',
+            1 => 'title',
+            2 => 'description',
+            3 => 'image_upload',
             4 => 'status',
-            5 => 'created_at',
-            5 => 'updated_at',
+            5 => 'is_publish',
+            6 => 'created_at',
+            7 => 'updated_at',
         );
 
-        $select_query = DB::table('testimonial')
+        $select_query = DB::table('bullet')
                 ->where('status', '!=', -1);
+        
+        $publish = '<div class="datatable_btn"><a href="javascript:void(0);" class="btn btn-xs btn-info btn_publish"> Publish </a>  	&nbsp;';
+        $unpublish = '<a href="javascript:void(0);"  class="btn btn-xs btn-info btn_unpublish"> Unpublish</a>  	&nbsp;';
+        
         $select_query->select('*', DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        $select_query->select('*', DB::raw("IF(is_publish = 1,'".$publish."','".$unpublish."') as is_publish"));
+//        $select_query->select('*', DB::raw("IF(is_publish = 1,'<a href='javascript:void(0);' class='btn btn-xs btn-info btn_publish'> Publish </a>',"
+//                . "'<a href='javascript:void(0);' class='btn btn-xs btn-info btn_unpublish> Unpublish</a>  	&nbsp;') as is_publish"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("customer_name", "like", '%' . $requestData['search']['value'] . '%');
+            $select_query->where("title", "like", '%' . $requestData['search']['value'] . '%');
         }
 
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
@@ -181,35 +211,40 @@ class TestimonialController extends Controller {
             $select_query->limit($requestData['length']);
         }
 
-        $testimonial_list = $select_query->get();
+        $bullet_list = $select_query->get();
 
         $baseurl = url('/');
-        foreach ($testimonial_list as $row) {
+        foreach ($bullet_list as $row) {
 
-            $file = public_path() . "/upload/testimonial/thumbnail/" . $row->user_photo;
+            $file = public_path() . "/upload/bullet/thumbnail/" . $row->image_upload;
 
             if (file_exists($file)) {
-                $media = "<div> <img src='" . $baseurl . "/upload/testimonial/thumbnail/" . $row->user_photo . "'/></div>";
+                $media = "<div> <img src='" . $baseurl . "/upload/bullet/thumbnail/" . $row->image_upload . "'/></div>";
             } else {
                 $media = "<div> <img src='" . $baseurl . "/images/noimage100.png'></div>";
             }
 //            echo $media;exit;
             $temp['id'] = $row->id;
-            $temp['customer_name'] = $row->customer_name;
-            $temp['feedback'] = $row->feedback;
-            $temp['user_photo'] = $media;
+            $temp['title'] = $row->title;
+            $temp['description'] = $row->description;
+            $temp['image_upload'] = $media;
             $temp['created_date'] = $row->created_at;
             $temp['updated_date'] = $row->updated_at;
             $temp['status'] = $row->status;
+            $temp['is_publish'] = $row->is_publish;
             $id = $row->id;
 
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btn_publish"> Publish </a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btn_unpublish"> Unpublish</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
             $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
 
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
         }
+        
+        
 
         $json_data = array(
             "draw" => intval($requestData['draw']),
@@ -217,6 +252,7 @@ class TestimonialController extends Controller {
             "recordsFiltered" => intval($totalData),
             "data" => $data
         );
+        
         echo json_encode($json_data);
         exit(0);
     }
