@@ -109,7 +109,7 @@ class BulletController extends Controller {
             if ($id != "") {
 
                 $bullet = DB::table('bullet')
-                                ->where('id', '=', $id)->first();
+                        ->where('id', '=', $id)->first();
 
                 $data_result['status'] = 1;
                 $data_result['content'] = $bullet;
@@ -120,21 +120,46 @@ class BulletController extends Controller {
     }
     
     public function is_publish(Request $request) {
-
+        
         $post = $request->input();
         $data_result = array();
         $data_result['status'] = 0;
 
         if (!empty($post)) {
             $id = isset($post['id']) ? $post['id'] : '';
+            $publish = isset($post['publish']) ? $post['publish'] : '';
             if ($id != "") {
-
+                
                 $bullet = DB::table('bullet')
-                            ->select('is_publish')
-                            ->where('id', '=', $id)->first();
+                            ->where('status', '!=', -1)
+                            ->where('is_publish', '=', 1)
+                            ->get();
+                $total_publish = count($bullet);
 
-                $data_result['status'] = 1;
-                $data_result['content'] = $bullet;
+                if($total_publish == 0 && $publish == 0){
+                    
+                        $bullet = DB::table('bullet')
+                                ->where('id', $id)
+                                ->update(array('is_publish' => 1));
+
+                        $data_result['status'] = 1;
+                        $data_result['msg'] = "Record published successfully.";
+                }
+                
+                else if($total_publish == 1 && $publish == 1){
+                    
+                        $bullet = DB::table('bullet')
+                                    ->where('id', $id)
+                                    ->update(array('is_publish' => 0));
+
+                        $data_result['status'] = 1;
+                        $data_result['msg'] = "Record unpublished successfully.";
+                    
+                }
+                else {
+                    $data_result['status'] = 2;
+                    $data_result['msg'] = "Please unpublish another post first.";
+                }
             }
         }
         echo json_encode($data_result);
@@ -162,6 +187,27 @@ class BulletController extends Controller {
         echo json_encode($data_result);
         exit;
     }
+    
+    public function email_to_users(Request $request) {
+
+        $post = $request->input();
+        $data_result = array();
+        $data_result['status'] = 0;
+
+        if (!empty($post)) {
+            $id = isset($post['id']) ? $post['id'] : '';
+            if ($id != "") {
+
+               $user =  DB::table('users')
+                    ->where('status', '=', 1)
+                    ->get();
+                        
+                $data_result['status'] = 1;
+            }
+        }
+        echo json_encode($data_result);
+        exit;
+    }
 
     public function anyData() {
 
@@ -184,11 +230,7 @@ class BulletController extends Controller {
         $select_query = DB::table('bullet')
                 ->where('status', '!=', -1);
         
-        $publish = '<div class="datatable_btn"><a href="javascript:void(0);" class="btn btn-xs btn-info btn_publish"> Publish </a>  	&nbsp;';
-        $unpublish = '<a href="javascript:void(0);"  class="btn btn-xs btn-info btn_unpublish"> Unpublish</a>  	&nbsp;';
-        
         $select_query->select('*', DB::raw("IF(status = 1,'Active','Inactive') as status"));
-//        $select_query->select('*', DB::raw("IF(is_publish = 1,'".$publish."','".$unpublish."') as is_publish"));
 
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
             $select_query->where("title", "like", '%' . $requestData['search']['value'] . '%');
@@ -200,7 +242,8 @@ class BulletController extends Controller {
         } else {
             $select_query->orderBy("created_at", "DESC");
         }
-
+        
+        
         //This is for count
         $totalData = $select_query->count();
 
@@ -214,6 +257,9 @@ class BulletController extends Controller {
 
         $baseurl = url('/');
         foreach ($bullet_list as $row) {
+            
+            $id = $row->id;
+            $is_publish = $row->is_publish;
 
             $file = public_path() . "/upload/bullet/thumbnail/" . $row->image_upload;
 
@@ -222,7 +268,14 @@ class BulletController extends Controller {
             } else {
                 $media = "<div> <img src='" . $baseurl . "/images/noimage100.png'></div>";
             }
-//            echo $media;exit;
+            
+            if($row->is_publish == 0)
+            {
+                $action = '<a href="javascript:void(0);" data-id="' . $id .'" data-publish="'.$is_publish.'" class="btn btn-xs btn-info btn_is_publish"> Publish </a> &nbsp;';
+            } else {
+                $action = '<a href="javascript:void(0);" data-id="' . $id .'" data-publish="'.$is_publish.'" class="btn btn-xs btn-info btn_is_publish"> Unpublish </a>&nbsp;';
+            }
+            
             $temp['id'] = $row->id;
             $temp['title'] = $row->title;
             $temp['description'] = $row->description;
@@ -231,13 +284,12 @@ class BulletController extends Controller {
             $temp['updated_date'] = $row->updated_at;
             $temp['status'] = $row->status;
             $temp['is_publish'] = $row->is_publish;
-            $id = $row->id;
+            
 
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btn_publish"> Publish </a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btn_unpublish"> Unpublish</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info email_to_users "> Email To users</a>  	&nbsp;';
             $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btnEdit_test"> Edit</a>  	&nbsp;';
             $action .= '<a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-danger btnDelete_test"> Delete</a></div>';
-
+            
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";

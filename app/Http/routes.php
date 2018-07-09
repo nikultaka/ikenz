@@ -160,6 +160,7 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('bullet/delete', 'Admin\BulletController@deleterecord');
         Route::any('bullet/edit', 'Admin\BulletController@editbullet');
         Route::any('bullet/is_publish', 'Admin\BulletController@is_publish');
+        Route::any('bullet/email_to_users', 'Admin\BulletController@email_to_users');
         
         
     });

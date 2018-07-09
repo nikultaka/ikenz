@@ -14,11 +14,18 @@ admin.bullet = {
             var id = $(this).data('id');
             this_class.delete_row(id);
         });
-        $('body').on('click', '.btn_publish', function () {
+        
+        $('body').on('click', '.email_to_users', function () {
             var id = $(this).data('id');
-            this_class.is_publish(id);
+            this_class.email_to_users(id);
         });
-
+        
+        $('body').on('click', '.btn_is_publish', function () {
+            var id = $(this).data('id');
+            var publish = $(this).data('publish');
+            this_class.is_publish(id,publish);
+        });
+        
         $("#user_photo").change(function () {
             $("#u_photo").show();
             this_class.Image_preview(this);
@@ -192,24 +199,57 @@ admin.bullet = {
         else {
             return false;
         }
-
-
     },
     
-    is_publish: function (id){
+    is_publish: function (id,publish){
         
         if(id > 0){
-        
+                    
             $.ajax({
                 url: BASE_URL + '/admin/bullet/is_publish',
+                type: 'POST',
+                data: {_token: admin.common.get_csrf_token_value(),id:id,publish:publish},
+                success: function (data) {
+                    var data = $.parseJSON(data);
+                    if (data.status == 1) {
+                        $('#msg_main').html(data.msg);
+                        $('#msg_main').attr('style', 'color:green;');
+                        window.location.reload();
+                    }
+                    if (data.status == 2) {
+                        $('#msg_main').html(data.msg);
+                        $('#msg_main').attr('style', 'color:green;');
+                    }
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    },
+    
+    email_to_users: function (id){
+        
+         if(id > 0){
+                    
+            $.ajax({
+                url: BASE_URL + '/admin/bullet/email_to_users',
                 type: 'POST',
                 data: {_token: admin.common.get_csrf_token_value(),id:id},
                 success: function (data) {
                     var data = $.parseJSON(data);
                     if (data.status == 1) {
+//                        $('#msg_main').html(data.msg);
+//                        $('#msg_main').attr('style', 'color:green;');
+//                        window.location.reload();
                     }
                 }
             });
         }
-    },
+        else {
+            return false;
+        }
+        
+        
+    }
 };
