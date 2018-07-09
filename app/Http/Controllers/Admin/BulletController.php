@@ -201,6 +201,7 @@ class BulletController extends Controller {
                $user =  DB::table('users')
                     ->where('status', '=', 1)
                     ->get();
+            print_r($user);exit;
                         
                 $data_result['status'] = 1;
             }
