@@ -12,6 +12,7 @@ use yajra\Datatables\Facades\Datatables;
 use Image;
 use App\Helper\CommonHelper;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
 
 class BulletController extends Controller {
 
@@ -194,18 +195,67 @@ class BulletController extends Controller {
         $data_result = array();
         $data_result['status'] = 0;
 
+       
+        $user =  DB::table('users')
+                    ->select('email')
+                    ->where('role_id', '!=', 1)
+                    ->where('status', '=', 1)
+                    ->get();
+        
+        
+        
         if (!empty($post)) {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-               $user =  DB::table('users')
-                    ->where('status', '=', 1)
-                    ->get();
-            print_r($user);exit;
-                        
-                $data_result['status'] = 1;
+               $bullet = DB::table('bullet')
+                ->where('id', '=', $id)
+                ->where('status', '!=', -1)
+                ->get();
+               
             }
         }
+        
+        $bullet = DB::table('bullet')
+                ->where('id', '=', $id)
+                ->where('status', '!=', -1)
+                ->get();
+        
+        
+        $baseurl = url('/');
+        
+        foreach ($bullet AS $row) {
+            
+        $file = public_path() . "/upload/bullet/thumbnail/" . $row->image_upload;
+
+            if(file_exists($file)){
+
+                $media = '<img src="' . $baseurl . '/upload/bullet/thumbnail/' . $row->image_upload . '"/>';
+
+                $data = array('msg'=> 'Dear user,' , 'content' => $media);
+            }
+
+            $subject = $row->title;
+        
+        }
+        
+        $email = $user;
+        if(isset($email) && $email != ""){
+            Mail::send('mail', $data, function($message) use ($email,$subject) {
+            
+            $message->from(USER_EMAIL,'Mukund Rana');
+                foreach ($email AS $user) {
+                $message->to($user->email);
+                }
+                    $message->subject($subject);
+
+            });
+            
+            $data_result['status'] = 1;
+            $data_result['msg'] = "Email sent to all users.";
+        
+        }
+        
         echo json_encode($data_result);
         exit;
     }

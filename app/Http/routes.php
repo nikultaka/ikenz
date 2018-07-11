@@ -162,5 +162,10 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('bullet/is_publish', 'Admin\BulletController@is_publish');
         Route::any('bullet/email_to_users', 'Admin\BulletController@email_to_users');
         
+        Route::get('product', 'Admin\ProductController@index');
+        Route::any('product/addrecord', 'Admin\ProductController@addrecord');
+        Route::any('product/getdata', 'Admin\ProductController@anydata')->name('product/getdata');
+        Route::any('product/delete', 'Admin\ProductController@deleterecord');
+        Route::any('product/edit', 'Admin\ProductController@editproduct');
         
     });

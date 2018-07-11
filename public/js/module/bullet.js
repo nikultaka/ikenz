@@ -239,9 +239,7 @@ admin.bullet = {
                 success: function (data) {
                     var data = $.parseJSON(data);
                     if (data.status == 1) {
-//                        $('#msg_main').html(data.msg);
-//                        $('#msg_main').attr('style', 'color:green;');
-//                        window.location.reload();
+                        admin.common.get_success_msg(data.msg);
                     }
                 }
             });
@@ -249,7 +247,5 @@ admin.bullet = {
         else {
             return false;
         }
-        
-        
     }
 };

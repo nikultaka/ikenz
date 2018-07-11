@@ -44,7 +44,7 @@
                  <li> <a class="has-arrow" href="#" aria-expanded="false"><i class="fa fa-tasks"></i><span class="hide-menu">CMS</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{url('admin/cms')}}"> CMS </a></li>
-                        <li><a href="{{url('admin/cms_list')}}"> CMS List </a></li>
+                        <li><a href="{{url('admin/cms/list')}}"> CMS List </a></li>
                     </ul>
                 </li>
                               
@@ -55,7 +55,10 @@
                     </ul>
                 </li>
                 
-                 <li><a href="{{url('admin/bullet')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Bullet</span></a>
+                <li><a href="{{url('admin/bullet')}}" aria-expanded="false"><i class="fa fa-list-alt"></i><span class="hide-menu">Bullet</span></a>
+                </li>
+                
+                <li><a href="{{url('admin/product')}}" aria-expanded="false"><i class="fa fa-product-hunt"></i><span class="hide-menu">Product</span></a>
                 </li>
                 
                 <li><a href="{{url('logout')}}" aria-expanded="false"><i class="fa fa-sign-out"></i><span class="hide-menu">Logout</span></a>

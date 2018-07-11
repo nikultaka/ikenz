@@ -5,22 +5,16 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Contact_us;
+//use App\Models\Faq;
+//use App\Models\Faqcategory;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use yajra\Datatables\Facades\Datatables;
 use App\Helper\CommonHelper;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Bus\Queueable;
-use Illuminate\Mail\Mailable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\SendMailable;
 
+class ProductController extends Controller {
 
-class Contact_usController extends Controller {
-    use Queueable, SerializesModels;
     public function __construct() {
 //        $this->middleware('auth');
 //        $this->middleware('admin');
@@ -28,10 +22,13 @@ class Contact_usController extends Controller {
 
     public function index() {
         //This is for breadcrumb
-        CommonHelper::add_breadcrumb("Contact us", URL::to('/admin/contact_us'));
+        CommonHelper::add_breadcrumb("product", URL::to('/admin/product'));
         //This is for breadcrumb
 
-        return view("admin.contact_us.contact_us_list");
+        $data_result = array();
+        $user = DB::table('users')->where('status', '=', 1)->get();
+        $data_result['user'] = $user;
+        return view("admin.product.product_list")->with($data_result);
     }
 
     public function addrecord(Request $request) {
@@ -46,9 +43,10 @@ class Contact_usController extends Controller {
                 $id = $post['id'];
             }
 
-            $data['name'] = isset($post['name']) ? $post['name'] : '';
-            $data['email'] = isset($post['email']) ? $post['email'] : '';
-            $data['phone_no'] = isset($post['phone_no']) ? $post['phone_no'] : '';
+            $data['user_id'] = isset($post['user_id']) ? $post['user_id'] : '';
+            $data['title'] = isset($post['title']) ? $post['title'] : '';
+            $data['short_description'] = isset($post['short_description']) ? $post['short_description'] : '';
+            $data['price'] = isset($post['price']) ? $post['price'] : '';
             $data['description'] = isset($post['description']) ? $post['description'] : '';
             $data['status'] = isset($post['status']) ? $post['status'] : '';
 
@@ -56,7 +54,7 @@ class Contact_usController extends Controller {
 
                 $data['updated_at'] = date("Y-m-d h:i:s");
 
-                $returnresult = DB::table('contact_us')
+                $returnresult = DB::table('product')
                         ->where('id', $id)
                         ->update($data);
 
@@ -65,8 +63,10 @@ class Contact_usController extends Controller {
                     $result['msg'] = 'Record updated successfully.!';
                 }
             } else {
+
                 $data['created_at'] = date("Y-m-d h:i:s");
-                if (DB::table('contact_us')->insert($data)) {
+
+                if (DB::table('product')->insert($data)) {
                     $result['status'] = 1;
                     $result['msg'] = "Record add sucessfully..!";
                 }
@@ -76,7 +76,7 @@ class Contact_usController extends Controller {
         exit;
     }
 
-    public function editcontact_us(Request $request) {
+    public function editproduct(Request $request) {
 
         $post = $request->input();
         $data_result = array();
@@ -86,36 +86,15 @@ class Contact_usController extends Controller {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-                $contact_us = DB::table('contact_us')
+                $product = DB::table('product')
                                 ->where('id', '=', $id)->first();
 
+                $data_result = array();
                 $data_result['status'] = 1;
-                $data_result['content'] = $contact_us;
+                $data_result['content'] = $product;
             }
         }
-        echo json_encode($data_result);
-        exit;
-    }
-
-    public function email_reply(Request $request) {
-
-        $post = $request->input();
-        $data_result = array();
-        $data_result['status'] = 0;
-
-        if (!empty($post)) {
-            $id = isset($post['id']) ? $post['id'] : '';
-            if ($id != "") {
-
-                $email_reply = DB::table('contact_us')
-                                ->select('email')
-                                ->where('id', '=', $id)->first();
-
-                $data_result['status'] = 1;
-                $data_result['content'] = $email_reply;
-            }
-        }
-
+        
         echo json_encode($data_result);
         exit;
     }
@@ -130,7 +109,7 @@ class Contact_usController extends Controller {
             $id = isset($post['id']) ? $post['id'] : '';
             if ($id != "") {
 
-                DB::table('contact_us')
+                DB::table('product')
                         ->where('id', $id)
                         ->update(array('status' => -1));
 
@@ -138,6 +117,8 @@ class Contact_usController extends Controller {
                 $data_result['msg'] = "Record deleted successfully.";
             }
         }
+        echo json_encode($data_result);
+        exit;
     }
 
     public function anyData() {
@@ -148,27 +129,33 @@ class Contact_usController extends Controller {
 
         //This is for order 
         $columns = array(
-            0. => 'id',
-            1 => 'name',
-            2 => 'email',
-            3 => 'phone_no',
-            4 => 'description',
+            0. => 'p.id',
+            1 => 'u.name',
+            2 => 'p.title',
+            3 => 'p.short_description',
+            4 => 'p.price',
+            5 => 'p.status',
+            6 => 'p.created_at',
+            7 => 'p.updated_at',
         );
 
-        $select_query = DB::table('contact_us')
-                ->where('status', '!=', -1);
-        $select_query->select('*', DB::raw("IF(status = 1,'Active','Inactive') as status"));
+        $select_query = DB::table('product as p')
+                ->join('users as u', 'p.user_id', '=', 'u.id')
+                ->where('p.status', '!=', -1);
+
+        $select_query->select('p.*','u.name', DB::raw("IF(p.status = 1,'Active','Inactive') as status"));
         if (isset($requestData['search']['value']) && $requestData['search']['value'] != '') {
-            $select_query->where("name", "like", '%' . $requestData['search']['value'] . '%');
-            $select_query->where("email", "like", '%' . $requestData['search']['value'] . '%');
-            $select_query->where("phone_no", "like", '%' . $requestData['search']['value'] . '%');
+            $select_query->where("u.name", "like", '%' . $requestData['search']['value'] . '%')
+                    ->oRwhere("p.title", "like", '%' . $requestData['search']['value'] . '%')
+                    ->oRwhere("p.price", "like", '%' . $requestData['search']['value'] . '%')
+                    ->oRwhere("p.short_description", "like", '%' . $requestData['search']['value'] . '%');
         }
 
         if (isset($requestData['order'][0]['column']) && $requestData['order'][0]['column'] != '' && isset($requestData['order'][0]['dir']) && $requestData['order'][0]['dir'] != '') {
             $order_by = $columns[$requestData['order'][0]['column']];
             $select_query->orderBy($order_by, $requestData['order'][0]['dir']);
         } else {
-            $select_query->orderBy("id", "DESC");
+            $select_query->orderBy("p.created_at", "DESC");
         }
 
         //This is for count
@@ -180,27 +167,24 @@ class Contact_usController extends Controller {
             $select_query->limit($requestData['length']);
         }
 
-        $contact_us_list = $select_query->get();
-        foreach ($contact_us_list as $row) {
+        $product_list = $select_query->get();
+        foreach ($product_list as $row) {
+
             $temp['id'] = $row->id;
             $temp['name'] = $row->name;
-            $temp['email'] = $row->email;
-            $temp['phone_no'] = $row->phone_no;
-            $temp['description'] = $row->description;
-            $temp['reply'] = '<i class="fa fa-mail-reply em_reply" data-id="' . $row->id . '" onclick="email_reply(' . $row->id . ')"></i>';
+            $temp['title'] = $row->title;
+            $temp['short_description'] = $row->short_description;
+            $temp['price'] = $row->price;
             $temp['status'] = $row->status;
             $id = $row->id;
 
-            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btnEdit_contact_us"> Edit</a>  	&nbsp;';
-            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" type="button" class="btn btn-xs btn-danger btnDelete_contact_us"> Delete</a></div>';
-
+            $action = '<div class="datatable_btn"><a href="javascript:void(0);" data-id="' . $id . '" class="btn btn-xs btn-info btnEdit_product"> Edit</a>  	&nbsp;';
+            $action .= '<a href="javascript:void(0);" data-id="' . $id . '" type="button" class="btn btn-xs btn-danger btnDelete_product"> Delete</a></div>';
 
             $temp['action'] = $action;
             $data[] = $temp;
             $id = "";
         }
-
-
 
         $json_data = array(
             "draw" => intval($requestData['draw']),
@@ -211,22 +195,5 @@ class Contact_usController extends Controller {
         echo json_encode($json_data);
         exit(0);
     }
-    
-    public function email(Request $request)
-    {
-        $post = $request->input();
-        $subject = $post['subject'];
-        $email = $post['em_name'];
-        $msg = $post['reply'];
-        $data = array('msg'=> $msg);
 
-        Mail::send('mail', $data, function($message) use ($email,$subject) {
-        $message->to($email)->subject
-            ($subject);
-        $message->from(USER_EMAIL,'Mukund Rana');
-        });
-        
-        echo "Email Sent. Check your inbox.";
-        
-    }
 }

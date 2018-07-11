@@ -12,7 +12,7 @@
                     <div class="card-header">
                         <div class="col-sm-12">
                             <button type="button" class="btn btn-info btn-sm open-modal" data-toggle="modal" data-target="#ins_bullet"> Create Bullet </button>
-                            <p id="msg_main"></p>
+                            <center><p id="msg_main"></p></center>
                         </div>  
                     </div>
                     <!-- /.card-header -->
