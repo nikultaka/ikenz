@@ -15,6 +15,7 @@
     <!-- Bootstrap Core CSS -->
     <link href="{{url('css/lib/bootstrap/bootstrap.min.css')}}" rel="stylesheet">
     <script src="{{url('js/lib/bootstrap/js/bootstrap.min.js')}}"></script>
+     
     <!-- Custom CSS -->
     <link href="{{url('css/helper.css')}}" rel="stylesheet">
     <link href="{{url('css/style.css')}}" rel="stylesheet">
@@ -31,8 +32,8 @@
     
 <style>
     .has-error{
-/*        border: 2px solid red;
-        border-radius: 5px;*/
+        border: 2px solid red;
+        border-radius: 5px;
     }
 </style>
 <script type="text/javascript">

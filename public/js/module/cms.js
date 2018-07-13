@@ -83,6 +83,7 @@ admin.cms = {
 
     },
     refresh_validator: function () {
+                
         $("#frm_cms").bootstrapValidator({
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',

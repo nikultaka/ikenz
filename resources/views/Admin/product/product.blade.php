@@ -10,7 +10,7 @@
                         <!--modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h4>Create new faq</h4>
+                                <h4>Create new Product</h4>
                             </div>
                             <div class="modal-body">
                                 <p id="msg"></p>
@@ -21,7 +21,7 @@
                                     <label for="user_id" class="col-sm-12">Users</label>
                                     <div class="col-sm-12">
                                         <select id="user_id" name="user_id" class="form-control">
-                                            <option value="">----Select Category----</option>
+                                            <option value="">----Select User----</option>
                                             @if($user > 0)
                                             @foreach($user as $row)
                                             <option value="{{$row->id}}">{{$row ->name}}</option>
@@ -54,7 +54,6 @@
                                     <label for="description" class="col-sm-12">Description</label>
                                     <div class="col-sm-12">
                                         <textarea class="form-control" name="description" id="description" rows="5"></textarea>
-                                        <!--<input type="text" class="form-control" name="answer" id="answer" />-->
                                     </div>
                                 </div>
                                 <div class="form-group">

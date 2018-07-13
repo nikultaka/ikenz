@@ -17,7 +17,7 @@ class CreateProductTable extends Migration
             $table->integer('user_id');
             $table->string('title');
             $table->string('short_description');
-            $table->integer('price');
+            $table->float('price', 10, 2);
             $table->string('description');
             $table->tinyInteger('status');
             $table->timestamps();

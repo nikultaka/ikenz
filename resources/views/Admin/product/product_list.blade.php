@@ -44,9 +44,13 @@
 @endsection
 
 @section('bottomscript')
+
 <script src="https://cdn.ckeditor.com/4.9.2/standard/ckeditor.js"></script>
-<!--<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>-->
+
+    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
 		
 
 <script src="{!! asset('js/module/product.js')!!}"></script>
@@ -54,18 +58,6 @@
     $(document).ready(function () {
         admin.product.initialize();
         CKEDITOR.replace('description');
-        
-        // Initialize select2
-//        $("#user_id").select2();
-//
-//        // Read selected option
-//        $('#but_read').click(function(){
-//          var username = $('#user_id option:selected').text();
-//          var userid = $('#user_id').val();
-//
-//          $('#result').html("id : " + userid + ", name : " + username);
-//
-//        });
 
     });
 </script>  

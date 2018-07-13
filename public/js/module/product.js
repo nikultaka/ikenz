@@ -17,12 +17,16 @@ admin.product = {
 
         admin.product.refresh_validator();
 
+        admin.product.search_user();
+
         $('#ins_product').on('hidden.bs.modal', function () {
             $('#frm_product')[0].reset();
             $('#frm_product').bootstrapValidator('resetForm', true);
-        })
-
+        });
+        
     },
+    
+    
     load_product: function () {
 
         var table = jQuery('.product-table').DataTable({
@@ -49,14 +53,34 @@ admin.product = {
             ],
         });
 
+    },
+    
+    search_user: function (){
+        $("#user_id").select2({
+            width: '100%',
+            placeholder: "Select User",
+            minimumInputLength: 2,
+            dropdownParent: $("#ins_product"),
 
+            ajax: {
+              url: BASE_URL + '/admin/product/search',
+              dataType: 'json',
+              delay: 250,
 
-
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                },
+                cache: true
+                }
+        });
 
     },
+    
     refresh_validator: function ()
     {
-
+        
         $("#frm_product").bootstrapValidator({
             feedbackIcons: {
                 valid: 'glyphicon glyphicon-ok',
@@ -88,6 +112,9 @@ admin.product = {
                 },
                 price: {
                     validators: {
+                        numeric: {
+                            message: 'Please enter digits'
+                        },
                         notEmpty: {
                             message: 'Field required'
                         }
@@ -111,6 +138,10 @@ admin.product = {
         })
 
                 .on('success.form.bv', function (e) {
+                    for (instance in CKEDITOR.instances) 
+                    {
+                        CKEDITOR.instances[instance].updateElement();
+                    }
 
                     $.ajax({
                         url: BASE_URL + '/admin/product/addrecord',
@@ -145,15 +176,15 @@ admin.product = {
                 success: function (data) {
                     var data = $.parseJSON(data);
                     if (data.status == 1) {
-
+                        delays : 1000;
                         $("#id").val(data.content.id);
-                        var user_id = $("#user_id").val(data.content.user_id);
-                        user_id.attr("selected", "selected");
                         $("#title").val(data.content.title);
                         $("#short_description").val(data.content.short_description);
                         $("#price").val(data.content.price);
-                        $("#description").html(data.content.description);
-
+                        $("#description").val(data.content.description);
+                        
+                        var user_id = $("#user_id").val(data.content.user_id);
+                        user_id.attr("selected", "selected");
 
                         var status_id = $("#status").val(data.content.status);
                         status_id.attr("selected", "selected");
@@ -190,4 +221,6 @@ admin.product = {
 
 
     },
+    
+    
 };

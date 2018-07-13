@@ -167,5 +167,6 @@ Route::group(['prefix' => 'admin'], function()
         Route::any('product/getdata', 'Admin\ProductController@anydata')->name('product/getdata');
         Route::any('product/delete', 'Admin\ProductController@deleterecord');
         Route::any('product/edit', 'Admin\ProductController@editproduct');
+        Route::get('product/search', 'Admin\ProductController@search_user');
         
     });

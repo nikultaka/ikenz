@@ -98,6 +98,28 @@ class ProductController extends Controller {
         echo json_encode($data_result);
         exit;
     }
+    
+    public function search_user(Request $request) {
+        
+        $post = $request->input();
+        $name = $post['q'];
+        
+        $user = DB::table('users')
+                ->select('id','name')
+                ->where('name','LIKE','%'.$name.'%')
+                ->where('status', '=', 1)
+                ->get();
+        
+        $data[] = "";
+        foreach ($user as $row){
+            $data[] = ["id" => $row->id,"text" => $row->name];
+        }
+
+        return json_encode($data);
+        
+    }
+    
+    
 
     public function deleterecord(Request $request) {
 
